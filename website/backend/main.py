@@ -162,3 +162,67 @@ async def get_projects():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+# ── Certificate Program Endpoints ─────────────────────────────────────────────
+
+class CertificateSubmission(BaseModel):
+    learner_name: str
+    industry: str
+    industry_id: str
+    score: int
+    modules: list
+    issued_at: str
+    cert_id: str
+
+@app.post("/api/certificates")
+async def issue_certificate(cert: CertificateSubmission):
+    """Issue and store a certificate after passing a program."""
+    certificates = load_data("certificates.json", [])
+    entry = cert.dict()
+    certificates.append(entry)
+    save_data("certificates.json", certificates)
+    return {
+        "success": True,
+        "cert_id": cert.cert_id,
+        "message": f"Certificate issued for {cert.learner_name} in {cert.industry}"
+    }
+
+@app.get("/api/certificates")
+async def get_certificates():
+    """Get all issued certificates (public leaderboard)."""
+    certificates = load_data("certificates.json", [])
+    # Return summary (no personal details)
+    summary = [
+        {
+            "cert_id": c["cert_id"],
+            "industry": c["industry"],
+            "score": c["score"],
+            "issued_at": c["issued_at"]
+        }
+        for c in certificates
+    ]
+    return {"certificates": summary, "total": len(summary)}
+
+@app.get("/api/certificates/stats")
+async def get_certificate_stats():
+    """Get certificate program statistics."""
+    certificates = load_data("certificates.json", [])
+    by_industry = {}
+    for c in certificates:
+        ind = c.get("industry", "Unknown")
+        if ind not in by_industry:
+            by_industry[ind] = {"count": 0, "avg_score": 0, "scores": []}
+        by_industry[ind]["count"] += 1
+        by_industry[ind]["scores"].append(c.get("score", 0))
+    for ind in by_industry:
+        scores = by_industry[ind]["scores"]
+        by_industry[ind]["avg_score"] = round(sum(scores) / len(scores))
+        del by_industry[ind]["scores"]
+    return {
+        "total_certificates": len(certificates),
+        "by_industry": by_industry,
+        "industries_available": 6,
+        "modules_per_program": 3,
+        "questions_per_module": 4
+    }

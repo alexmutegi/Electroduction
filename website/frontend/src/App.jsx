@@ -6,13 +6,13 @@ import GameStats from './components/GameStats'
 import About from './components/About'
 import Contact from './components/Contact'
 import Navigation from './components/Navigation'
+import CertificateProgram from './components/CertificateProgram'
 import { API_URL } from './api'
 
 function App() {
   const [apiStatus, setApiStatus] = useState('checking')
 
   useEffect(() => {
-    // Check backend API connection
     const checkAPI = async () => {
       try {
         const response = await fetch(`${API_URL}/api/health`)
@@ -35,6 +35,7 @@ function App() {
         <Hero />
         <About />
         <Projects />
+        <CertificateProgram />
         <GameStats apiStatus={apiStatus} />
         <Contact />
       </main>

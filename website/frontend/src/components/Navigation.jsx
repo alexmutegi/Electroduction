@@ -29,6 +29,7 @@ function Navigation() {
           <li><a onClick={() => scrollToSection('hero')}>Home</a></li>
           <li><a onClick={() => scrollToSection('about')}>About</a></li>
           <li><a onClick={() => scrollToSection('projects')}>Projects</a></li>
+          <li><a onClick={() => scrollToSection('certificates')} className="nav-cert-link">🎓 Certificates</a></li>
           <li><a onClick={() => scrollToSection('game-stats')}>Game Stats</a></li>
           <li><a onClick={() => scrollToSection('contact')}>Contact</a></li>
         </ul>
