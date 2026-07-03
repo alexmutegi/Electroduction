@@ -258,6 +258,16 @@
     </div>
 
     <div class="container">
+        <div style="margin-bottom: 1.5rem;">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="task-input" 
+                placeholder="Search products by name or category..."
+                onkeyup="handleSearch()"
+                style="width: 100%; padding: 1rem; border: 2px solid #667eea; border-radius: 10px; font-size: 1rem; margin-bottom: 1rem;"
+            >
+        </div>
         <div class="filters">
             <button class="filter-btn active" onclick="filterProducts('all', event)">All</button>
             <button class="filter-btn" onclick="filterProducts('laptops', event)">Laptops</button>
@@ -319,24 +329,43 @@
         // Global state variables - in a larger app, consider state management pattern
         let cart = [];  // Shopping cart: array of product objects with quantity
         let currentFilter = 'all';  // Active category filter
+        let currentSearch = '';  // Current search query
 
         // ============================================
         // RENDERING FUNCTIONS
         // ============================================
 
         /**
-         * Renders the product grid based on current filter
+         * Renders the product grid based on current filter and search
          * Uses template literals for clean HTML generation
          * Pattern: Data -> Filter -> Map -> Join -> Inject
          */
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
 
-            // Filter products based on current category
-            // Ternary operator: if 'all', show everything, else filter by category
-            const filtered = currentFilter === 'all'
-                ? products
-                : products.filter(p => p.category === currentFilter);
+            // Filter products based on category and search query
+            let filtered = products;
+
+            // Apply category filter
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(p => p.category === currentFilter);
+            }
+
+            // Apply search filter
+            if (currentSearch) {
+                const query = currentSearch.toLowerCase();
+                filtered = filtered.filter(p =>
+                    p.name.toLowerCase().includes(query) ||
+                    p.description.toLowerCase().includes(query) ||
+                    p.category.toLowerCase().includes(query)
+                );
+            }
+
+            // Show empty state if no results
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-cart" style="grid-column: 1 / -1;">No products found. Try adjusting your search or filters.</div>';
+                return;
+            }
 
             // Map filtered products to HTML strings, then join into single string
             // Template literals (backticks) allow embedded expressions ${...}
@@ -353,6 +382,14 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        /**
+         * Handles search input changes
+         */
+        function handleSearch() {
+            currentSearch = document.getElementById('searchInput').value;
+            renderProducts();
         }
 
         /**
@@ -406,6 +443,28 @@
         }
 
         /**
+         * Saves cart to localStorage for persistence
+         */
+        function saveCart() {
+            localStorage.setItem('techshop_cart', JSON.stringify(cart));
+        }
+
+        /**
+         * Loads cart from localStorage
+         */
+        function loadCart() {
+            const saved = localStorage.getItem('techshop_cart');
+            if (saved) {
+                try {
+                    cart = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Failed to load cart from storage');
+                    cart = [];
+                }
+            }
+        }
+
+        /**
          * Updates cart count badge and refreshes cart display
          * Central update function called after any cart modification
          */
@@ -416,6 +475,9 @@
 
             // Refresh cart modal content
             renderCart();
+
+            // Save cart to localStorage
+            saveCart();
         }
 
         /**
@@ -494,12 +556,20 @@
         // ============================================
         // INITIALIZATION
         // ============================================
+        // Load cart from localStorage on page load
+        loadCart();
+
         // Render products on page load
         renderProducts();
 
+        // Update cart display if items were restored
+        if (cart.length > 0) {
+            updateCart();
+        }
+
         /*
          * ENHANCEMENT IDEAS:
-         * - Add LocalStorage for cart persistence
+         * - ✅ Added LocalStorage for cart persistence
          * - Implement quantity adjustment in cart
          * - Add product search functionality
          * - Create wishlist feature

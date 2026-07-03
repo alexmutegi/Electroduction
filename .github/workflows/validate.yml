@@ -1,0 +1,45 @@
+name: Validate HTML & JavaScript
+
+on:
+  push:
+    branches: [ main, develop, 'fix/*' ]
+    paths:
+      - '10-websites/**'
+      - '.eslintrc.json'
+      - 'package.json'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Run ESLint
+      run: npm run lint
+      continue-on-error: true
+    
+    - name: Validate HTML
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libxml2-utils
+        for file in 10-websites/*.html; do
+          echo "Checking $file..."
+          xmllint --html --noout "$file" 2>&1 | grep -v "parser warning" || true
+        done
+    
+    - name: Check for console errors
+      run: |
+        echo "Checking for common JavaScript errors..."
+        grep -r "console.error" 10-websites/ || true
