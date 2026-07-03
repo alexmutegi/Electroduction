@@ -259,10 +259,10 @@
 
     <div class="container">
         <div class="filters">
-            <button class="filter-btn active" onclick="filterProducts('all')">All</button>
-            <button class="filter-btn" onclick="filterProducts('laptops')">Laptops</button>
-            <button class="filter-btn" onclick="filterProducts('phones')">Phones</button>
-            <button class="filter-btn" onclick="filterProducts('accessories')">Accessories</button>
+            <button class="filter-btn active" onclick="filterProducts('all', event)">All</button>
+            <button class="filter-btn" onclick="filterProducts('laptops', event)">Laptops</button>
+            <button class="filter-btn" onclick="filterProducts('phones', event)">Phones</button>
+            <button class="filter-btn" onclick="filterProducts('accessories', event)">Accessories</button>
         </div>
 
         <div class="products-grid" id="productsGrid"></div>
@@ -360,13 +360,17 @@
          * Updates UI state and re-renders products
          * @param {string} category - Category to filter by ('all', 'laptops', etc.)
          */
-        function filterProducts(category) {
+        function filterProducts(category, event) {
             // Update global state
             currentFilter = category;
 
             // Update button active states (remove all, add to clicked)
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else if (event && event.target) {
+                event.target.classList.add('active');
+            }
 
             // Re-render with new filter
             renderProducts();

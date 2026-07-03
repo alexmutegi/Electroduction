@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from datetime import datetime
+from pathlib import Path
 import json
-import os
 
 app = FastAPI(title="Electroduction Portfolio API", version="1.0.0")
 
@@ -36,21 +36,22 @@ class LeaderboardEntry(BaseModel):
     date: datetime
 
 # In-memory storage (replace with database in production)
-DATA_DIR = "/home/user/Electroduction/website/backend/data"
-os.makedirs(DATA_DIR, exist_ok=True)
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 def load_data(filename: str, default=None):
     """Load JSON data from file"""
-    filepath = os.path.join(DATA_DIR, filename)
-    if os.path.exists(filepath):
-        with open(filepath, 'r') as f:
+    filepath = DATA_DIR / filename
+    if filepath.exists():
+        with filepath.open('r') as f:
             return json.load(f)
     return default if default is not None else []
 
 def save_data(filename: str, data):
     """Save data to JSON file"""
-    filepath = os.path.join(DATA_DIR, filename)
-    with open(filepath, 'w') as f:
+    filepath = DATA_DIR / filename
+    with filepath.open('w') as f:
         json.dump(data, f, indent=2, default=str)
 
 # API Endpoints

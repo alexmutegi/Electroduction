@@ -4,10 +4,64 @@ Unit tests for the Electroduction Desktop Application
 
 import pytest
 import sys
+from types import ModuleType
 from unittest.mock import Mock, patch, MagicMock
 
-# Mock customtkinter before importing main
-sys.modules['customtkinter'] = MagicMock()
+# Create a minimal fake customtkinter package for tests
+fake_ctk = ModuleType("customtkinter")
+
+class DummyWidget:
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def title(self, *args, **kwargs):
+        pass
+
+    def geometry(self, *args, **kwargs):
+        pass
+
+    def minsize(self, *args, **kwargs):
+        pass
+
+    def grid(self, *args, **kwargs):
+        pass
+
+    def grid_rowconfigure(self, *args, **kwargs):
+        pass
+
+    def grid_columnconfigure(self, *args, **kwargs):
+        pass
+
+    def pack(self, *args, **kwargs):
+        pass
+
+    def configure(self, *args, **kwargs):
+        pass
+
+    def destroy(self):
+        pass
+
+    def winfo_children(self):
+        return []
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    def get(self, *args, **kwargs):
+        return ""
+
+fake_ctk.CTk = DummyWidget
+fake_ctk.CTkFrame = DummyWidget
+fake_ctk.CTkLabel = DummyWidget
+fake_ctk.CTkButton = DummyWidget
+fake_ctk.CTkScrollableFrame = DummyWidget
+fake_ctk.CTkEntry = DummyWidget
+fake_ctk.CTkTextbox = DummyWidget
+fake_ctk.CTkFont = lambda *args, **kwargs: None
+fake_ctk.set_appearance_mode = lambda mode: None
+fake_ctk.set_default_color_theme = lambda theme: None
+
+sys.modules['customtkinter'] = fake_ctk
 
 import main
 
