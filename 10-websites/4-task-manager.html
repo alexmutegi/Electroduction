@@ -267,9 +267,9 @@
         </div>
 
         <div class="filters">
-            <button class="filter-btn active" onclick="filterTasks('all')">All</button>
-            <button class="filter-btn" onclick="filterTasks('pending')">Pending</button>
-            <button class="filter-btn" onclick="filterTasks('completed')">Completed</button>
+            <button class="filter-btn active" onclick="filterTasks('all', event)">All</button>
+            <button class="filter-btn" onclick="filterTasks('pending', event)">Pending</button>
+            <button class="filter-btn" onclick="filterTasks('completed', event)">Completed</button>
         </div>
 
         <div class="tasks-container">
@@ -315,10 +315,14 @@
             updateTasks();
         }
 
-        function filterTasks(filter) {
+        function filterTasks(filter, event) {
             currentFilter = filter;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else if (event && event.target) {
+                event.target.classList.add('active');
+            }
             updateTasks();
         }
 

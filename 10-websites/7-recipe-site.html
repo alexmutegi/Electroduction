@@ -256,11 +256,11 @@
 
     <div class="container">
         <div class="categories">
-            <button class="category-btn active" onclick="filterRecipes('all')">All</button>
-            <button class="category-btn" onclick="filterRecipes('breakfast')">Breakfast</button>
-            <button class="category-btn" onclick="filterRecipes('lunch')">Lunch</button>
-            <button class="category-btn" onclick="filterRecipes('dinner')">Dinner</button>
-            <button class="category-btn" onclick="filterRecipes('dessert')">Dessert</button>
+            <button class="category-btn active" onclick="filterRecipes('all', event)">All</button>
+            <button class="category-btn" onclick="filterRecipes('breakfast', event)">Breakfast</button>
+            <button class="category-btn" onclick="filterRecipes('lunch', event)">Lunch</button>
+            <button class="category-btn" onclick="filterRecipes('dinner', event)">Dinner</button>
+            <button class="category-btn" onclick="filterRecipes('dessert', event)">Dessert</button>
         </div>
 
         <div class="recipes-grid" id="recipesGrid"></div>
@@ -330,10 +330,14 @@
             `).join('');
         }
 
-        function filterRecipes(category) {
+        function filterRecipes(category, event) {
             currentFilter = category;
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else if (event && event.target) {
+                event.target.classList.add('active');
+            }
 
             const filtered = category === 'all'
                 ? recipes

@@ -3,21 +3,48 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from datetime import datetime
+from pathlib import Path
 import json
-import os
 
-app = FastAPI(title="Electroduction Portfolio API", version="1.0.0")
+app = FastAPI(
+    title="Electroduction Portfolio API",
+    version="2.0.0",
+    description="API for Electroduction portfolio projects"
+)
 
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Data models
+# ============================================
+# DATA MODELS
+# ============================================
+
+class Product(BaseModel):
+    id: int
+    name: str
+    category: str
+    price: float
+    icon: str
+    description: str
+
+class Recipe(BaseModel):
+    id: int
+    title: str
+    category: str
+    time: str
+    servings: int
+    difficulty: str
+    icon: str
+    description: str
+    ingredients: List[str]
+    instructions: List[str]
+
 class ContactMessage(BaseModel):
     name: str
     email: EmailStr
@@ -27,142 +54,124 @@ class GameScore(BaseModel):
     player_name: str
     score: int
     level: int
-    date: datetime = datetime.now()
+    date: datetime = None
 
 class LeaderboardEntry(BaseModel):
     player_name: str
     score: int
     level: int
-    date: datetime
+    date: str
 
-# In-memory storage (replace with database in production)
-DATA_DIR = os.environ.get("DATA_DIR", os.path.join(os.path.dirname(__file__), "data"))
-os.makedirs(DATA_DIR, exist_ok=True)
+# ============================================
+# DATA
+# ============================================
+
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+PRODUCTS = [
+    {"id": 1, "name": "Premium Laptop Pro", "category": "laptops", "price": 1299, "icon": "💻", "description": "High-performance laptop"},
+    {"id": 2, "name": "Smartphone X", "category": "phones", "price": 899, "icon": "📱", "description": "Latest flagship"},
+    {"id": 3, "name": "Wireless Headphones", "category": "accessories", "price": 199, "icon": "🎧", "description": "Noise-cancelling"},
+]
 
 def load_data(filename: str, default=None):
-    """Load JSON data from file"""
-    filepath = os.path.join(DATA_DIR, filename)
-    if os.path.exists(filepath):
-        with open(filepath, 'r') as f:
+    filepath = DATA_DIR / filename
+    if filepath.exists():
+        with filepath.open('r') as f:
             return json.load(f)
     return default if default is not None else []
 
 def save_data(filename: str, data):
-    """Save data to JSON file"""
-    filepath = os.path.join(DATA_DIR, filename)
-    with open(filepath, 'w') as f:
+    filepath = DATA_DIR / filename
+    with filepath.open('w') as f:
         json.dump(data, f, indent=2, default=str)
 
-# API Endpoints
+# ============================================
+# ROOT & HEALTH
+# ============================================
+
 @app.get("/")
 async def root():
     return {
-        "message": "Electroduction Portfolio API",
-        "version": "1.0.0",
+        "message": "Electroduction Portfolio API v2.0",
         "endpoints": {
+            "products": "/api/products",
             "health": "/api/health",
-            "game_stats": "/api/game/stats",
-            "leaderboard": "/api/game/leaderboard",
-            "submit_score": "/api/game/score",
-            "contact": "/api/contact"
+            "leaderboard": "/api/leaderboard"
         }
     }
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "healthy", "timestamp": datetime.now()}
+    return {"status": "healthy", "timestamp": datetime.now().isoformat()}
 
-@app.get("/api/game/stats")
-async def get_game_stats():
-    """Get overall game statistics"""
-    leaderboard = load_data("leaderboard.json", [])
+# ============================================
+# PRODUCT ENDPOINTS
+# ============================================
 
-    total_players = len(set(entry["player_name"] for entry in leaderboard))
-    total_runs = len(leaderboard)
-    highest_level = max((entry["level"] for entry in leaderboard), default=0)
-    bosses_defeated = sum(1 for entry in leaderboard if entry["level"] >= 5)
+@app.get("/api/products", response_model=List[Product])
+async def get_products(category: Optional[str] = None):
+    """Get products, optionally filtered by category"""
+    if category and category != 'all':
+        return [p for p in PRODUCTS if p.get('category') == category]
+    return PRODUCTS
 
-    return {
-        "total_players": total_players,
-        "total_runs": total_runs,
-        "highest_level": highest_level,
-        "bosses_defeated": bosses_defeated
-    }
+@app.get("/api/products/{product_id}", response_model=Product)
+async def get_product(product_id: int):
+    """Get a single product"""
+    for p in PRODUCTS:
+        if p['id'] == product_id:
+            return p
+    raise HTTPException(status_code=404, detail="Product not found")
 
-@app.get("/api/game/leaderboard", response_model=List[LeaderboardEntry])
-async def get_leaderboard(limit: int = 10):
-    """Get top scores"""
-    leaderboard = load_data("leaderboard.json", [])
-
-    # Sort by score descending
-    sorted_leaderboard = sorted(
-        leaderboard,
-        key=lambda x: x["score"],
-        reverse=True
-    )[:limit]
-
-    return sorted_leaderboard
+# ============================================
+# GAME ENDPOINTS
+# ============================================
 
 @app.post("/api/game/score")
 async def submit_score(score: GameScore):
-    """Submit a new game score"""
+    """Submit a game score"""
     leaderboard = load_data("leaderboard.json", [])
-
     new_entry = {
         "player_name": score.player_name,
         "score": score.score,
         "level": score.level,
-        "date": score.date.isoformat()
+        "date": (score.date or datetime.now()).isoformat()
     }
-
     leaderboard.append(new_entry)
     save_data("leaderboard.json", leaderboard)
+    return {"message": "Score submitted", "rank": len([e for e in leaderboard if e["score"] > score.score]) + 1}
 
-    return {
-        "message": "Score submitted successfully",
-        "rank": len([e for e in leaderboard if e["score"] > score.score]) + 1
-    }
+@app.get("/api/leaderboard")
+async def get_leaderboard(limit: int = 10):
+    """Get top leaderboard scores"""
+    leaderboard = load_data("leaderboard.json", [])
+    sorted_board = sorted(leaderboard, key=lambda x: x["score"], reverse=True)[:limit]
+    return {"topScores": sorted_board}
+
+# ============================================
+# CONTACT ENDPOINTS
+# ============================================
 
 @app.post("/api/contact")
 async def submit_contact(message: ContactMessage):
-    """Submit a contact message"""
+    """Submit contact message"""
     messages = load_data("messages.json", [])
-
     new_message = {
         "name": message.name,
         "email": message.email,
         "message": message.message,
         "timestamp": datetime.now().isoformat()
     }
-
     messages.append(new_message)
     save_data("messages.json", messages)
-
-    return {"message": "Message received successfully"}
-
-@app.get("/api/projects")
-async def get_projects():
-    """Get project information"""
-    return {
-        "projects": [
-            {
-                "id": "electroduction",
-                "name": "Electroduction",
-                "description": "AAA Roguelike Game",
-                "tech": ["Python", "Pygame"],
-                "stats": {
-                    "lines_of_code": 5000,
-                    "files": 24,
-                    "systems": ["Combat", "Dungeon Gen", "AI", "Audio"]
-                }
-            }
-        ]
-    }
+    return {"message": "Contact message received"}
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
 
 # ── Certificate Program Endpoints ─────────────────────────────────────────────
 
@@ -192,7 +201,6 @@ async def issue_certificate(cert: CertificateSubmission):
 async def get_certificates():
     """Get all issued certificates (public leaderboard)."""
     certificates = load_data("certificates.json", [])
-    # Return summary (no personal details)
     summary = [
         {
             "cert_id": c["cert_id"],

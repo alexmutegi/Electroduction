@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from main import app, DATA_DIR
+from website.backend.main import app, DATA_DIR
 import os
 import json
 
