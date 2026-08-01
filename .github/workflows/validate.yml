@@ -7,39 +7,73 @@ on:
       - '10-websites/**'
       - '.eslintrc.json'
       - 'package.json'
+      - '.github/workflows/validate.yml'
+      - '.github/scripts/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - '10-websites/**'
+      - '.eslintrc.json'
+      - 'package.json'
+      - '.github/workflows/validate.yml'
+      - '.github/scripts/**'
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm install
-    
-    - name: Run ESLint
-      run: npm run lint
-      continue-on-error: true
-    
-    - name: Validate HTML
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libxml2-utils
-        for file in 10-websites/*.html; do
-          echo "Checking $file..."
-          xmllint --html --noout "$file" 2>&1 | grep -v "parser warning" || true
-        done
-    
-    - name: Check for console errors
-      run: |
-        echo "Checking for common JavaScript errors..."
-        grep -r "console.error" 10-websites/ || true
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          # No cache: 'npm' here on purpose — there's no package-lock.json at
+          # the repo root, so setup-node's cache would silently key off the
+          # unrelated website/frontend/package-lock.json. Commit a root
+          # lockfile (npm install && git add package-lock.json) to re-enable
+          # caching safely.
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        # No continue-on-error — real errors (eqeqeq, semi, quotes, etc. per
+        # .eslintrc.json) now actually fail the build. Rules set to "warn"
+        # (no-unused-vars, no-console) still won't block the job.
+        run: npm run lint
+
+      - name: Check inline JavaScript syntax
+        run: |
+          status=0
+          for file in 10-websites/*.html; do
+            echo "Checking JS in $file..."
+            python3 .github/scripts/extract_inline_js.py "$file" > /tmp/_extracted.js
+            if ! node --check /tmp/_extracted.js; then
+              echo "  ^ syntax error in $file"
+              status=1
+            fi
+          done
+          exit $status
+
+      - name: Validate HTML structure
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libxml2-utils
+
+          status=0
+          for file in 10-websites/*.html; do
+            echo "Checking $file..."
+            python3 .github/scripts/strip_script_bodies.py "$file" > /tmp/_stripped.html
+
+            # xmllint --html exits 0 even on genuine parser errors, so check
+            # the actual error text rather than trusting the exit code.
+            out=$(xmllint --html --noout /tmp/_stripped.html 2>&1 | grep -v "parser warning" || true)
+            if [ -n "$out" ]; then
+              echo "$out"
+              status=1
+            fi
+          done
+          exit $status
