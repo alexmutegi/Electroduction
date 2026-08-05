@@ -43,3 +43,4 @@ game/save/*.json
 
 # Pygame
 *.pyc
+node_modules/
