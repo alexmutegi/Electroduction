@@ -9,10 +9,15 @@
     "validate": "bash validate.sh",
     "test": "npm run lint && npm run validate"
   },
-  "keywords": ["game", "website", "demo"],
+  "keywords": [
+    "game",
+    "website",
+    "demo"
+  ],
   "author": "Alex Mutegi",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.56.0"
+    "eslint": "^8.56.0",
+    "eslint-plugin-html": "^8.1.4"
   }
 }
