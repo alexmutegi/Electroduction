@@ -358,38 +358,38 @@
 
     <script>
         const posts = [
-            {
-                id: 1,
-                author: 'Alex Johnson',
-                time: '2 hours ago',
-                content: 'Just launched my new website! 🚀 Check it out and let me know what you think. Really proud of how it turned out!',
-                likes: 234,
-                comments: 45,
-                shares: 12
-            },
-            {
-                id: 2,
-                author: 'Alex Johnson',
-                time: '1 day ago',
-                content: 'Working on some exciting new projects. Stay tuned for announcements! 💻✨',
-                likes: 189,
-                comments: 23,
-                shares: 8
-            },
-            {
-                id: 3,
-                author: 'Alex Johnson',
-                time: '3 days ago',
-                content: 'Great meeting with the team today. Amazing what we can accomplish when we work together! 🤝',
-                likes: 312,
-                comments: 56,
-                shares: 15
-            }
+          {
+            id: 1,
+            author: 'Alex Johnson',
+            time: '2 hours ago',
+            content: 'Just launched my new website! 🚀 Check it out and let me know what you think. Really proud of how it turned out!',
+            likes: 234,
+            comments: 45,
+            shares: 12
+          },
+          {
+            id: 2,
+            author: 'Alex Johnson',
+            time: '1 day ago',
+            content: 'Working on some exciting new projects. Stay tuned for announcements! 💻✨',
+            likes: 189,
+            comments: 23,
+            shares: 8
+          },
+          {
+            id: 3,
+            author: 'Alex Johnson',
+            time: '3 days ago',
+            content: 'Great meeting with the team today. Amazing what we can accomplish when we work together! 🤝',
+            likes: 312,
+            comments: 56,
+            shares: 15
+          }
         ];
 
         function renderPosts() {
-            const container = document.getElementById('postsContainer');
-            container.innerHTML = posts.map(post => `
+          const container = document.getElementById('postsContainer');
+          container.innerHTML = posts.map(post => `
                 <div class="post">
                     <div class="post-header">
                         <div class="avatar">👤</div>
@@ -409,23 +409,23 @@
         }
 
         function createPost() {
-            const input = document.getElementById('newPostInput');
-            const content = input.value.trim();
+          const input = document.getElementById('newPostInput');
+          const content = input.value.trim();
 
-            if (!content) return;
+          if (!content) {return;}
 
-            posts.unshift({
-                id: Date.now(),
-                author: 'Alex Johnson',
-                time: 'Just now',
-                content: content,
-                likes: 0,
-                comments: 0,
-                shares: 0
-            });
+          posts.unshift({
+            id: Date.now(),
+            author: 'Alex Johnson',
+            time: 'Just now',
+            content: content,
+            likes: 0,
+            comments: 0,
+            shares: 0
+          });
 
-            input.value = '';
-            renderPosts();
+          input.value = '';
+          renderPosts();
         }
 
         renderPosts();

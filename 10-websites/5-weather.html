@@ -198,61 +198,61 @@
 
     <script>
         const weatherData = {
-            'San Francisco': {
-                temp: 72, feelsLike: 70, humidity: 65, windSpeed: 12, pressure: 1013,
-                description: 'Sunny', icon: '☀️',
-                forecast: [
-                    { day: 'Mon', icon: '☀️', temp: 73 },
-                    { day: 'Tue', icon: '⛅', temp: 71 },
-                    { day: 'Wed', icon: '🌤️', temp: 69 },
-                    { day: 'Thu', icon: '☁️', temp: 66 },
-                    { day: 'Fri', icon: '🌧️', temp: 64 },
-                    { day: 'Sat', icon: '⛈️', temp: 62 },
-                    { day: 'Sun', icon: '🌤️', temp: 68 }
-                ]
-            },
-            'New York': {
-                temp: 58, feelsLike: 55, humidity: 72, windSpeed: 18, pressure: 1010,
-                description: 'Partly Cloudy', icon: '⛅',
-                forecast: [
-                    { day: 'Mon', icon: '⛅', temp: 60 },
-                    { day: 'Tue', icon: '☁️', temp: 57 },
-                    { day: 'Wed', icon: '🌧️', temp: 54 },
-                    { day: 'Thu', icon: '⛈️', temp: 52 },
-                    { day: 'Fri', icon: '🌧️', temp: 56 },
-                    { day: 'Sat', icon: '⛅', temp: 61 },
-                    { day: 'Sun', icon: '☀️', temp: 65 }
-                ]
-            },
-            'London': {
-                temp: 52, feelsLike: 48, humidity: 78, windSpeed: 15, pressure: 1008,
-                description: 'Rainy', icon: '🌧️',
-                forecast: [
-                    { day: 'Mon', icon: '🌧️', temp: 53 },
-                    { day: 'Tue', icon: '☁️', temp: 51 },
-                    { day: 'Wed', icon: '🌧️', temp: 49 },
-                    { day: 'Thu', icon: '⛅', temp: 55 },
-                    { day: 'Fri', icon: '☀️', temp: 58 },
-                    { day: 'Sat', icon: '⛅', temp: 56 },
-                    { day: 'Sun', icon: '☁️', temp: 54 }
-                ]
-            }
+          'San Francisco': {
+            temp: 72, feelsLike: 70, humidity: 65, windSpeed: 12, pressure: 1013,
+            description: 'Sunny', icon: '☀️',
+            forecast: [
+              { day: 'Mon', icon: '☀️', temp: 73 },
+              { day: 'Tue', icon: '⛅', temp: 71 },
+              { day: 'Wed', icon: '🌤️', temp: 69 },
+              { day: 'Thu', icon: '☁️', temp: 66 },
+              { day: 'Fri', icon: '🌧️', temp: 64 },
+              { day: 'Sat', icon: '⛈️', temp: 62 },
+              { day: 'Sun', icon: '🌤️', temp: 68 }
+            ]
+          },
+          'New York': {
+            temp: 58, feelsLike: 55, humidity: 72, windSpeed: 18, pressure: 1010,
+            description: 'Partly Cloudy', icon: '⛅',
+            forecast: [
+              { day: 'Mon', icon: '⛅', temp: 60 },
+              { day: 'Tue', icon: '☁️', temp: 57 },
+              { day: 'Wed', icon: '🌧️', temp: 54 },
+              { day: 'Thu', icon: '⛈️', temp: 52 },
+              { day: 'Fri', icon: '🌧️', temp: 56 },
+              { day: 'Sat', icon: '⛅', temp: 61 },
+              { day: 'Sun', icon: '☀️', temp: 65 }
+            ]
+          },
+          'London': {
+            temp: 52, feelsLike: 48, humidity: 78, windSpeed: 15, pressure: 1008,
+            description: 'Rainy', icon: '🌧️',
+            forecast: [
+              { day: 'Mon', icon: '🌧️', temp: 53 },
+              { day: 'Tue', icon: '☁️', temp: 51 },
+              { day: 'Wed', icon: '🌧️', temp: 49 },
+              { day: 'Thu', icon: '⛅', temp: 55 },
+              { day: 'Fri', icon: '☀️', temp: 58 },
+              { day: 'Sat', icon: '⛅', temp: 56 },
+              { day: 'Sun', icon: '☁️', temp: 54 }
+            ]
+          }
         };
 
         function searchWeather() {
-            const city = document.getElementById('cityInput').value;
-            const data = weatherData[city] || weatherData['San Francisco'];
+          const city = document.getElementById('cityInput').value;
+          const data = weatherData[city] || weatherData['San Francisco'];
 
-            document.getElementById('location').textContent = city;
-            document.getElementById('weatherIcon').textContent = data.icon;
-            document.getElementById('currentTemp').textContent = `${data.temp}°F`;
-            document.getElementById('description').textContent = data.description;
-            document.getElementById('feelsLike').textContent = `${data.feelsLike}°F`;
-            document.getElementById('humidity').textContent = `${data.humidity}%`;
-            document.getElementById('windSpeed').textContent = `${data.windSpeed} mph`;
-            document.getElementById('pressure').textContent = `${data.pressure} hPa`;
+          document.getElementById('location').textContent = city;
+          document.getElementById('weatherIcon').textContent = data.icon;
+          document.getElementById('currentTemp').textContent = `${data.temp}°F`;
+          document.getElementById('description').textContent = data.description;
+          document.getElementById('feelsLike').textContent = `${data.feelsLike}°F`;
+          document.getElementById('humidity').textContent = `${data.humidity}%`;
+          document.getElementById('windSpeed').textContent = `${data.windSpeed} mph`;
+          document.getElementById('pressure').textContent = `${data.pressure} hPa`;
 
-            const forecastHTML = data.forecast.map(day => `
+          const forecastHTML = data.forecast.map(day => `
                 <div class="forecast-card">
                     <div class="forecast-day">${day.day}</div>
                     <div class="forecast-icon">${day.icon}</div>
@@ -260,7 +260,7 @@
                 </div>
             `).join('');
 
-            document.getElementById('forecast').innerHTML = forecastHTML;
+          document.getElementById('forecast').innerHTML = forecastHTML;
         }
 
         searchWeather();

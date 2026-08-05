@@ -284,37 +284,37 @@
 
     <script>
         const recipes = [
-            { id: 1, title: 'Fluffy Pancakes', category: 'breakfast', time: '20 min', servings: 4, difficulty: 'easy', icon: '🥞',
-              description: 'Light and fluffy pancakes perfect for Sunday morning',
-              ingredients: ['2 cups flour', '2 tbsp sugar', '2 eggs', '1.5 cups milk', '1 tsp vanilla'],
-              instructions: ['Mix dry ingredients', 'Add wet ingredients and stir', 'Cook on medium heat', 'Flip when bubbles form'] },
-            { id: 2, title: 'Caesar Salad', category: 'lunch', time: '15 min', servings: 2, difficulty: 'easy', icon: '🥗',
-              description: 'Classic Caesar salad with homemade dressing',
-              ingredients: ['Romaine lettuce', 'Parmesan cheese', 'Croutons', 'Caesar dressing', 'Lemon'],
-              instructions: ['Chop lettuce', 'Add dressing and toss', 'Top with cheese and croutons', 'Serve immediately'] },
-            { id: 3, title: 'Spaghetti Carbonara', category: 'dinner', time: '30 min', servings: 4, difficulty: 'medium', icon: '🍝',
-              description: 'Creamy Italian pasta with bacon and eggs',
-              ingredients: ['400g spaghetti', '200g bacon', '3 eggs', 'Parmesan', 'Black pepper'],
-              instructions: ['Cook pasta al dente', 'Fry bacon until crispy', 'Mix eggs and cheese', 'Combine everything while hot'] },
-            { id: 4, title: 'Chocolate Cake', category: 'dessert', time: '60 min', servings: 8, difficulty: 'hard', icon: '🍰',
-              description: 'Rich and moist chocolate layer cake',
-              ingredients: ['2 cups flour', '1.5 cups sugar', '3/4 cup cocoa', '3 eggs', '1 cup milk'],
-              instructions: ['Preheat oven to 350°F', 'Mix dry ingredients', 'Add wet ingredients', 'Bake for 30-35 minutes'] },
-            { id: 5, title: 'Avocado Toast', category: 'breakfast', time: '10 min', servings: 2, difficulty: 'easy', icon: '🥑',
-              description: 'Simple and healthy breakfast option',
-              ingredients: ['2 slices bread', '1 avocado', 'Salt', 'Pepper', 'Lemon juice'],
-              instructions: ['Toast bread', 'Mash avocado', 'Spread on toast', 'Season to taste'] },
-            { id: 6, title: 'Grilled Chicken', category: 'dinner', time: '45 min', servings: 4, difficulty: 'medium', icon: '🍗',
-              description: 'Juicy grilled chicken with herbs',
-              ingredients: ['4 chicken breasts', 'Olive oil', 'Garlic', 'Herbs', 'Lemon'],
-              instructions: ['Marinate chicken for 30 min', 'Preheat grill', 'Grill 6-7 min per side', 'Rest before serving'] }
+          { id: 1, title: 'Fluffy Pancakes', category: 'breakfast', time: '20 min', servings: 4, difficulty: 'easy', icon: '🥞',
+            description: 'Light and fluffy pancakes perfect for Sunday morning',
+            ingredients: ['2 cups flour', '2 tbsp sugar', '2 eggs', '1.5 cups milk', '1 tsp vanilla'],
+            instructions: ['Mix dry ingredients', 'Add wet ingredients and stir', 'Cook on medium heat', 'Flip when bubbles form'] },
+          { id: 2, title: 'Caesar Salad', category: 'lunch', time: '15 min', servings: 2, difficulty: 'easy', icon: '🥗',
+            description: 'Classic Caesar salad with homemade dressing',
+            ingredients: ['Romaine lettuce', 'Parmesan cheese', 'Croutons', 'Caesar dressing', 'Lemon'],
+            instructions: ['Chop lettuce', 'Add dressing and toss', 'Top with cheese and croutons', 'Serve immediately'] },
+          { id: 3, title: 'Spaghetti Carbonara', category: 'dinner', time: '30 min', servings: 4, difficulty: 'medium', icon: '🍝',
+            description: 'Creamy Italian pasta with bacon and eggs',
+            ingredients: ['400g spaghetti', '200g bacon', '3 eggs', 'Parmesan', 'Black pepper'],
+            instructions: ['Cook pasta al dente', 'Fry bacon until crispy', 'Mix eggs and cheese', 'Combine everything while hot'] },
+          { id: 4, title: 'Chocolate Cake', category: 'dessert', time: '60 min', servings: 8, difficulty: 'hard', icon: '🍰',
+            description: 'Rich and moist chocolate layer cake',
+            ingredients: ['2 cups flour', '1.5 cups sugar', '3/4 cup cocoa', '3 eggs', '1 cup milk'],
+            instructions: ['Preheat oven to 350°F', 'Mix dry ingredients', 'Add wet ingredients', 'Bake for 30-35 minutes'] },
+          { id: 5, title: 'Avocado Toast', category: 'breakfast', time: '10 min', servings: 2, difficulty: 'easy', icon: '🥑',
+            description: 'Simple and healthy breakfast option',
+            ingredients: ['2 slices bread', '1 avocado', 'Salt', 'Pepper', 'Lemon juice'],
+            instructions: ['Toast bread', 'Mash avocado', 'Spread on toast', 'Season to taste'] },
+          { id: 6, title: 'Grilled Chicken', category: 'dinner', time: '45 min', servings: 4, difficulty: 'medium', icon: '🍗',
+            description: 'Juicy grilled chicken with herbs',
+            ingredients: ['4 chicken breasts', 'Olive oil', 'Garlic', 'Herbs', 'Lemon'],
+            instructions: ['Marinate chicken for 30 min', 'Preheat grill', 'Grill 6-7 min per side', 'Rest before serving'] }
         ];
 
         let currentFilter = 'all';
 
         function renderRecipes(recipesToShow = recipes) {
-            const grid = document.getElementById('recipesGrid');
-            grid.innerHTML = recipesToShow.map(recipe => `
+          const grid = document.getElementById('recipesGrid');
+          grid.innerHTML = recipesToShow.map(recipe => `
                 <div class="recipe-card" onclick="viewRecipe(${recipe.id})">
                     <div class="recipe-image">${recipe.icon}</div>
                     <div class="recipe-content">
@@ -331,43 +331,43 @@
         }
 
         function filterRecipes(category, event) {
-            currentFilter = category;
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
-            } else if (event && event.target) {
-                event.target.classList.add('active');
-            }
+          currentFilter = category;
+          document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+          if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+          } else if (event && event.target) {
+            event.target.classList.add('active');
+          }
 
-            const filtered = category === 'all'
-                ? recipes
-                : recipes.filter(r => r.category === category);
-            renderRecipes(filtered);
+          const filtered = category === 'all'
+            ? recipes
+            : recipes.filter(r => r.category === category);
+          renderRecipes(filtered);
         }
 
         function searchRecipes(query) {
-            const filtered = recipes.filter(r =>
-                r.title.toLowerCase().includes(query.toLowerCase()) ||
+          const filtered = recipes.filter(r =>
+            r.title.toLowerCase().includes(query.toLowerCase()) ||
                 r.description.toLowerCase().includes(query.toLowerCase())
-            );
-            renderRecipes(filtered);
+          );
+          renderRecipes(filtered);
         }
 
         function viewRecipe(id) {
-            const recipe = recipes.find(r => r.id === id);
-            document.getElementById('modalTitle').textContent = recipe.title;
-            document.getElementById('modalMeta').innerHTML = `
+          const recipe = recipes.find(r => r.id === id);
+          document.getElementById('modalTitle').textContent = recipe.title;
+          document.getElementById('modalMeta').innerHTML = `
                 <div style="margin-top: 1rem;">
                     ⏱️ ${recipe.time} | 👥 ${recipe.servings} servings | ${recipe.difficulty.toUpperCase()}
                 </div>
             `;
-            document.getElementById('ingredientsList').innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
-            document.getElementById('instructionsList').innerHTML = recipe.instructions.map(i => `<div class="instruction-step">${i}</div>`).join('');
-            document.getElementById('recipeModal').classList.add('active');
+          document.getElementById('ingredientsList').innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
+          document.getElementById('instructionsList').innerHTML = recipe.instructions.map(i => `<div class="instruction-step">${i}</div>`).join('');
+          document.getElementById('recipeModal').classList.add('active');
         }
 
         function closeModal() {
-            document.getElementById('recipeModal').classList.remove('active');
+          document.getElementById('recipeModal').classList.remove('active');
         }
 
         renderRecipes();

@@ -282,64 +282,64 @@
         let currentFilter = 'all';
 
         function addTask() {
-            const input = document.getElementById('taskInput');
-            const priority = document.getElementById('prioritySelect').value;
-            const title = input.value.trim();
+          const input = document.getElementById('taskInput');
+          const priority = document.getElementById('prioritySelect').value;
+          const title = input.value.trim();
 
-            if (!title) return;
+          if (!title) {return;}
 
-            const task = {
-                id: Date.now(),
-                title: title,
-                priority: priority,
-                completed: false,
-                createdAt: new Date().toLocaleDateString()
-            };
+          const task = {
+            id: Date.now(),
+            title: title,
+            priority: priority,
+            completed: false,
+            createdAt: new Date().toLocaleDateString()
+          };
 
-            tasks.unshift(task);
-            input.value = '';
+          tasks.unshift(task);
+          input.value = '';
 
-            updateTasks();
+          updateTasks();
         }
 
         function toggleTask(id) {
-            const task = tasks.find(t => t.id === id);
-            if (task) {
-                task.completed = !task.completed;
-                updateTasks();
-            }
+          const task = tasks.find(t => t.id === id);
+          if (task) {
+            task.completed = !task.completed;
+            updateTasks();
+          }
         }
 
         function deleteTask(id) {
-            tasks = tasks.filter(t => t.id !== id);
-            updateTasks();
+          tasks = tasks.filter(t => t.id !== id);
+          updateTasks();
         }
 
         function filterTasks(filter, event) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
-            } else if (event && event.target) {
-                event.target.classList.add('active');
-            }
-            updateTasks();
+          currentFilter = filter;
+          document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+          if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+          } else if (event && event.target) {
+            event.target.classList.add('active');
+          }
+          updateTasks();
         }
 
         function updateTasks() {
-            const container = document.getElementById('tasksContainer');
+          const container = document.getElementById('tasksContainer');
 
-            let filtered = tasks;
-            if (currentFilter === 'pending') {
-                filtered = tasks.filter(t => !t.completed);
-            } else if (currentFilter === 'completed') {
-                filtered = tasks.filter(t => t.completed);
-            }
+          let filtered = tasks;
+          if (currentFilter === 'pending') {
+            filtered = tasks.filter(t => !t.completed);
+          } else if (currentFilter === 'completed') {
+            filtered = tasks.filter(t => t.completed);
+          }
 
-            if (filtered.length === 0) {
-                container.innerHTML = '<div class="empty-state">No tasks yet. Add one to get started! 🎯</div>';
-            } else {
-                container.innerHTML = filtered.map(task => `
+          if (filtered.length === 0) {
+            container.innerHTML = '<div class="empty-state">No tasks yet. Add one to get started! 🎯</div>';
+          } else {
+            container.innerHTML = filtered.map(task => `
                     <div class="task ${task.completed ? 'completed' : ''}">
                         <input
                             type="checkbox"
@@ -357,20 +357,20 @@
                         <button class="delete-btn" onclick="deleteTask(${task.id})">Delete</button>
                     </div>
                 `).join('');
-            }
+          }
 
-            // Update stats
-            document.getElementById('totalTasks').textContent = tasks.length;
-            document.getElementById('completedTasks').textContent = tasks.filter(t => t.completed).length;
-            document.getElementById('pendingTasks').textContent = tasks.filter(t => !t.completed).length;
+          // Update stats
+          document.getElementById('totalTasks').textContent = tasks.length;
+          document.getElementById('completedTasks').textContent = tasks.filter(t => t.completed).length;
+          document.getElementById('pendingTasks').textContent = tasks.filter(t => !t.completed).length;
         }
 
         // Load sample tasks
         tasks = [
-            { id: 1, title: 'Complete project proposal', priority: 'high', completed: false, createdAt: 'Jan 14, 2026' },
-            { id: 2, title: 'Review pull requests', priority: 'medium', completed: false, createdAt: 'Jan 14, 2026' },
-            { id: 3, title: 'Update documentation', priority: 'low', completed: true, createdAt: 'Jan 13, 2026' },
-            { id: 4, title: 'Team meeting at 2 PM', priority: 'high', completed: false, createdAt: 'Jan 14, 2026' }
+          { id: 1, title: 'Complete project proposal', priority: 'high', completed: false, createdAt: 'Jan 14, 2026' },
+          { id: 2, title: 'Review pull requests', priority: 'medium', completed: false, createdAt: 'Jan 14, 2026' },
+          { id: 3, title: 'Update documentation', priority: 'low', completed: true, createdAt: 'Jan 13, 2026' },
+          { id: 4, title: 'Team meeting at 2 PM', priority: 'high', completed: false, createdAt: 'Jan 14, 2026' }
         ];
 
         updateTasks();

@@ -247,15 +247,15 @@
 
     <script>
         const activities = [
-            { id: 1, type: 'Running', duration: 45, calories: 450, icon: '🏃', time: '2 hours ago' },
-            { id: 2, type: 'Weightlifting', duration: 60, calories: 350, icon: '🏋️', time: 'Yesterday' },
-            { id: 3, type: 'Yoga', duration: 30, calories: 120, icon: '🧘', time: '2 days ago' },
-            { id: 4, type: 'Cycling', duration: 90, calories: 600, icon: '🚴', time: '3 days ago' }
+          { id: 1, type: 'Running', duration: 45, calories: 450, icon: '🏃', time: '2 hours ago' },
+          { id: 2, type: 'Weightlifting', duration: 60, calories: 350, icon: '🏋️', time: 'Yesterday' },
+          { id: 3, type: 'Yoga', duration: 30, calories: 120, icon: '🧘', time: '2 days ago' },
+          { id: 4, type: 'Cycling', duration: 90, calories: 600, icon: '🚴', time: '3 days ago' }
         ];
 
         function renderActivities() {
-            const list = document.getElementById('activityList');
-            list.innerHTML = activities.map(activity => `
+          const list = document.getElementById('activityList');
+          list.innerHTML = activities.map(activity => `
                 <div class="activity-item">
                     <div class="activity-info">
                         <div class="activity-icon">${activity.icon}</div>
@@ -271,44 +271,44 @@
         }
 
         function toggleWorkoutForm() {
-            document.getElementById('workoutForm').classList.toggle('active');
+          document.getElementById('workoutForm').classList.toggle('active');
         }
 
         function logWorkout() {
-            const type = document.getElementById('exerciseType').value;
-            const duration = parseInt(document.getElementById('duration').value);
-            const calories = parseInt(document.getElementById('calories').value);
+          const type = document.getElementById('exerciseType').value;
+          const duration = parseInt(document.getElementById('duration').value);
+          const calories = parseInt(document.getElementById('calories').value);
 
-            if (!duration || !calories) return;
+          if (!duration || !calories) {return;}
 
-            const icons = {
-                'Running': '🏃',
-                'Cycling': '🚴',
-                'Swimming': '🏊',
-                'Weightlifting': '🏋️',
-                'Yoga': '🧘'
-            };
+          const icons = {
+            'Running': '🏃',
+            'Cycling': '🚴',
+            'Swimming': '🏊',
+            'Weightlifting': '🏋️',
+            'Yoga': '🧘'
+          };
 
-            activities.unshift({
-                id: Date.now(),
-                type: type,
-                duration: duration,
-                calories: calories,
-                icon: icons[type],
-                time: 'Just now'
-            });
+          activities.unshift({
+            id: Date.now(),
+            type: type,
+            duration: duration,
+            calories: calories,
+            icon: icons[type],
+            time: 'Just now'
+          });
 
-            // Update stats
-            const totalCalories = parseInt(document.getElementById('caloriesBurned').textContent.replace(',', ''));
-            document.getElementById('caloriesBurned').textContent = (totalCalories + calories).toLocaleString();
+          // Update stats
+          const totalCalories = parseInt(document.getElementById('caloriesBurned').textContent.replace(',', ''));
+          document.getElementById('caloriesBurned').textContent = (totalCalories + calories).toLocaleString();
 
-            const totalWorkouts = parseInt(document.getElementById('totalWorkouts').textContent);
-            document.getElementById('totalWorkouts').textContent = totalWorkouts + 1;
+          const totalWorkouts = parseInt(document.getElementById('totalWorkouts').textContent);
+          document.getElementById('totalWorkouts').textContent = totalWorkouts + 1;
 
-            document.getElementById('duration').value = '';
-            document.getElementById('calories').value = '';
-            renderActivities();
-            toggleWorkoutForm();
+          document.getElementById('duration').value = '';
+          document.getElementById('calories').value = '';
+          renderActivities();
+          toggleWorkoutForm();
         }
 
         renderActivities();

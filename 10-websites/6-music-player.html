@@ -278,22 +278,22 @@
 
     <script>
         const songs = [
-            { id: 1, title: 'Summer Vibes', artist: 'The Beach Boys', icon: '🏖️' },
-            { id: 2, title: 'Midnight Jazz', artist: 'Miles Davis', icon: '🎷' },
-            { id: 3, title: 'Electric Dreams', artist: 'Daft Punk', icon: '⚡' },
-            { id: 4, title: 'Classical Sunrise', artist: 'Mozart', icon: '🌅' },
-            { id: 5, title: 'Rock Anthem', artist: 'Queen', icon: '🎸' },
-            { id: 6, title: 'Hip Hop Nation', artist: '2Pac', icon: '🎤' },
-            { id: 7, title: 'Country Roads', artist: 'John Denver', icon: '🛣️' },
-            { id: 8, title: 'Pop Sensation', artist: 'Taylor Swift', icon: '✨' }
+          { id: 1, title: 'Summer Vibes', artist: 'The Beach Boys', icon: '🏖️' },
+          { id: 2, title: 'Midnight Jazz', artist: 'Miles Davis', icon: '🎷' },
+          { id: 3, title: 'Electric Dreams', artist: 'Daft Punk', icon: '⚡' },
+          { id: 4, title: 'Classical Sunrise', artist: 'Mozart', icon: '🌅' },
+          { id: 5, title: 'Rock Anthem', artist: 'Queen', icon: '🎸' },
+          { id: 6, title: 'Hip Hop Nation', artist: '2Pac', icon: '🎤' },
+          { id: 7, title: 'Country Roads', artist: 'John Denver', icon: '🛣️' },
+          { id: 8, title: 'Pop Sensation', artist: 'Taylor Swift', icon: '✨' }
         ];
 
         let isPlaying = false;
         let currentSong = null;
 
         function renderSongs(containerId, songList) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = songList.map(song => `
+          const container = document.getElementById(containerId);
+          container.innerHTML = songList.map(song => `
                 <div class="song-card" onclick="playSong(${song.id})">
                     <div class="song-cover">${song.icon}</div>
                     <div class="song-title">${song.title}</div>
@@ -303,17 +303,17 @@
         }
 
         function playSong(id) {
-            currentSong = songs.find(s => s.id === id);
-            document.getElementById('currentCover').textContent = currentSong.icon;
-            document.getElementById('currentTitle').textContent = currentSong.title;
-            document.getElementById('currentArtist').textContent = currentSong.artist;
-            isPlaying = true;
-            document.getElementById('playBtn').textContent = '⏸️';
+          currentSong = songs.find(s => s.id === id);
+          document.getElementById('currentCover').textContent = currentSong.icon;
+          document.getElementById('currentTitle').textContent = currentSong.title;
+          document.getElementById('currentArtist').textContent = currentSong.artist;
+          isPlaying = true;
+          document.getElementById('playBtn').textContent = '⏸️';
         }
 
         function togglePlay() {
-            isPlaying = !isPlaying;
-            document.getElementById('playBtn').textContent = isPlaying ? '⏸️' : '▶️';
+          isPlaying = !isPlaying;
+          document.getElementById('playBtn').textContent = isPlaying ? '⏸️' : '▶️';
         }
 
         renderSongs('songsGrid', songs);
@@ -321,11 +321,11 @@
 
         // Animate progress bar
         setInterval(() => {
-            if (isPlaying) {
-                const fill = document.getElementById('progressFill');
-                const current = parseFloat(fill.style.width || '0');
-                fill.style.width = ((current + 0.5) % 100) + '%';
-            }
+          if (isPlaying) {
+            const fill = document.getElementById('progressFill');
+            const current = parseFloat(fill.style.width || '0');
+            fill.style.width = ((current + 0.5) % 100) + '%';
+          }
         }, 1000);
     </script>
 </body>
