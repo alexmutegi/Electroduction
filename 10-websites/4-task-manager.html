@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskFlow - Get Things Done</title>
+    <link rel="stylesheet" href="shared/theme.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -277,9 +272,26 @@
         </div>
     </div>
 
+    <script src="shared/storage.js"></script>
     <script>
+        const STORAGE_KEY = 'taskflow_tasks';
         let tasks = [];
         let currentFilter = 'all';
+
+        const DEFAULT_TASKS = [
+          { id: 1, title: 'Complete project proposal', priority: 'high', completed: false, createdAt: 'Jan 14, 2026' },
+          { id: 2, title: 'Review pull requests', priority: 'medium', completed: false, createdAt: 'Jan 14, 2026' },
+          { id: 3, title: 'Update documentation', priority: 'low', completed: true, createdAt: 'Jan 13, 2026' },
+          { id: 4, title: 'Team meeting at 2 PM', priority: 'high', completed: false, createdAt: 'Jan 14, 2026' }
+        ];
+
+        function loadTasks() {
+          return getJSON(STORAGE_KEY, DEFAULT_TASKS.slice());
+        }
+
+        function saveTasks() {
+          setJSON(STORAGE_KEY, tasks);
+        }
 
         function addTask() {
           const input = document.getElementById('taskInput');
@@ -299,6 +311,7 @@
           tasks.unshift(task);
           input.value = '';
 
+          saveTasks();
           updateTasks();
         }
 
@@ -306,12 +319,14 @@
           const task = tasks.find(t => t.id === id);
           if (task) {
             task.completed = !task.completed;
+            saveTasks();
             updateTasks();
           }
         }
 
         function deleteTask(id) {
           tasks = tasks.filter(t => t.id !== id);
+          saveTasks();
           updateTasks();
         }
 
@@ -365,14 +380,7 @@
           document.getElementById('pendingTasks').textContent = tasks.filter(t => !t.completed).length;
         }
 
-        // Load sample tasks
-        tasks = [
-          { id: 1, title: 'Complete project proposal', priority: 'high', completed: false, createdAt: 'Jan 14, 2026' },
-          { id: 2, title: 'Review pull requests', priority: 'medium', completed: false, createdAt: 'Jan 14, 2026' },
-          { id: 3, title: 'Update documentation', priority: 'low', completed: true, createdAt: 'Jan 13, 2026' },
-          { id: 4, title: 'Team meeting at 2 PM', priority: 'high', completed: false, createdAt: 'Jan 14, 2026' }
-        ];
-
+        tasks = loadTasks();
         updateTasks();
     </script>
 </body>

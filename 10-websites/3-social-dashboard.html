@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SocialHub - Your Social Media Dashboard</title>
+    <link rel="stylesheet" href="shared/theme.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Arial', sans-serif;
             background: #1a1a2e;
@@ -356,8 +351,10 @@
         </div>
     </div>
 
+    <script src="shared/storage.js"></script>
     <script>
-        const posts = [
+        const STORAGE_KEY = 'socialhub_posts';
+        const DEFAULT_POSTS = [
           {
             id: 1,
             author: 'Alex Johnson',
@@ -365,7 +362,8 @@
             content: 'Just launched my new website! 🚀 Check it out and let me know what you think. Really proud of how it turned out!',
             likes: 234,
             comments: 45,
-            shares: 12
+            shares: 12,
+            userLiked: false
           },
           {
             id: 2,
@@ -374,7 +372,8 @@
             content: 'Working on some exciting new projects. Stay tuned for announcements! 💻✨',
             likes: 189,
             comments: 23,
-            shares: 8
+            shares: 8,
+            userLiked: false
           },
           {
             id: 3,
@@ -383,9 +382,20 @@
             content: 'Great meeting with the team today. Amazing what we can accomplish when we work together! 🤝',
             likes: 312,
             comments: 56,
-            shares: 15
+            shares: 15,
+            userLiked: false
           }
         ];
+
+        function loadPosts() {
+          return getJSON(STORAGE_KEY, DEFAULT_POSTS.slice());
+        }
+
+        function savePosts() {
+          setJSON(STORAGE_KEY, posts);
+        }
+
+        let posts = loadPosts();
 
         function renderPosts() {
           const container = document.getElementById('postsContainer');
@@ -400,12 +410,21 @@
                     </div>
                     <div class="post-content">${post.content}</div>
                     <div class="post-stats">
-                        <div class="post-stat">👍 ${post.likes} likes</div>
+                        <div class="post-stat" style="cursor: pointer;" onclick="toggleLike(${post.id})">${post.userLiked ? '💙' : '👍'} ${post.likes} likes</div>
                         <div class="post-stat">💬 ${post.comments} comments</div>
                         <div class="post-stat">🔄 ${post.shares} shares</div>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function toggleLike(id) {
+          const post = posts.find(p => p.id === id);
+          if (!post) {return;}
+          post.userLiked = !post.userLiked;
+          post.likes += post.userLiked ? 1 : -1;
+          savePosts();
+          renderPosts();
         }
 
         function createPost() {
@@ -421,10 +440,12 @@
             content: content,
             likes: 0,
             comments: 0,
-            shares: 0
+            shares: 0,
+            userLiked: false
           });
 
           input.value = '';
+          savePosts();
           renderPosts();
         }
 

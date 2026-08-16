@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechBlog - Latest in Technology</title>
+    <link rel="stylesheet" href="shared/theme.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Georgia', serif;
             background: #fafafa;
@@ -234,6 +229,7 @@
         <a class="nav-link" onclick="filterCategory('AI')">AI</a>
         <a class="nav-link" onclick="filterCategory('Web')">Web Dev</a>
         <a class="nav-link" onclick="filterCategory('Mobile')">Mobile</a>
+        <a class="nav-link" onclick="filterCategory('saved')">🔖 Saved</a>
     </div>
 
     <div class="container">
@@ -260,11 +256,13 @@
             <div class="article-header">
                 <h1 class="article-title" id="articleTitle"></h1>
                 <div class="meta" id="articleMeta"></div>
+                <button class="back-btn" id="bookmarkBtn" style="margin-top: 1rem;" onclick="toggleBookmarkCurrent()">🔖 Save Article</button>
             </div>
             <div class="article-content" id="articleContent"></div>
         </div>
     </div>
 
+    <script src="shared/storage.js"></script>
     <script>
         const posts = [
           {
@@ -336,19 +334,58 @@
         ];
 
         let currentCategory = 'all';
+        let currentArticleId = null;
+        const BOOKMARK_KEY = 'techblog_bookmarks';
+
+        function loadBookmarks() {
+          return getJSON(BOOKMARK_KEY, []);
+        }
+
+        function saveBookmarks(ids) {
+          setJSON(BOOKMARK_KEY, ids);
+        }
+
+        let bookmarks = loadBookmarks();
+
+        function toggleBookmarkCurrent() {
+          if (currentArticleId === null) {return;}
+          const idx = bookmarks.indexOf(currentArticleId);
+          if (idx === -1) {
+            bookmarks.push(currentArticleId);
+          } else {
+            bookmarks.splice(idx, 1);
+          }
+          saveBookmarks(bookmarks);
+          updateBookmarkButton();
+        }
+
+        function updateBookmarkButton() {
+          const btn = document.getElementById('bookmarkBtn');
+          if (!btn || currentArticleId === null) {return;}
+          const isSaved = bookmarks.includes(currentArticleId);
+          btn.textContent = isSaved ? '✅ Saved' : '🔖 Save Article';
+        }
 
         function renderPosts() {
           const grid = document.getElementById('postsGrid');
-          const filtered = currentCategory === 'all'
-            ? posts
-            : posts.filter(p => p.category === currentCategory);
+          let filtered = posts;
+          if (currentCategory === 'saved') {
+            filtered = posts.filter(p => bookmarks.includes(p.id));
+          } else if (currentCategory !== 'all') {
+            filtered = posts.filter(p => p.category === currentCategory);
+          }
+
+          if (filtered.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #888; padding: 2rem;">No saved articles yet. Open an article and tap "Save Article" to bookmark it.</p>';
+            return;
+          }
 
           grid.innerHTML = filtered.map(post => `
                 <div class="post-card" onclick="viewArticle(${post.id})">
                     <div class="post-image">${post.icon}</div>
                     <div class="post-content">
                         <span class="category-tag">${post.category}</span>
-                        <h3 class="post-title">${post.title}</h3>
+                        <h3 class="post-title">${bookmarks.includes(post.id) ? '🔖 ' : ''}${post.title}</h3>
                         <div class="meta">${post.author} • ${post.date} • ${post.readTime} read</div>
                         <p class="post-excerpt">${post.excerpt}</p>
                         <a class="read-more">Read More →</a>
@@ -366,12 +403,15 @@
           const post = posts.find(p => p.id === id);
           if (!post) {return;}
 
+          currentArticleId = post.id;
+
           document.getElementById('homeView').style.display = 'none';
           document.getElementById('articleView').classList.add('active');
 
           document.getElementById('articleTitle').textContent = post.title;
           document.getElementById('articleMeta').textContent = `${post.author} • ${post.date} • ${post.readTime} read`;
           document.getElementById('articleContent').innerHTML = post.content;
+          updateBookmarkButton();
 
           window.scrollTo(0, 0);
         }
@@ -379,6 +419,7 @@
         function showHome() {
           document.getElementById('homeView').style.display = 'block';
           document.getElementById('articleView').classList.remove('active');
+          currentArticleId = null;
           currentCategory = 'all';
           renderPosts();
           window.scrollTo(0, 0);

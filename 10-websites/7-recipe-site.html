@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RecipeHub - Delicious Recipes</title>
+    <link rel="stylesheet" href="shared/theme.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Georgia', serif;
             background: #fef5e7;
@@ -261,6 +260,7 @@
             <button class="category-btn" onclick="filterRecipes('lunch', event)">Lunch</button>
             <button class="category-btn" onclick="filterRecipes('dinner', event)">Dinner</button>
             <button class="category-btn" onclick="filterRecipes('dessert', event)">Dessert</button>
+            <button class="category-btn" onclick="filterRecipes('favorites', event)">⭐ Favorites</button>
         </div>
 
         <div class="recipes-grid" id="recipesGrid"></div>
@@ -272,6 +272,7 @@
                 <button class="close-btn" onclick="closeModal()">×</button>
                 <h2 id="modalTitle"></h2>
                 <div id="modalMeta"></div>
+                <button class="category-btn" id="favoriteBtn" style="margin-top: 0.75rem;" onclick="toggleFavoriteCurrent()">⭐ Save to Favorites</button>
             </div>
             <div class="modal-body">
                 <h3>Ingredients</h3>
@@ -282,6 +283,7 @@
         </div>
     </div>
 
+    <script src="shared/storage.js"></script>
     <script>
         const recipes = [
           { id: 1, title: 'Fluffy Pancakes', category: 'breakfast', time: '20 min', servings: 4, difficulty: 'easy', icon: '🥞',
@@ -311,14 +313,50 @@
         ];
 
         let currentFilter = 'all';
+        let currentRecipeId = null;
+        const FAVORITES_KEY = 'recipehub_favorites';
+
+        function loadFavorites() {
+          return getJSON(FAVORITES_KEY, []);
+        }
+
+        function saveFavorites(ids) {
+          setJSON(FAVORITES_KEY, ids);
+        }
+
+        let favorites = loadFavorites();
+
+        function toggleFavoriteCurrent() {
+          if (currentRecipeId === null) {return;}
+          const idx = favorites.indexOf(currentRecipeId);
+          if (idx === -1) {
+            favorites.push(currentRecipeId);
+          } else {
+            favorites.splice(idx, 1);
+          }
+          saveFavorites(favorites);
+          updateFavoriteButton();
+        }
+
+        function updateFavoriteButton() {
+          const btn = document.getElementById('favoriteBtn');
+          if (!btn || currentRecipeId === null) {return;}
+          btn.textContent = favorites.includes(currentRecipeId) ? '✅ Saved to Favorites' : '⭐ Save to Favorites';
+        }
 
         function renderRecipes(recipesToShow = recipes) {
           const grid = document.getElementById('recipesGrid');
+
+          if (recipesToShow.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #888; padding: 2rem;">No favorite recipes yet. Open a recipe and tap "Save to Favorites".</p>';
+            return;
+          }
+
           grid.innerHTML = recipesToShow.map(recipe => `
                 <div class="recipe-card" onclick="viewRecipe(${recipe.id})">
                     <div class="recipe-image">${recipe.icon}</div>
                     <div class="recipe-content">
-                        <h3 class="recipe-title">${recipe.title}</h3>
+                        <h3 class="recipe-title">${favorites.includes(recipe.id) ? '⭐ ' : ''}${recipe.title}</h3>
                         <div class="recipe-meta">
                             <span>⏱️ ${recipe.time}</span>
                             <span>👥 ${recipe.servings} servings</span>
@@ -339,9 +377,12 @@
             event.target.classList.add('active');
           }
 
-          const filtered = category === 'all'
-            ? recipes
-            : recipes.filter(r => r.category === category);
+          let filtered = recipes;
+          if (category === 'favorites') {
+            filtered = recipes.filter(r => favorites.includes(r.id));
+          } else if (category !== 'all') {
+            filtered = recipes.filter(r => r.category === category);
+          }
           renderRecipes(filtered);
         }
 
@@ -355,6 +396,7 @@
 
         function viewRecipe(id) {
           const recipe = recipes.find(r => r.id === id);
+          currentRecipeId = id;
           document.getElementById('modalTitle').textContent = recipe.title;
           document.getElementById('modalMeta').innerHTML = `
                 <div style="margin-top: 1rem;">
@@ -363,6 +405,7 @@
             `;
           document.getElementById('ingredientsList').innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
           document.getElementById('instructionsList').innerHTML = recipe.instructions.map(i => `<div class="instruction-step">${i}</div>`).join('');
+          updateFavoriteButton();
           document.getElementById('recipeModal').classList.add('active');
         }
 

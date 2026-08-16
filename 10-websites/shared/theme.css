@@ -1,0 +1,9 @@
+/* Shared base reset used across the Electroduction demo suite.
+   Keeps the one truly identical rule (box-model reset) in one place;
+   each site keeps its own colors, gradients, and layout in its own
+   inline <style> block, so visual identity per site is unaffected. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

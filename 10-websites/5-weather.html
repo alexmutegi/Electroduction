@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeatherNow - Your Weather Forecast</title>
+    <link rel="stylesheet" href="shared/theme.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
@@ -164,6 +163,7 @@
                 <input type="text" class="search-input" placeholder="Enter city name..." id="cityInput" value="San Francisco">
                 <button class="search-btn" onclick="searchWeather()">Search</button>
             </div>
+            <div id="statusMessage" style="color: white; text-align: center; margin-top: 0.75rem; min-height: 1.2rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);"></div>
         </div>
 
         <div class="current-weather">
@@ -196,74 +196,125 @@
         <div class="forecast" id="forecast"></div>
     </div>
 
+    <script src="shared/storage.js"></script>
     <script>
-        const weatherData = {
-          'San Francisco': {
-            temp: 72, feelsLike: 70, humidity: 65, windSpeed: 12, pressure: 1013,
-            description: 'Sunny', icon: '☀️',
-            forecast: [
-              { day: 'Mon', icon: '☀️', temp: 73 },
-              { day: 'Tue', icon: '⛅', temp: 71 },
-              { day: 'Wed', icon: '🌤️', temp: 69 },
-              { day: 'Thu', icon: '☁️', temp: 66 },
-              { day: 'Fri', icon: '🌧️', temp: 64 },
-              { day: 'Sat', icon: '⛈️', temp: 62 },
-              { day: 'Sun', icon: '🌤️', temp: 68 }
-            ]
-          },
-          'New York': {
-            temp: 58, feelsLike: 55, humidity: 72, windSpeed: 18, pressure: 1010,
-            description: 'Partly Cloudy', icon: '⛅',
-            forecast: [
-              { day: 'Mon', icon: '⛅', temp: 60 },
-              { day: 'Tue', icon: '☁️', temp: 57 },
-              { day: 'Wed', icon: '🌧️', temp: 54 },
-              { day: 'Thu', icon: '⛈️', temp: 52 },
-              { day: 'Fri', icon: '🌧️', temp: 56 },
-              { day: 'Sat', icon: '⛅', temp: 61 },
-              { day: 'Sun', icon: '☀️', temp: 65 }
-            ]
-          },
-          'London': {
-            temp: 52, feelsLike: 48, humidity: 78, windSpeed: 15, pressure: 1008,
-            description: 'Rainy', icon: '🌧️',
-            forecast: [
-              { day: 'Mon', icon: '🌧️', temp: 53 },
-              { day: 'Tue', icon: '☁️', temp: 51 },
-              { day: 'Wed', icon: '🌧️', temp: 49 },
-              { day: 'Thu', icon: '⛅', temp: 55 },
-              { day: 'Fri', icon: '☀️', temp: 58 },
-              { day: 'Sat', icon: '⛅', temp: 56 },
-              { day: 'Sun', icon: '☁️', temp: 54 }
-            ]
-          }
+        const STORAGE_KEY = 'weathernow_last_city';
+
+        const WEATHER_CODES = {
+          0: { desc: 'Clear Sky', icon: '☀️' },
+          1: { desc: 'Mostly Clear', icon: '🌤️' },
+          2: { desc: 'Partly Cloudy', icon: '⛅' },
+          3: { desc: 'Overcast', icon: '☁️' },
+          45: { desc: 'Foggy', icon: '🌫️' },
+          48: { desc: 'Foggy', icon: '🌫️' },
+          51: { desc: 'Light Drizzle', icon: '🌦️' },
+          53: { desc: 'Drizzle', icon: '🌦️' },
+          55: { desc: 'Heavy Drizzle', icon: '🌧️' },
+          61: { desc: 'Light Rain', icon: '🌧️' },
+          63: { desc: 'Rain', icon: '🌧️' },
+          65: { desc: 'Heavy Rain', icon: '🌧️' },
+          71: { desc: 'Light Snow', icon: '🌨️' },
+          73: { desc: 'Snow', icon: '❄️' },
+          75: { desc: 'Heavy Snow', icon: '❄️' },
+          77: { desc: 'Snow Grains', icon: '❄️' },
+          80: { desc: 'Rain Showers', icon: '🌦️' },
+          81: { desc: 'Rain Showers', icon: '🌧️' },
+          82: { desc: 'Violent Showers', icon: '⛈️' },
+          85: { desc: 'Snow Showers', icon: '🌨️' },
+          86: { desc: 'Snow Showers', icon: '❄️' },
+          95: { desc: 'Thunderstorm', icon: '⛈️' },
+          96: { desc: 'Thunderstorm', icon: '⛈️' },
+          99: { desc: 'Severe Thunderstorm', icon: '⛈️' }
         };
 
-        function searchWeather() {
-          const city = document.getElementById('cityInput').value;
-          const data = weatherData[city] || weatherData['San Francisco'];
+        function weatherFor(code) {
+          return WEATHER_CODES[code] || { desc: 'Unknown', icon: '🌡️' };
+        }
 
-          document.getElementById('location').textContent = city;
-          document.getElementById('weatherIcon').textContent = data.icon;
-          document.getElementById('currentTemp').textContent = `${data.temp}°F`;
-          document.getElementById('description').textContent = data.description;
-          document.getElementById('feelsLike').textContent = `${data.feelsLike}°F`;
-          document.getElementById('humidity').textContent = `${data.humidity}%`;
-          document.getElementById('windSpeed').textContent = `${data.windSpeed} mph`;
-          document.getElementById('pressure').textContent = `${data.pressure} hPa`;
+        function setStatus(message, isError) {
+          const el = document.getElementById('statusMessage');
+          el.textContent = message || '';
+          el.style.color = isError ? '#ffe0e0' : 'white';
+        }
 
-          const forecastHTML = data.forecast.map(day => `
-                <div class="forecast-card">
-                    <div class="forecast-day">${day.day}</div>
-                    <div class="forecast-icon">${day.icon}</div>
-                    <div class="forecast-temp">${day.temp}°F</div>
-                </div>
-            `).join('');
+        function dayLabel(isoDate, index) {
+          if (index === 0) { return 'Today'; }
+          const d = new Date(isoDate + 'T00:00:00');
+          return d.toLocaleDateString('en-US', { weekday: 'short' });
+        }
+
+        async function geocodeCity(city) {
+          const url = 'https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(city) + '&count=1&language=en&format=json';
+          const res = await fetch(url);
+          if (!res.ok) { throw new Error('Location lookup failed'); }
+          const data = await res.json();
+          if (!data.results || data.results.length === 0) { throw new Error('City not found'); }
+          return data.results[0];
+        }
+
+        async function fetchWeather(lat, lon) {
+          const url = 'https://api.open-meteo.com/v1/forecast'
+                + '?latitude=' + lat + '&longitude=' + lon
+                + '&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,surface_pressure,weather_code'
+                + '&daily=weather_code,temperature_2m_max,temperature_2m_min'
+                + '&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto';
+          const res = await fetch(url);
+          if (!res.ok) { throw new Error('Forecast lookup failed'); }
+          return res.json();
+        }
+
+        function renderWeather(place, data) {
+          const current = data.current;
+          const currentWeather = weatherFor(current.weather_code);
+
+          document.getElementById('location').textContent = place.name + (place.country ? ', ' + (place.admin1 || place.country) : '');
+          document.getElementById('weatherIcon').textContent = currentWeather.icon;
+          document.getElementById('currentTemp').textContent = Math.round(current.temperature_2m) + '°F';
+          document.getElementById('description').textContent = currentWeather.desc;
+          document.getElementById('feelsLike').textContent = Math.round(current.apparent_temperature) + '°F';
+          document.getElementById('humidity').textContent = Math.round(current.relative_humidity_2m) + '%';
+          document.getElementById('windSpeed').textContent = Math.round(current.wind_speed_10m) + ' mph';
+          document.getElementById('pressure').textContent = Math.round(current.surface_pressure) + ' hPa';
+
+          const daily = data.daily;
+          const forecastHTML = daily.time.map(function (isoDate, i) {
+            const code = daily.weather_code[i];
+            const w = weatherFor(code);
+            const high = Math.round(daily.temperature_2m_max[i]);
+            return '<div class="forecast-card">'
+                    + '<div class="forecast-day">' + dayLabel(isoDate, i) + '</div>'
+                    + '<div class="forecast-icon">' + w.icon + '</div>'
+                    + '<div class="forecast-temp">' + high + '°F</div>'
+                    + '</div>';
+          }).join('');
 
           document.getElementById('forecast').innerHTML = forecastHTML;
         }
 
-        searchWeather();
+        async function searchWeather() {
+          const cityInput = document.getElementById('cityInput');
+          const city = cityInput.value.trim();
+          if (!city) { return; }
+
+          setStatus('Looking up ' + city + '...', false);
+
+          try {
+            const place = await geocodeCity(city);
+            const data = await fetchWeather(place.latitude, place.longitude);
+            renderWeather(place, data);
+            setStatus('', false);
+            setJSON(STORAGE_KEY, city);
+          } catch (err) {
+            console.error(err);
+            setStatus('Couldn\'t find weather for "' + city + '". Try another city name.', true);
+          }
+        }
+
+        (function init() {
+          const startingCity = getJSON(STORAGE_KEY, 'San Francisco');
+          document.getElementById('cityInput').value = startingCity;
+          searchWeather();
+        })();
     </script>
 </body>
 </html>

@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoneyTrack - Financial Dashboard</title>
+    <link rel="stylesheet" href="shared/theme.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Arial', sans-serif;
             background: #f8f9fa;
@@ -164,6 +163,19 @@
             font-weight: bold;
         }
 
+        .transaction-delete {
+            background: none;
+            border: none;
+            color: #bdc3c7;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-left: 0.75rem;
+        }
+
+        .transaction-delete:hover {
+            color: #e74c3c;
+        }
+
         .category-item {
             display: flex;
             justify-content: space-between;
@@ -186,6 +198,10 @@
             transition: width 0.3s;
         }
 
+        .category-fill.over-budget {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
         .add-transaction-btn {
             background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
             color: white;
@@ -195,6 +211,110 @@
             font-weight: bold;
             cursor: pointer;
             margin-bottom: 2rem;
+        }
+
+        .empty-state {
+            color: #95a5a6;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .modal h2 {
+            margin-bottom: 1.25rem;
+        }
+
+        .modal label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 0.35rem;
+            margin-top: 1rem;
+            color: #555;
+        }
+
+        .modal input, .modal select {
+            width: 100%;
+            padding: 0.65rem 0.75rem;
+            border: 1px solid #dcdfe3;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .modal-type-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.35rem;
+        }
+
+        .modal-type-toggle button {
+            flex: 1;
+            padding: 0.6rem;
+            border-radius: 8px;
+            border: 1px solid #dcdfe3;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-type-toggle button.active[data-type="income"] {
+            background: #d5f4e6;
+            border-color: #2ecc71;
+            color: #27ae60;
+        }
+
+        .modal-type-toggle button.active[data-type="expense"] {
+            background: #fadbd8;
+            border-color: #e74c3c;
+            color: #c0392b;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-cancel {
+            background: #ecf0f1;
+            color: #555;
+        }
+
+        .modal-submit {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
         }
     </style>
 </head>
@@ -214,113 +334,246 @@
         <div class="main-content">
             <div class="header">
                 <h1>Financial Overview</h1>
-                <button class="add-transaction-btn" onclick="alert('Add transaction feature!')">➕ Add Transaction</button>
+                <button class="add-transaction-btn" onclick="openModal()">➕ Add Transaction</button>
             </div>
 
             <div class="balance-cards">
                 <div class="balance-card">
                     <div class="balance-label">Total Balance</div>
-                    <div class="balance-amount">$24,580</div>
-                    <div class="balance-change">+$2,340 this month</div>
+                    <div class="balance-amount" id="balanceTotal">$0</div>
+                    <div class="balance-change" id="balanceChange"></div>
                 </div>
                 <div class="balance-card expense">
                     <div class="balance-label">Total Expenses</div>
-                    <div class="balance-amount">$8,420</div>
-                    <div class="balance-change">+12% from last month</div>
+                    <div class="balance-amount" id="expenseTotal">$0</div>
+                    <div class="balance-change">This month</div>
                 </div>
                 <div class="balance-card savings">
-                    <div class="balance-label">Savings</div>
-                    <div class="balance-amount">$16,160</div>
-                    <div class="balance-change">+18% from last month</div>
+                    <div class="balance-label">Total Income</div>
+                    <div class="balance-amount" id="incomeTotal">$0</div>
+                    <div class="balance-change">This month</div>
                 </div>
             </div>
 
             <div class="content-grid">
                 <div class="section">
                     <h3 class="section-title">Recent Transactions</h3>
-                    <div class="transaction">
-                        <div class="transaction-info">
-                            <div class="transaction-icon income">💵</div>
-                            <div>
-                                <div style="font-weight: bold;">Salary</div>
-                                <div style="color: #95a5a6; font-size: 0.9rem;">Jan 14, 2026</div>
-                            </div>
-                        </div>
-                        <div class="transaction-amount income">+$4,500</div>
-                    </div>
-                    <div class="transaction">
-                        <div class="transaction-info">
-                            <div class="transaction-icon expense">🛒</div>
-                            <div>
-                                <div style="font-weight: bold;">Groceries</div>
-                                <div style="color: #95a5a6; font-size: 0.9rem;">Jan 13, 2026</div>
-                            </div>
-                        </div>
-                        <div class="transaction-amount expense">-$240</div>
-                    </div>
-                    <div class="transaction">
-                        <div class="transaction-info">
-                            <div class="transaction-icon expense">🏠</div>
-                            <div>
-                                <div style="font-weight: bold;">Rent</div>
-                                <div style="color: #95a5a6; font-size: 0.9rem;">Jan 12, 2026</div>
-                            </div>
-                        </div>
-                        <div class="transaction-amount expense">-$1,200</div>
-                    </div>
-                    <div class="transaction">
-                        <div class="transaction-info">
-                            <div class="transaction-icon income">💼</div>
-                            <div>
-                                <div style="font-weight: bold;">Freelance Project</div>
-                                <div style="color: #95a5a6; font-size: 0.9rem;">Jan 10, 2026</div>
-                            </div>
-                        </div>
-                        <div class="transaction-amount income">+$850</div>
-                    </div>
+                    <div id="transactionList"></div>
                 </div>
 
                 <div class="section">
                     <h3 class="section-title">Spending by Category</h3>
-                    <div class="category-item">
-                        <div>
-                            <div style="font-weight: bold;">Housing</div>
-                            <div style="color: #95a5a6; font-size: 0.9rem;">$1,200 / $1,500</div>
-                        </div>
-                        <div class="category-bar">
-                            <div class="category-fill" style="width: 80%;"></div>
-                        </div>
-                    </div>
-                    <div class="category-item">
-                        <div>
-                            <div style="font-weight: bold;">Food &amp; Dining</div>
-                            <div style="color: #95a5a6; font-size: 0.9rem;">$420 / $600</div>
-                        </div>
-                        <div class="category-bar">
-                            <div class="category-fill" style="width: 70%;"></div>
-                        </div>
-                    </div>
-                    <div class="category-item">
-                        <div>
-                            <div style="font-weight: bold;">Transportation</div>
-                            <div style="color: #95a5a6; font-size: 0.9rem;">$180 / $300</div>
-                        </div>
-                        <div class="category-bar">
-                            <div class="category-fill" style="width: 60%;"></div>
-                        </div>
-                    </div>
-                    <div class="category-item">
-                        <div>
-                            <div style="font-weight: bold;">Entertainment</div>
-                            <div style="color: #95a5a6; font-size: 0.9rem;">$120 / $200</div>
-                        </div>
-                        <div class="category-bar">
-                            <div class="category-fill" style="width: 60%;"></div>
-                        </div>
-                    </div>
+                    <div id="categoryList"></div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h2>Add Transaction</h2>
+            <div class="modal-type-toggle">
+                <button type="button" data-type="expense" class="active" onclick="setModalType('expense')">Expense</button>
+                <button type="button" data-type="income" onclick="setModalType('income')">Income</button>
+            </div>
+
+            <label for="txnDescription">Description</label>
+            <input type="text" id="txnDescription" placeholder="e.g. Groceries">
+
+            <label for="txnAmount">Amount ($)</label>
+            <input type="number" id="txnAmount" placeholder="0.00" min="0" step="0.01">
+
+            <label for="txnCategory">Category</label>
+            <select id="txnCategory">
+                <option>Housing</option>
+                <option>Food &amp; Dining</option>
+                <option>Transportation</option>
+                <option>Entertainment</option>
+                <option>Income</option>
+                <option>Other</option>
+            </select>
+
+            <div class="modal-actions">
+                <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-submit" onclick="submitTransaction()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="shared/storage.js"></script>
+    <script>
+        var STORAGE_KEY = 'moneytrack_transactions';
+        var BUDGETS = { 'Housing': 1500, 'Food & Dining': 600, 'Transportation': 300, 'Entertainment': 200, 'Other': 250 };
+        var modalType = 'expense';
+
+        var DEFAULT_TRANSACTIONS = [
+          { id: 1, description: 'Salary', amount: 4500, type: 'income', category: 'Income', date: '2026-01-14' },
+          { id: 2, description: 'Groceries', amount: 240, type: 'expense', category: 'Food & Dining', date: '2026-01-13' },
+          { id: 3, description: 'Rent', amount: 1200, type: 'expense', category: 'Housing', date: '2026-01-12' },
+          { id: 4, description: 'Freelance Project', amount: 850, type: 'income', category: 'Income', date: '2026-01-10' },
+          { id: 5, description: 'Gas & Transit', amount: 180, type: 'expense', category: 'Transportation', date: '2026-01-09' },
+          { id: 6, description: 'Movie Night', amount: 60, type: 'expense', category: 'Entertainment', date: '2026-01-07' }
+        ];
+
+        function loadTransactions() {
+          return getJSON(STORAGE_KEY, DEFAULT_TRANSACTIONS.slice());
+        }
+
+        function saveTransactions(transactions) {
+          setJSON(STORAGE_KEY, transactions);
+        }
+
+        function formatMoney(amount) {
+          var sign = amount < 0 ? '-' : '';
+          var value = Math.abs(amount).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+          return sign + '$' + value;
+        }
+
+        function formatDate(isoDate) {
+          var d = new Date(isoDate + 'T00:00:00');
+          if (isNaN(d.getTime())) {
+            return isoDate;
+          }
+          return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function iconFor(category, type) {
+          if (type === 'income') { return '💵'; }
+          var icons = { 'Housing': '🏠', 'Food & Dining': '🛒', 'Transportation': '🚗', 'Entertainment': '🎬', 'Other': '📦' };
+          return icons[category] || '💳';
+        }
+
+        function render() {
+          var transactions = loadTransactions();
+          var sorted = transactions.slice().sort(function (a, b) { return b.date.localeCompare(a.date) || b.id - a.id; });
+
+          var income = 0, expense = 0;
+          transactions.forEach(function (t) {
+            if (t.type === 'income') { income += Number(t.amount); }
+            else { expense += Number(t.amount); }
+          });
+          var balance = income - expense;
+
+          document.getElementById('balanceTotal').textContent = formatMoney(balance);
+          document.getElementById('incomeTotal').textContent = formatMoney(income);
+          document.getElementById('expenseTotal').textContent = formatMoney(expense);
+          document.getElementById('balanceChange').textContent = (balance >= 0 ? '+' : '') + formatMoney(balance) + ' net this period';
+
+          var listEl = document.getElementById('transactionList');
+          if (sorted.length === 0) {
+            listEl.innerHTML = '<div class="empty-state">No transactions yet. Add one to get started.</div>';
+          } else {
+            listEl.innerHTML = sorted.slice(0, 8).map(function (t) {
+              var amountText = (t.type === 'income' ? '+' : '-') + '$' + Number(t.amount).toLocaleString('en-US');
+              return '<div class="transaction">' +
+                        '<div class="transaction-info">' +
+                        '<div class="transaction-icon ' + t.type + '">' + iconFor(t.category, t.type) + '</div>' +
+                        '<div>' +
+                        '<div style="font-weight: bold;">' + escapeHtml(t.description) + '</div>' +
+                        '<div style="color: #95a5a6; font-size: 0.9rem;">' + formatDate(t.date) + '</div>' +
+                        '</div></div>' +
+                        '<div style="display:flex; align-items:center;">' +
+                        '<div class="transaction-amount ' + t.type + '">' + amountText + '</div>' +
+                        '<button class="transaction-delete" title="Delete" onclick="deleteTransaction(' + t.id + ')">✕</button>' +
+                        '</div></div>';
+            }).join('');
+          }
+
+          var categoryTotals = {};
+          transactions.forEach(function (t) {
+            if (t.type !== 'expense') { return; }
+            categoryTotals[t.category] = (categoryTotals[t.category] || 0) + Number(t.amount);
+          });
+
+          var categoryEl = document.getElementById('categoryList');
+          var categoryNames = Object.keys(BUDGETS).filter(function (c) { return c !== 'Income'; });
+          var anySpending = categoryNames.some(function (c) { return categoryTotals[c] > 0; });
+
+          if (!anySpending) {
+            categoryEl.innerHTML = '<div class="empty-state">No spending recorded yet.</div>';
+          } else {
+            categoryEl.innerHTML = categoryNames.map(function (cat) {
+              var spent = categoryTotals[cat] || 0;
+              var budget = BUDGETS[cat];
+              var pct = Math.min(100, Math.round((spent / budget) * 100));
+              var overClass = spent > budget ? ' over-budget' : '';
+              return '<div class="category-item">' +
+                        '<div><div style="font-weight: bold;">' + cat + '</div>' +
+                        '<div style="color: #95a5a6; font-size: 0.9rem;">$' + spent.toLocaleString('en-US') + ' / $' + budget.toLocaleString('en-US') + '</div></div>' +
+                        '<div class="category-bar"><div class="category-fill' + overClass + '" style="width: ' + pct + '%;"></div></div>' +
+                        '</div>';
+            }).join('');
+          }
+        }
+
+        function escapeHtml(str) {
+          var div = document.createElement('div');
+          div.textContent = str;
+          return div.innerHTML;
+        }
+
+        function deleteTransaction(id) {
+          var transactions = loadTransactions().filter(function (t) { return t.id !== id; });
+          saveTransactions(transactions);
+          render();
+        }
+
+        function openModal() {
+          document.getElementById('modalOverlay').classList.add('open');
+          document.getElementById('txnDescription').focus();
+        }
+
+        function closeModal() {
+          document.getElementById('modalOverlay').classList.remove('open');
+          document.getElementById('txnDescription').value = '';
+          document.getElementById('txnAmount').value = '';
+          setModalType('expense');
+        }
+
+        function setModalType(type) {
+          modalType = type;
+          var buttons = document.querySelectorAll('.modal-type-toggle button');
+          buttons.forEach(function (b) {
+            b.classList.toggle('active', b.getAttribute('data-type') === type);
+          });
+          var categorySelect = document.getElementById('txnCategory');
+          if (type === 'income') {
+            categorySelect.value = 'Income';
+          } else if (categorySelect.value === 'Income') {
+            categorySelect.value = 'Other';
+          }
+        }
+
+        function submitTransaction() {
+          var description = document.getElementById('txnDescription').value.trim();
+          var amount = parseFloat(document.getElementById('txnAmount').value);
+          var category = document.getElementById('txnCategory').value;
+
+          if (!description || isNaN(amount) || amount <= 0) {
+            alert('Please enter a description and a valid amount.');
+            return;
+          }
+
+          var transactions = loadTransactions();
+          var nextId = transactions.reduce(function (max, t) { return Math.max(max, t.id); }, 0) + 1;
+          transactions.push({
+            id: nextId,
+            description: description,
+            amount: amount,
+            type: modalType,
+            category: modalType === 'income' ? 'Income' : category,
+            date: new Date().toISOString().slice(0, 10)
+          });
+          saveTransactions(transactions);
+          closeModal();
+          render();
+        }
+
+        document.getElementById('modalOverlay').addEventListener('click', function (e) {
+          if (e.target === this) { closeModal(); }
+        });
+
+        render();
+    </script>
 </body>
 </html>

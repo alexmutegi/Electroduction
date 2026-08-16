@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitTrack - Your Fitness Journey</title>
+    <link rel="stylesheet" href="shared/theme.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Arial', sans-serif;
             background: #0f0f23;
@@ -245,13 +244,25 @@
         </div>
     </div>
 
+    <script src="shared/storage.js"></script>
     <script>
-        const activities = [
+        const STORAGE_KEY = 'fittrack_activities';
+        const DEFAULT_ACTIVITIES = [
           { id: 1, type: 'Running', duration: 45, calories: 450, icon: '🏃', time: '2 hours ago' },
           { id: 2, type: 'Weightlifting', duration: 60, calories: 350, icon: '🏋️', time: 'Yesterday' },
           { id: 3, type: 'Yoga', duration: 30, calories: 120, icon: '🧘', time: '2 days ago' },
           { id: 4, type: 'Cycling', duration: 90, calories: 600, icon: '🚴', time: '3 days ago' }
         ];
+
+        function loadActivities() {
+          return getJSON(STORAGE_KEY, DEFAULT_ACTIVITIES.slice());
+        }
+
+        function saveActivities() {
+          setJSON(STORAGE_KEY, activities);
+        }
+
+        let activities = loadActivities();
 
         function renderActivities() {
           const list = document.getElementById('activityList');
@@ -268,6 +279,10 @@
                     </div>
                 </div>
             `).join('');
+
+          const totalCalories = activities.reduce((sum, a) => sum + Number(a.calories), 0);
+          document.getElementById('caloriesBurned').textContent = totalCalories.toLocaleString();
+          document.getElementById('totalWorkouts').textContent = activities.length;
         }
 
         function toggleWorkoutForm() {
@@ -298,12 +313,7 @@
             time: 'Just now'
           });
 
-          // Update stats
-          const totalCalories = parseInt(document.getElementById('caloriesBurned').textContent.replace(',', ''));
-          document.getElementById('caloriesBurned').textContent = (totalCalories + calories).toLocaleString();
-
-          const totalWorkouts = parseInt(document.getElementById('totalWorkouts').textContent);
-          document.getElementById('totalWorkouts').textContent = totalWorkouts + 1;
+          saveActivities();
 
           document.getElementById('duration').value = '';
           document.getElementById('calories').value = '';
