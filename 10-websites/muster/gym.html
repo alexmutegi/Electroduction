@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muster Gym — Train for the Field</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/brand.css">
+<script src="shared/nav.js" defer></script>
+<style>
+  :root { --venue: var(--flare); }
+  .site-nav { border-bottom-color: var(--venue); }
+  .eyebrow { color: var(--venue); }
+  .site-nav ul a:hover, .site-nav ul a[aria-current="page"] { border-color: var(--venue); }
+
+  .vhero {
+    background: var(--ink);
+    color: var(--canvas);
+    padding: 4.5rem 0 4rem;
+    border-bottom: 4px solid var(--venue);
+  }
+  .vhero .wrap { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2.5rem; }
+  .vhero .stamp { --stamp-color: var(--venue); }
+  .vhero .eyebrow { color: var(--venue); }
+  .vhero .lead { color: var(--canvas-dim); }
+
+  .schedule-section { padding: 5rem 0; }
+  .week-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 2.5rem; }
+  .day-col { border: 1px solid var(--ink); }
+  .day-col .day-head { background: var(--ink); color: var(--canvas); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem; text-align: center; }
+  .day-col .slot { padding: 0.9rem 0.8rem; border-bottom: 1px dotted var(--steel); font-size: 0.85rem; }
+  .day-col .slot:last-child { border-bottom: none; }
+  .day-col .slot .time { font-family: var(--font-mono); font-size: 0.72rem; color: var(--flare-dim); display: block; margin-bottom: 0.2rem; }
+
+  .tiers-strip { background: var(--ink); color: var(--canvas); padding: 4.5rem 0; }
+  .tiers-strip .eyebrow { color: var(--venue); }
+  .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .tier-card { border: 1px solid var(--steel-dim); padding: 2rem; }
+  .tier-card.featured { border-color: var(--flare); background: rgba(232,99,28,0.08); }
+  .tier-card .tname { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--flare); }
+  .tier-card .tamount { font-family: var(--font-display); font-size: 2.8rem; margin: 0.5rem 0; }
+  .tier-card .tamount span { font-family: var(--font-mono); font-size: 0.9rem; color: var(--canvas-dim); }
+  .tier-card ul { list-style: none; margin-top: 1.2rem; font-size: 0.9rem; }
+  .tier-card li { padding: 0.5rem 0; border-bottom: 1px solid rgba(237,230,214,0.15); color: var(--canvas-dim); }
+
+  .coaches-section { padding: 5rem 0; }
+  .coach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; margin-top: 2.5rem; }
+  .coach-card { border-top: 3px solid var(--venue); padding-top: 1.2rem; }
+  .coach-card .cname { font-size: 1.15rem; font-weight: 700; }
+  .coach-card .crole { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel-dim); margin-bottom: 0.6rem; display: block; }
+
+  @media (max-width: 900px) {
+    .week-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .vhero .wrap { grid-template-columns: 1fr; text-align: left; } .vhero .stamp { width: 108px; height: 108px; margin-top: 1.5rem; transform: rotate(-8deg) scale(1); } .vhero .stamp .stamp-top, .vhero .stamp .stamp-bottom { font-size: 0.44rem; } .vhero .stamp .stamp-mid { font-size: 1rem; }
+    .tier-grid, .coach-grid { grid-template-columns: 1fr; }
+    .week-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <input type="checkbox" id="navToggle" class="nav-toggle-input">
+    <a class="brand" href="index.html">MUSTER<span class="dot">.</span></a>
+    <label for="navToggle" class="nav-toggle-label" aria-label="Toggle menu"><span></span></label>
+    <ul>
+      <li><a href="cafe.html">Café</a></li>
+      <li><a href="cards.html">Cards</a></li>
+      <li><a href="range.html">Range</a></li>
+      <li><a href="gym.html">Gym</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="vhero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Ground 04 — Conditioning</span>
+      <h1>Train for the<br>field, not the<br>mirror.</h1>
+      <p class="lead">Loaded carries, sprint intervals, and mobility work built to hold up under a full loadout — because the field doesn't care how much you can bench.</p>
+    </div>
+    <div class="stamp" aria-hidden="true">
+      <span class="stamp-top">STRENGTH &amp;</span>
+      <span class="stamp-mid">CONDITION</span>
+      <span class="stamp-bottom">24/5 ACCESS</span>
+    </div>
+  </div>
+</header>
+
+<section class="schedule-section">
+  <div class="wrap">
+    <span class="eyebrow">This Week</span>
+    <h2>Five days of coached classes. Open floor the rest of the time.</h2>
+    <div class="week-grid">
+      <div class="day-col">
+        <div class="day-head">Monday</div>
+        <div class="slot"><span class="time">6:00 AM</span>Loaded Carry Conditioning</div>
+        <div class="slot"><span class="time">5:30 PM</span>Strength Fundamentals</div>
+      </div>
+      <div class="day-col">
+        <div class="day-head">Tuesday</div>
+        <div class="slot"><span class="time">6:00 AM</span>Sprint Intervals</div>
+        <div class="slot"><span class="time">6:00 PM</span>Mobility &amp; Recovery</div>
+      </div>
+      <div class="day-col">
+        <div class="day-head">Wednesday</div>
+        <div class="slot"><span class="time">6:00 AM</span>Loaded Carry Conditioning</div>
+        <div class="slot"><span class="time">5:30 PM</span>Strength Fundamentals</div>
+      </div>
+      <div class="day-col">
+        <div class="day-head">Thursday</div>
+        <div class="slot"><span class="time">6:00 AM</span>Sprint Intervals</div>
+        <div class="slot"><span class="time">6:00 PM</span>Field Conditioning Circuit</div>
+      </div>
+      <div class="day-col">
+        <div class="day-head">Friday</div>
+        <div class="slot"><span class="time">6:00 AM</span>Field Conditioning Circuit</div>
+        <div class="slot"><span class="time">4:00 PM</span>Open Floor, no class</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tiers-strip">
+  <div class="wrap">
+    <span class="eyebrow">Membership</span>
+    <h2>Three ways in.</h2>
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tname">Open Floor</div>
+        <div class="tamount">$49<span>/mo</span></div>
+        <ul>
+          <li>Weight room &amp; conditioning floor</li>
+          <li>Standard hours access</li>
+          <li>No coached classes</li>
+        </ul>
+      </div>
+      <div class="tier-card featured">
+        <div class="tname">Full Access</div>
+        <div class="tamount">$89<span>/mo</span></div>
+        <ul>
+          <li>Everything in Open Floor</li>
+          <li>Unlimited coached classes</li>
+          <li>24/5 key fob access</li>
+        </ul>
+      </div>
+      <div class="tier-card">
+        <div class="tname">Muster Card Add-On</div>
+        <div class="tamount">+$0</div>
+        <ul>
+          <li>Free with active Muster Card</li>
+          <li>Same access as Full Access</li>
+          <li>One card, all four grounds</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="coaches-section">
+  <div class="wrap">
+    <span class="eyebrow">Coaching Staff</span>
+    <h2>Three coaches, five classes a week.</h2>
+    <div class="coach-grid">
+      <div class="coach-card">
+        <span class="crole">Strength &amp; Conditioning</span>
+        <div class="cname">Marisol Vega</div>
+        <p>Runs Monday and Wednesday strength sessions, built around carries and sled work over isolated lifts.</p>
+      </div>
+      <div class="coach-card">
+        <span class="crole">Speed &amp; Intervals</span>
+        <div class="cname">Devon Okafor</div>
+        <p>Coaches sprint interval mornings — short, hard sessions timed to fit before the workday starts.</p>
+      </div>
+      <div class="coach-card">
+        <span class="crole">Mobility &amp; Recovery</span>
+        <div class="cname">Priya Nair</div>
+        <p>Runs the Tuesday evening mobility class, plus one-on-one sessions for anyone nursing a field injury.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Muster Grounds</h4>
+        <p style="color: var(--canvas-dim); font-size: 0.9rem; max-width: 32ch;">2400 Ordnance Road, Bay 4<br>One block, four grounds, one card.</p>
+      </div>
+      <div>
+        <h4>Grounds</h4>
+        <ul>
+          <li><a href="cafe.html">Café</a></li>
+          <li><a href="cards.html">Cards</a></li>
+          <li><a href="range.html">Range</a></li>
+          <li><a href="gym.html">Gym</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Gym Hours</h4>
+        <ul>
+          <li>Mon–Fri 5am – 11pm</li>
+          <li>Sat–Sun 7am – 9pm</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>gym@mustergrounds.example</li>
+          <li>(555) 019-4204</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Muster Grounds</span>
+      <span>Bay 4 — one block, four grounds</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

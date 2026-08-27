@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muster Café — Coffee Before the Op</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/brand.css">
+<script src="shared/nav.js" defer></script>
+<style>
+  :root { --venue: var(--brass); }
+  .site-nav { border-bottom-color: var(--venue); }
+  .eyebrow { color: var(--venue); }
+  .site-nav ul a:hover, .site-nav ul a[aria-current="page"] { border-color: var(--venue); }
+
+  .vhero {
+    background: var(--ink);
+    color: var(--canvas);
+    padding: 4.5rem 0 4rem;
+    border-bottom: 4px solid var(--venue);
+  }
+  .vhero .wrap { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2.5rem; }
+  .vhero .stamp { --stamp-color: var(--venue); }
+  .vhero .eyebrow { color: var(--venue); }
+  .vhero .lead { color: var(--canvas-dim); }
+
+  .menu-section { padding: 5rem 0; }
+  .menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
+  .menu-group h3 { border-bottom: 2px solid var(--venue); padding-bottom: 0.6rem; margin-bottom: 1rem; font-size: 1.15rem; letter-spacing: 0.03em; }
+  .menu-item { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px dotted var(--steel); }
+  .menu-item .mname { font-weight: 600; }
+  .menu-item .mdesc { display: block; font-size: 0.85rem; color: var(--steel-dim); font-weight: 400; }
+  .menu-item .mprice { font-family: var(--font-mono); font-size: 0.95rem; white-space: nowrap; }
+
+  .strip {
+    background: var(--canvas-dim);
+    padding: 4rem 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .strip .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .strip .item .eyebrow { color: var(--venue); display: block; margin-bottom: 0.4rem; }
+
+  @media (max-width: 760px) {
+    .vhero .wrap { grid-template-columns: 1fr; text-align: left; } .vhero .stamp { width: 108px; height: 108px; margin-top: 1.5rem; transform: rotate(-8deg) scale(1); } .vhero .stamp .stamp-top, .vhero .stamp .stamp-bottom { font-size: 0.44rem; } .vhero .stamp .stamp-mid { font-size: 1rem; }
+    .menu-cols { grid-template-columns: 1fr; }
+    .strip .wrap { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <input type="checkbox" id="navToggle" class="nav-toggle-input">
+    <a class="brand" href="index.html">MUSTER<span class="dot">.</span></a>
+    <label for="navToggle" class="nav-toggle-label" aria-label="Toggle menu"><span></span></label>
+    <ul>
+      <li><a href="cafe.html">Café</a></li>
+      <li><a href="cards.html">Cards</a></li>
+      <li><a href="range.html">Range</a></li>
+      <li><a href="gym.html">Gym</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="vhero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Ground 01 — Fuel</span>
+      <h1>Coffee before<br>the op.</h1>
+      <p class="lead">Pour-over bar, drip on tap, and a kitchen that runs breakfast burritos past noon on game days. Outlets at every table — this is where routes get planned and decks get sleeved.</p>
+    </div>
+    <div class="stamp" aria-hidden="true">
+      <span class="stamp-top">ROASTED &amp;</span>
+      <span class="stamp-mid">POURED</span>
+      <span class="stamp-bottom">ON SITE</span>
+    </div>
+  </div>
+</header>
+
+<section class="menu-section">
+  <div class="wrap">
+    <span class="eyebrow">The Menu</span>
+    <h2>Drip, pour-over, and enough food to hold you through a match.</h2>
+
+    <div class="menu-cols">
+      <div class="menu-group">
+        <h3>Coffee</h3>
+        <div class="menu-item"><span class="mname">Drip<span class="mdesc">House blend, bottomless before 9am</span></span><span class="mprice">$3.25</span></div>
+        <div class="menu-item"><span class="mname">Pour-Over<span class="mdesc">Rotating single origin, ask what's on today</span></span><span class="mprice">$5.50</span></div>
+        <div class="menu-item"><span class="mname">Cortado<span class="mdesc">Double shot, steamed milk 1:1</span></span><span class="mprice">$4.25</span></div>
+        <div class="menu-item"><span class="mname">Cold Brew<span class="mdesc">18-hour steep, served over ice</span></span><span class="mprice">$4.75</span></div>
+        <div class="menu-item"><span class="mname">Field Latte<span class="mdesc">Espresso, oat milk, cardamom</span></span><span class="mprice">$5.75</span></div>
+      </div>
+      <div class="menu-group">
+        <h3>Kitchen</h3>
+        <div class="menu-item"><span class="mname">Breakfast Burrito<span class="mdesc">Eggs, potato, cheddar, salsa verde</span></span><span class="mprice">$8.50</span></div>
+        <div class="menu-item"><span class="mname">Muster Bowl<span class="mdesc">Grain bowl, roasted veg, soft egg</span></span><span class="mprice">$10.00</span></div>
+        <div class="menu-item"><span class="mname">Turkey &amp; Swiss<span class="mdesc">Sourdough, whole grain mustard</span></span><span class="mprice">$9.50</span></div>
+        <div class="menu-item"><span class="mname">Oats &amp; Berries<span class="mdesc">Overnight oats, seasonal fruit</span></span><span class="mprice">$6.25</span></div>
+        <div class="menu-item"><span class="mname">Trail Mix Bar<span class="mdesc">Build your own, sold by the ounce</span></span><span class="mprice">$0.75/oz</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap">
+    <div class="item">
+      <span class="eyebrow">Workspace</span>
+      <h3>Outlets at every table</h3>
+      <p>Plan a scenario, sleeve a deck, or just get through email. The back corner runs quiet before 8am.</p>
+    </div>
+    <div class="item">
+      <span class="eyebrow">House Account</span>
+      <h3>Muster Card holders</h3>
+      <p>Tab it to your card and settle up monthly. 10% off drip and pour-over, every visit.</p>
+    </div>
+    <div class="item">
+      <span class="eyebrow">Game Day</span>
+      <h3>Kitchen runs late Fri–Sun</h3>
+      <p>Burritos and bowls stay on the menu until 2pm on range days, so nobody runs the field on an empty stomach.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Muster Grounds</h4>
+        <p style="color: var(--canvas-dim); font-size: 0.9rem; max-width: 32ch;">2400 Ordnance Road, Bay 4<br>One block, four grounds, one card.</p>
+      </div>
+      <div>
+        <h4>Grounds</h4>
+        <ul>
+          <li><a href="cafe.html">Café</a></li>
+          <li><a href="cards.html">Cards</a></li>
+          <li><a href="range.html">Range</a></li>
+          <li><a href="gym.html">Gym</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Café Hours</h4>
+        <ul>
+          <li>Mon–Sun</li>
+          <li>6:30am – 6pm</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>cafe@mustergrounds.example</li>
+          <li>(555) 019-4201</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Muster Grounds</span>
+      <span>Bay 4 — one block, four grounds</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muster — Train. Draft. Run the Field. Refuel.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/brand.css">
+<script src="shared/nav.js" defer></script>
+<style>
+  .hero {
+    background: var(--ink);
+    color: var(--canvas);
+    position: relative;
+    overflow: hidden;
+    padding: 5.5rem 0 6rem;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(135deg, rgba(232,99,28,0.05) 0 2px, transparent 2px 42px);
+    pointer-events: none;
+  }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 3rem;
+    position: relative;
+  }
+  .hero h1 { margin: 1rem 0 1.25rem; }
+  .hero h1 span { color: var(--flare); }
+  .hero .lead { color: var(--canvas-dim); }
+  .hero .cta-row { display: flex; gap: 1rem; margin-top: 2.25rem; flex-wrap: wrap; }
+  .hero .stamp { --stamp-color: var(--flare); }
+
+  .manifest {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--steel);
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--steel-dim);
+    flex-wrap: wrap;
+  }
+  .manifest strong { color: var(--canvas); display: block; font-family: var(--font-body); font-size: 1rem; }
+
+  .points {
+    padding: 6rem 0;
+  }
+  .points .section-head { max-width: 640px; margin-bottom: 3rem; }
+  .points .section-head .eyebrow { margin-bottom: 0.6rem; display: block; }
+
+  .point-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .point {
+    border: 1px solid var(--ink);
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: relative;
+    transition: background 0.2s ease;
+  }
+  .point:hover { background: rgba(27,29,31,0.03); }
+  .point .point-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+  .point .stamp { width: 84px; height: 84px; border-width: 2px; flex-shrink: 0; }
+  .point .stamp .stamp-mid { font-size: 0.85rem; }
+  .point .stamp .stamp-top, .point .stamp .stamp-bottom { font-size: 0.42rem; }
+  .point .stamp::before { inset: 5px; }
+  .point h3 { margin: 0; }
+  .point .venue-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel-dim);
+  }
+  .point p { color: var(--ink); flex-grow: 1; }
+  .point .point-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding-top: 1rem;
+    border-top: 1px solid var(--steel);
+  }
+  .point .point-foot .go { color: var(--flare); font-weight: 600; }
+  .point.cafe { border-top: 4px solid var(--brass); }
+  .point.cards { border-top: 4px solid var(--brass); }
+  .point.range { border-top: 4px solid var(--field); }
+  .point.gym { border-top: 4px solid var(--flare); }
+  .point.cafe .stamp, .point.cards .stamp { --stamp-color: var(--brass); }
+  .point.range .stamp { --stamp-color: var(--field); }
+  .point.gym .stamp { --stamp-color: var(--flare); }
+
+  @media (max-width: 760px) {
+    .hero .wrap { grid-template-columns: 1fr; text-align: left; }
+    .hero .stamp { width: 108px; height: 108px; margin-top: 0.5rem; } .hero .stamp .stamp-top, .hero .stamp .stamp-bottom { font-size: 0.44rem; } .hero .stamp .stamp-mid { font-size: 1rem; }
+    .point-grid { grid-template-columns: 1fr; }
+  }
+
+  /* THE CARD — unifying membership section */
+  .thecard {
+    background: var(--field);
+    color: var(--canvas);
+    padding: 5.5rem 0;
+  }
+  .thecard .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
+  .thecard .eyebrow { color: var(--flare); }
+  .thecard .card-visual {
+    background: var(--ink);
+    border: 1px solid var(--brass);
+    padding: 2rem;
+    aspect-ratio: 1.6 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+  }
+  .thecard .card-visual .row1 { display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--steel); }
+  .thecard .card-visual .row2 { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 0.06em; color: var(--canvas); }
+  .thecard .card-visual .row3 { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--brass); letter-spacing: 0.08em; }
+  .thecard .perks { list-style: none; margin-top: 1.75rem; font-size: 0.95rem; }
+  .thecard .perks li { padding: 0.6rem 0; border-bottom: 1px solid rgba(237,230,214,0.2); display: flex; justify-content: space-between; gap: 1rem; }
+  .thecard .perks li span:last-child { font-family: var(--font-mono); font-size: 0.8rem; color: var(--canvas-dim); text-align: right; }
+
+  @media (max-width: 760px) {
+    .thecard .wrap { grid-template-columns: 1fr; }
+  }
+
+  .hours-strip {
+    background: var(--canvas-dim);
+    padding: 3rem 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .hours-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .hours-grid .h-name { font-family: var(--font-body); font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
+  .hours-grid .h-time { color: var(--steel-dim); }
+  @media (max-width: 760px) { .hours-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <input type="checkbox" id="navToggle" class="nav-toggle-input">
+    <a class="brand" href="index.html">MUSTER<span class="dot">.</span></a>
+    <label for="navToggle" class="nav-toggle-label" aria-label="Toggle menu"><span></span></label>
+    <ul>
+      <li><a href="cafe.html">Café</a></li>
+      <li><a href="cards.html">Cards</a></li>
+      <li><a href="range.html">Range</a></li>
+      <li><a href="gym.html">Gym</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow on-dark">Est. 2019 — Muster Grounds, Bay 4</span>
+      <h1>Where the crew<br><span>musters.</span></h1>
+      <p class="lead">Four grounds, one card. Train at the gym, draft at the shop, run the field at the range, and unwind at the café — all on the same block, all under one roof.</p>
+      <div class="cta-row">
+        <a class="btn on-dark" href="#points">See the four grounds</a>
+        <a class="btn on-dark ghost" href="#thecard">The Muster Card</a>
+      </div>
+      <div class="manifest">
+        <div><strong>4</strong>grounds, one block</div>
+        <div><strong>1</strong>membership card</div>
+        <div><strong>7am–11pm</strong>doors open daily</div>
+        <div><strong>Bay 4</strong>Muster Grounds</div>
+      </div>
+    </div>
+    <div class="stamp" aria-hidden="true">
+      <span class="stamp-top">MUSTER GROUNDS</span>
+      <span class="stamp-mid">EST.<br>2019</span>
+      <span class="stamp-bottom">BAY FOUR</span>
+    </div>
+  </div>
+</header>
+
+<section class="points" id="points">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The Four Grounds</span>
+      <h2>One membership. Four reasons to show up.</h2>
+    </div>
+    <div class="point-grid">
+
+      <article class="point cafe">
+        <div class="point-top">
+          <div>
+            <span class="venue-tag">Ground 01 — Fuel</span>
+            <h3>Muster Café</h3>
+          </div>
+          <div class="stamp" aria-hidden="true">
+            <span class="stamp-top">ROASTED</span>
+            <span class="stamp-mid">CAFÉ</span>
+            <span class="stamp-bottom">ON SITE</span>
+          </div>
+        </div>
+        <p>Pour-over bar, breakfast burritos, and enough outlets to plan next weekend's scenario game over a second coffee.</p>
+        <div class="point-foot"><span>Open 6:30am</span><a class="go" href="cafe.html">Visit the café →</a></div>
+      </article>
+
+      <article class="point cards">
+        <div class="point-top">
+          <div>
+            <span class="venue-tag">Ground 02 — Strategy</span>
+            <h3>Muster Cards</h3>
+          </div>
+          <div class="stamp" aria-hidden="true">
+            <span class="stamp-top">SEALED &amp;</span>
+            <span class="stamp-mid">SINGLES</span>
+            <span class="stamp-bottom">GRADED</span>
+          </div>
+        </div>
+        <p>Singles, sealed product, and a back room that runs a draft or a Commander pod most nights of the week.</p>
+        <div class="point-foot"><span>Draft night: Thu</span><a class="go" href="cards.html">Visit the shop →</a></div>
+      </article>
+
+      <article class="point range">
+        <div class="point-top">
+          <div>
+            <span class="venue-tag">Ground 03 — The Field</span>
+            <h3>Muster Range</h3>
+          </div>
+          <div class="stamp" aria-hidden="true">
+            <span class="stamp-top">AIRSOFT &amp;</span>
+            <span class="stamp-mid">PAINTBALL</span>
+            <span class="stamp-bottom">TWO ACRES</span>
+          </div>
+        </div>
+        <p>Two acres, one field, split by the week between airsoft scenario nights and paintball speedball. Rental loadouts at the gate.</p>
+        <div class="point-foot"><span>Games Fri–Sun</span><a class="go" href="range.html">Visit the range →</a></div>
+      </article>
+
+      <article class="point gym">
+        <div class="point-top">
+          <div>
+            <span class="venue-tag">Ground 04 — Conditioning</span>
+            <h3>Muster Gym</h3>
+          </div>
+          <div class="stamp" aria-hidden="true">
+            <span class="stamp-top">STRENGTH &amp;</span>
+            <span class="stamp-mid">CONDITION</span>
+            <span class="stamp-bottom">24/5 ACCESS</span>
+          </div>
+        </div>
+        <p>Built for the field, not the mirror: loaded carries, sprint intervals, and mobility work that holds up under a full loadout.</p>
+        <div class="point-foot"><span>Open 24/5</span><a class="go" href="gym.html">Visit the gym →</a></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="thecard" id="thecard">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">One Card, Four Grounds</span>
+      <h2>The Muster Card</h2>
+      <p class="lead" style="color: var(--canvas-dim);">One membership, scanned at all four doors. It doesn't unlock everything for free — it just makes sure showing up at all four is always worth it.</p>
+      <ul class="perks">
+        <li><span>Muster Café</span><span>10% off, house account tab</span></li>
+        <li><span>Muster Cards</span><span>Free draft entry, 1st Thursday</span></li>
+        <li><span>Muster Range</span><span>Member rate on rentals</span></li>
+        <li><span>Muster Gym</span><span>24/5 key fob access</span></li>
+      </ul>
+    </div>
+    <div class="card-visual">
+      <div class="row1"><span>MUSTER GROUNDS</span><span>BAY 4</span></div>
+      <div class="row2">MUSTER<br>CARD</div>
+      <div class="row3"><span>MEMBER SINCE 2024</span><span>NO. 00142</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="hours-strip">
+  <div class="wrap hours-grid">
+    <div><div class="h-name">Muster Café</div><div class="h-time">Mon–Sun · 6:30am – 6pm</div></div>
+    <div><div class="h-name">Muster Cards</div><div class="h-time">Tue–Sun · 11am – 9pm</div></div>
+    <div><div class="h-name">Muster Range</div><div class="h-time">Fri–Sun · 9am – 5pm (games)</div></div>
+    <div><div class="h-name">Muster Gym</div><div class="h-time">Mon–Fri 5am–11pm · Sat–Sun 7am–9pm</div></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Muster Grounds</h4>
+        <p style="color: var(--canvas-dim); font-size: 0.9rem; max-width: 32ch;">2400 Ordnance Road, Bay 4<br>One block, four grounds, one card.</p>
+      </div>
+      <div>
+        <h4>Grounds</h4>
+        <ul>
+          <li><a href="cafe.html">Café</a></li>
+          <li><a href="cards.html">Cards</a></li>
+          <li><a href="range.html">Range</a></li>
+          <li><a href="gym.html">Gym</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <ul>
+          <li><a href="#thecard">The Muster Card</a></li>
+          <li><a href="#points">Hours</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>hello@mustergrounds.example</li>
+          <li>(555) 019-4200</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Muster Grounds</span>
+      <span>Bay 4 — one block, four grounds</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

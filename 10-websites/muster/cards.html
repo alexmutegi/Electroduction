@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muster Cards — Draft Night Starts Here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/brand.css">
+<script src="shared/nav.js" defer></script>
+<style>
+  :root { --venue: var(--brass); }
+  .site-nav { border-bottom-color: var(--venue); }
+  .eyebrow { color: var(--venue); }
+  .site-nav ul a:hover, .site-nav ul a[aria-current="page"] { border-color: var(--venue); }
+
+  .vhero {
+    background: var(--ink);
+    color: var(--canvas);
+    padding: 4.5rem 0 4rem;
+    border-bottom: 4px solid var(--venue);
+  }
+  .vhero .wrap { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2.5rem; }
+  .vhero .stamp { --stamp-color: var(--venue); }
+  .vhero .eyebrow { color: var(--venue); }
+  .vhero .lead { color: var(--canvas-dim); }
+
+  .stock-section { padding: 5rem 0; }
+  .stock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .stock-card { border: 1px solid var(--ink); padding: 1.75rem; border-top: 4px solid var(--venue); }
+  .stock-card .tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-dim); }
+  .stock-card h3 { margin: 0.4rem 0 0.75rem; font-size: 1.3rem; }
+  .stock-card ul { list-style: none; font-size: 0.92rem; }
+  .stock-card li { padding: 0.35rem 0; border-bottom: 1px dotted var(--steel); }
+  .stock-card li:last-child { border-bottom: none; }
+
+  .schedule-strip { background: var(--ink); color: var(--canvas); padding: 4.5rem 0; }
+  .schedule-strip .eyebrow { color: var(--venue); }
+  .schedule-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 2.5rem; }
+  .sched-item { display: flex; justify-content: space-between; align-items: baseline; padding: 1.1rem 1.4rem; border: 1px solid var(--steel-dim); font-family: var(--font-mono); }
+  .sched-item .sname { font-family: var(--font-body); font-weight: 700; font-size: 1rem; }
+  .sched-item .sday { color: var(--venue); font-size: 0.85rem; }
+
+  .grading-section { padding: 5rem 0; }
+  .grading-section .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: start; }
+  .grading-steps { counter-reset: step; list-style: none; }
+  .grading-steps li { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--steel); }
+  .grading-steps li::before { counter-increment: step; content: counter(step); font-family: var(--font-mono); color: var(--venue); font-weight: 700; font-size: 1.1rem; flex-shrink: 0; }
+
+  @media (max-width: 760px) {
+    .vhero .wrap { grid-template-columns: 1fr; text-align: left; } .vhero .stamp { width: 108px; height: 108px; margin-top: 1.5rem; transform: rotate(-8deg) scale(1); } .vhero .stamp .stamp-top, .vhero .stamp .stamp-bottom { font-size: 0.44rem; } .vhero .stamp .stamp-mid { font-size: 1rem; }
+    .stock-grid { grid-template-columns: 1fr; }
+    .schedule-grid { grid-template-columns: 1fr; }
+    .grading-section .wrap { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <input type="checkbox" id="navToggle" class="nav-toggle-input">
+    <a class="brand" href="index.html">MUSTER<span class="dot">.</span></a>
+    <label for="navToggle" class="nav-toggle-label" aria-label="Toggle menu"><span></span></label>
+    <ul>
+      <li><a href="cafe.html">Café</a></li>
+      <li><a href="cards.html">Cards</a></li>
+      <li><a href="range.html">Range</a></li>
+      <li><a href="gym.html">Gym</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="vhero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Ground 02 — Strategy</span>
+      <h1>Draft night<br>starts here.</h1>
+      <p class="lead">Singles wall, sealed product, and a back room that runs a pod or a draft most nights of the week. Bring a deck or build one at the counter.</p>
+    </div>
+    <div class="stamp" aria-hidden="true">
+      <span class="stamp-top">SEALED &amp;</span>
+      <span class="stamp-mid">SINGLES</span>
+      <span class="stamp-bottom">GRADED</span>
+    </div>
+  </div>
+</header>
+
+<section class="stock-section">
+  <div class="wrap">
+    <span class="eyebrow">On the Wall</span>
+    <h2>Stocked for four games, restocked every Tuesday.</h2>
+    <div class="stock-grid">
+      <div class="stock-card">
+        <span class="tag">Singles &amp; Sealed</span>
+        <h3>Magic: The Gathering</h3>
+        <ul>
+          <li>Standard &amp; Commander staples</li>
+          <li>Draft &amp; set boosters, current set</li>
+          <li>Bulk rare bins, $0.25 and up</li>
+        </ul>
+      </div>
+      <div class="stock-card">
+        <span class="tag">Singles &amp; Sealed</span>
+        <h3>Pokémon TCG</h3>
+        <ul>
+          <li>Elite trainer boxes, current set</li>
+          <li>Singles wall, PSA-graded case</li>
+          <li>Booster packs sold individually</li>
+        </ul>
+      </div>
+      <div class="stock-card">
+        <span class="tag">Singles &amp; Sealed</span>
+        <h3>Lorcana &amp; One Piece</h3>
+        <ul>
+          <li>Booster boxes, most recent chapter</li>
+          <li>Singles restocked weekly</li>
+          <li>Playmats, sleeves, deck boxes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="schedule-strip">
+  <div class="wrap">
+    <span class="eyebrow">Back Room</span>
+    <h2>Something's running most nights.</h2>
+    <div class="schedule-grid">
+      <div class="sched-item"><span class="sname">Standard Draft</span><span class="sday">Thursdays, 7pm — $15 entry</span></div>
+      <div class="sched-item"><span class="sname">Commander Pod Night</span><span class="sday">Tuesdays, 6:30pm — free</span></div>
+      <div class="sched-item"><span class="sname">Pokémon League</span><span class="sday">Saturdays, 1pm — free, all ages</span></div>
+      <div class="sched-item"><span class="sname">Friday Night Sealed</span><span class="sday">1st Friday monthly — $25 entry</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="grading-section">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Grading Intake</span>
+      <h2>We handle the submission. You keep the card at home.</h2>
+      <p class="lead">Drop a card at the counter and we submit it on your behalf on our next grading run — no account setup, no shipping it yourself.</p>
+      <ol class="grading-steps">
+        <li>Bring the card in a top loader — condition gets logged at intake.</li>
+        <li>Pick a service tier: standard (6–8 weeks) or express (10 business days).</li>
+        <li>We ship with the next batch and text you when it's back.</li>
+      </ol>
+    </div>
+    <div class="card stamp-card" style="padding: 2rem;">
+      <h3 style="margin-bottom: 1rem;">Grading Rates</h3>
+      <div class="menu-item" style="display:flex; justify-content:space-between; padding: 0.6rem 0; border-bottom: 1px dotted var(--steel);"><span>Standard, per card</span><span style="font-family: var(--font-mono);">$22</span></div>
+      <div class="menu-item" style="display:flex; justify-content:space-between; padding: 0.6rem 0; border-bottom: 1px dotted var(--steel);"><span>Express, per card</span><span style="font-family: var(--font-mono);">$65</span></div>
+      <div class="menu-item" style="display:flex; justify-content:space-between; padding: 0.6rem 0;"><span>Bulk (10+ cards)</span><span style="font-family: var(--font-mono);">15% off</span></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Muster Grounds</h4>
+        <p style="color: var(--canvas-dim); font-size: 0.9rem; max-width: 32ch;">2400 Ordnance Road, Bay 4<br>One block, four grounds, one card.</p>
+      </div>
+      <div>
+        <h4>Grounds</h4>
+        <ul>
+          <li><a href="cafe.html">Café</a></li>
+          <li><a href="cards.html">Cards</a></li>
+          <li><a href="range.html">Range</a></li>
+          <li><a href="gym.html">Gym</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Shop Hours</h4>
+        <ul>
+          <li>Tue–Sun</li>
+          <li>11am – 9pm</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>cards@mustergrounds.example</li>
+          <li>(555) 019-4202</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Muster Grounds</span>
+      <span>Bay 4 — one block, four grounds</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

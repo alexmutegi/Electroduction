@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muster Range — Airsoft &amp; Paintball, Two Acres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/brand.css">
+<script src="shared/nav.js" defer></script>
+<style>
+  :root { --venue: var(--field); }
+  .site-nav { border-bottom-color: var(--venue); }
+  .eyebrow { color: var(--venue); }
+  .site-nav ul a:hover, .site-nav ul a[aria-current="page"] { border-color: var(--venue); }
+
+  .vhero {
+    background: var(--ink);
+    color: var(--canvas);
+    padding: 4.5rem 0 4rem;
+    border-bottom: 4px solid var(--flare);
+    position: relative;
+    overflow: hidden;
+  }
+  .vhero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(135deg, rgba(75,83,32,0.18) 0 2px, transparent 2px 42px);
+    pointer-events: none;
+  }
+  .vhero .wrap { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2.5rem; position: relative; }
+  .vhero .stamp { --stamp-color: var(--field); }
+  .vhero .eyebrow { color: var(--flare); }
+  .vhero .lead { color: var(--canvas-dim); }
+
+  .split-section { padding: 5rem 0; }
+  .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem; }
+  .mode-card { border: 1px solid var(--ink); padding: 2.25rem; }
+  .mode-card.airsoft { border-top: 4px solid var(--field); }
+  .mode-card.paintball { border-top: 4px solid var(--flare); }
+  .mode-card .tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-dim); }
+  .mode-card h3 { margin: 0.4rem 0 0.9rem; }
+  .mode-card ul { list-style: none; font-size: 0.92rem; margin-top: 1rem; }
+  .mode-card li { padding: 0.4rem 0; border-bottom: 1px dotted var(--steel); }
+
+  .pricing-strip { background: var(--field); color: var(--canvas); padding: 4.5rem 0; }
+  .pricing-strip .eyebrow { color: var(--flare); }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .price-card { border: 1px solid rgba(237,230,214,0.3); padding: 1.75rem; text-align: center; }
+  .price-card .pname { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--canvas-dim); }
+  .price-card .pamount { font-family: var(--font-display); font-size: 2.6rem; margin: 0.5rem 0; }
+  .price-card .pnote { font-size: 0.85rem; color: var(--canvas-dim); }
+
+  .rules-section { padding: 5rem 0; }
+  .rules-section .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .rules-list { list-style: none; }
+  .rules-list li { display: flex; gap: 0.9rem; padding: 0.9rem 0; border-bottom: 1px solid var(--steel); }
+  .rules-list li .n { font-family: var(--font-mono); color: var(--field); font-weight: 700; flex-shrink: 0; }
+
+  @media (max-width: 760px) {
+    .vhero .wrap { grid-template-columns: 1fr; text-align: left; } .vhero .stamp { width: 108px; height: 108px; margin-top: 1.5rem; transform: rotate(-8deg) scale(1); } .vhero .stamp .stamp-top, .vhero .stamp .stamp-bottom { font-size: 0.44rem; } .vhero .stamp .stamp-mid { font-size: 1rem; }
+    .split-grid, .price-grid, .rules-section .wrap { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <input type="checkbox" id="navToggle" class="nav-toggle-input">
+    <a class="brand" href="index.html">MUSTER<span class="dot">.</span></a>
+    <label for="navToggle" class="nav-toggle-label" aria-label="Toggle menu"><span></span></label>
+    <ul>
+      <li><a href="cafe.html">Café</a></li>
+      <li><a href="cards.html">Cards</a></li>
+      <li><a href="range.html">Range</a></li>
+      <li><a href="gym.html">Gym</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="vhero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Ground 03 — The Field</span>
+      <h1>Two acres.<br>Same field.</h1>
+      <p class="lead">One field, split by the week: airsoft scenario nights on one schedule, paintball speedball on another. Rental loadouts at the gate, no gear required to show up.</p>
+    </div>
+    <div class="stamp" aria-hidden="true">
+      <span class="stamp-top">AIRSOFT &amp;</span>
+      <span class="stamp-mid">PAINTBALL</span>
+      <span class="stamp-bottom">TWO ACRES</span>
+    </div>
+  </div>
+</header>
+
+<section class="split-section">
+  <div class="wrap">
+    <span class="eyebrow">The Field, Split By Day</span>
+    <h2>Two sports, one plot of dirt.</h2>
+    <div class="split-grid">
+      <div class="mode-card airsoft">
+        <span class="tag">Fridays &amp; Sundays</span>
+        <h3>Airsoft Scenario Nights</h3>
+        <p>Team-based objective games across the full two acres — CQB structures, a wooded flank, and a mid-field bunker line. Full-send scenarios run every other Friday under lights.</p>
+        <ul>
+          <li>Rental AEG package: $35, includes gun, mask, 2000 BBs</li>
+          <li>Bring-your-own rig: $18 field fee</li>
+          <li>Chrono check mandatory at check-in, 400 FPS cap</li>
+        </ul>
+      </div>
+      <div class="mode-card paintball">
+        <span class="tag">Saturdays</span>
+        <h3>Paintball Speedball</h3>
+        <p>Inflatable bunker field for fast, close-range games — points play in rotating brackets through the afternoon, open sign-up at the gate.</p>
+        <ul>
+          <li>Rental package: $40, includes marker, mask, 200 paintballs</li>
+          <li>Bring-your-own marker: $20 field fee</li>
+          <li>Paint sold at the gate only — no outside paint on our field</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing-strip">
+  <div class="wrap">
+    <span class="eyebrow">Booking</span>
+    <h2>Walk on, or book the field.</h2>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="pname">Open Play</div>
+        <div class="pamount">$18–20</div>
+        <div class="pnote">Field fee, walk-on basis, gear rental separate</div>
+      </div>
+      <div class="price-card">
+        <div class="pname">Rental Package</div>
+        <div class="pamount">$35–40</div>
+        <div class="pnote">Gear, mask, and starter ammo included</div>
+      </div>
+      <div class="price-card">
+        <div class="pname">Private Field Booking</div>
+        <div class="pamount">From $450</div>
+        <div class="pnote">Full field, 4-hour block, up to 40 players</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rules-section">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Before You Play</span>
+      <h2>Field rules, no exceptions.</h2>
+      <ul class="rules-list">
+        <li><span class="n">01</span><span>Full-seal eye protection on at all times past the gate line — no exceptions, no grace period.</span></li>
+        <li><span class="n">02</span><span>Chrono check on arrival for any bring-your-own airsoft replica; anything over 400 FPS sits out.</span></li>
+        <li><span class="n">03</span><span>Blind-fire and physical contact are both game-ending — one call from a marshal and you're off the field.</span></li>
+        <li><span class="n">04</span><span>Minimum engagement distance of 15 feet on full auto, enforced on both fields.</span></li>
+      </ul>
+    </div>
+    <div>
+      <span class="eyebrow">Good to Know</span>
+      <h2>Getting ready to come out.</h2>
+      <p class="lead">Closed-toe shoes and clothes you don't mind getting dirty — long sleeves recommended for airsoft. Water's free at the gate, but the café next door is open through the last game slot if you need a real meal after.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Muster Grounds</h4>
+        <p style="color: var(--canvas-dim); font-size: 0.9rem; max-width: 32ch;">2400 Ordnance Road, Bay 4<br>One block, four grounds, one card.</p>
+      </div>
+      <div>
+        <h4>Grounds</h4>
+        <ul>
+          <li><a href="cafe.html">Café</a></li>
+          <li><a href="cards.html">Cards</a></li>
+          <li><a href="range.html">Range</a></li>
+          <li><a href="gym.html">Gym</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Field Hours</h4>
+        <ul>
+          <li>Fri–Sun</li>
+          <li>9am – 5pm (games)</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>range@mustergrounds.example</li>
+          <li>(555) 019-4203</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Muster Grounds</span>
+      <span>Bay 4 — one block, four grounds</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
