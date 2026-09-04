@@ -399,24 +399,24 @@
         }
 
         function launchAll() {
-            const websites = [
-                '1-ecommerce.html',
-                '2-blog.html',
-                '3-social-dashboard.html',
-                '4-task-manager.html',
-                '5-weather.html',
-                '6-music-player.html',
-                '7-recipe-site.html',
-                '8-fitness-tracker.html',
-                '9-finance-dashboard.html',
-                '10-chat-app.html'
-            ];
+  const websites = [
+    '1-ecommerce.html',
+    '2-blog.html',
+    '3-social-dashboard.html',
+    '4-task-manager.html',
+    '5-weather.html',
+    '6-music-player.html',
+    '7-recipe-site.html',
+    '8-fitness-tracker.html',
+    '9-finance-dashboard.html',
+    '10-chat-app.html'
+  ];
 
-            websites.forEach((site, index) => {
-                setTimeout(() => {
-                    window.open(site, '_blank');
-                }, index * 500); // Stagger opening by 500ms
-            });
+  websites.forEach((site, index) => {
+    setTimeout(() => {
+      window.open(site, '_blank');
+    }, index * 500); // Stagger opening by 500ms
+  });
         }
     </script>
 </body>
