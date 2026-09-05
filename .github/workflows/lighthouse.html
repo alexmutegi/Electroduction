@@ -1,0 +1,33 @@
+name: Lighthouse Scoring
+
+# Runs only after a successful deploy, so it always audits the real,
+# currently-live site rather than guessing at timing. It never fails
+# the build — no assertions or budgets are configured — since its job
+# is to report scores, not to add another required check to pass.
+'on':
+  workflow_run:
+    workflows: ["Deploy static site to GitHub Pages"]
+    types: [completed]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Audit key pages with Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://alexmutegi.github.io/Electroduction/launch-all.html
+            https://alexmutegi.github.io/Electroduction/1-ecommerce.html
+            https://alexmutegi.github.io/Electroduction/9-finance-dashboard.html
+            https://alexmutegi.github.io/Electroduction/5-weather.html
+            https://alexmutegi.github.io/Electroduction/muster/index.html
+            https://alexmutegi.github.io/Electroduction/muster/gym.html
+          # Uploads each report to Lighthouse's free temporary public
+          # storage and prints a shareable link in the job log — the
+          # simplest way to view results from a phone, no artifact
+          # download needed. Links expire after about 7 days.
+          temporaryPublicStorage: true
+          uploadArtifacts: true
