@@ -22,6 +22,8 @@ jobs:
 
       - name: Audit key pages with Lighthouse
         uses: treosh/lighthouse-ci-action@v12
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.event.workflow_run.head_sha }}
         with:
           urls: |
             https://alexmutegi.github.io/Electroduction/launch-all.html
