@@ -42,10 +42,33 @@
   .strip .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
   .strip .item .eyebrow { color: var(--venue); display: block; margin-bottom: 0.4rem; }
 
+  /* ---------- GALLERY: fillable photo boxes ---------- */
+  .gallery-section { padding: 5rem 0; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 2.5rem; }
+  .photo-card { display: flex; flex-direction: column; gap: 0.6rem; }
+  .photo-box {
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, var(--venue) 0%, var(--ink) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--ink);
+  }
+  .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-box .placeholder-note {
+    position: absolute; bottom: 10px; right: 12px;
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em;
+    color: rgba(237,230,214,0.65); text-transform: uppercase;
+  }
+  .photo-label { font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--steel-dim); text-align: center; }
+
   @media (max-width: 760px) {
     .vhero .wrap { grid-template-columns: 1fr; text-align: left; } .vhero .stamp { width: 108px; height: 108px; margin-top: 1.5rem; transform: rotate(-8deg) scale(1); } .vhero .stamp .stamp-top, .vhero .stamp .stamp-bottom { font-size: 0.44rem; } .vhero .stamp .stamp-mid { font-size: 1rem; }
     .menu-cols { grid-template-columns: 1fr; }
     .strip .wrap { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .photo-box { aspect-ratio: 16 / 10; }
   }
 </style>
 </head>
@@ -61,6 +84,7 @@
       <li><a href="cards.html">Cards</a></li>
       <li><a href="range.html">Range</a></li>
       <li><a href="gym.html">Gym</a></li>
+      <li><a href="shop.html">Shop</a></li>
     </ul>
   </div>
 </nav>
@@ -79,6 +103,44 @@
     </div>
   </div>
 </header>
+
+<section class="gallery-section">
+  <div class="wrap">
+    <span class="eyebrow">Take a Look</span>
+    <h2>What the café actually looks like.</h2>
+    <div class="gallery-grid">
+      <!-- To add a real photo, replace the two <span> lines inside .photo-box with: <img src="your-photo.jpg" alt="Description"> -->
+      <div class="photo-card">
+        <div class="photo-box">
+          <span aria-hidden="true">☕</span>
+          <span class="placeholder-note">Photo coming soon</span>
+        </div>
+        <span class="photo-label">Espresso Bar</span>
+      </div>
+      <div class="photo-card">
+        <div class="photo-box">
+          <span aria-hidden="true">🔌</span>
+          <span class="placeholder-note">Photo coming soon</span>
+        </div>
+        <span class="photo-label">Outlet Seating</span>
+      </div>
+      <div class="photo-card">
+        <div class="photo-box">
+          <span aria-hidden="true">🥪</span>
+          <span class="placeholder-note">Photo coming soon</span>
+        </div>
+        <span class="photo-label">Kitchen Window</span>
+      </div>
+      <div class="photo-card">
+        <div class="photo-box">
+          <span aria-hidden="true">🥐</span>
+          <span class="placeholder-note">Photo coming soon</span>
+        </div>
+        <span class="photo-label">Weekend Rush</span>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="menu-section">
   <div class="wrap">
@@ -140,6 +202,7 @@
           <li><a href="cards.html">Cards</a></li>
           <li><a href="range.html">Range</a></li>
           <li><a href="gym.html">Gym</a></li>
+          <li><a href="shop.html">Shop</a></li>
         </ul>
       </div>
       <div>
