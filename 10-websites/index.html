@@ -1,34 +1,624 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="refresh" content="0; url=./launch-all.html" />
-  <title>Electroduction 10 Websites</title>
-  <style>
-    body {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #0f172a, #1d4ed8);
-      color: white;
-      text-align: center;
-      padding: 2rem;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Electroduction — eleven complete web projects, built and shipped end to end, from e-commerce to a four-venue brand suite.">
+<title>Electroduction — Ship ideas as working software</title>
+<link rel="stylesheet" href="shared/theme.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0F172A;
+    --navy-soft: #16213a;
+    --blue: #2563EB;
+    --blue-dim: #1d4fc4;
+    --cyan: #06B6D4;
+    --white: #FFFFFF;
+    --ink: #1F2937;
+    --ink-dim: #52606d;
+    --mist: #F1F5F9;
+    --line: #E2E8F0;
+    --radius: 4px;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --nav-height: 76px;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: var(--nav-height); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--white);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); color: var(--navy); line-height: 1.2; font-weight: 600; }
+  p { max-width: 62ch; }
+  a { color: inherit; }
+  img, svg { display: block; max-width: 100%; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 6.5rem 0; }
+  .section-mist { background: var(--mist); }
+  .section-head { max-width: 640px; margin-bottom: 3.5rem; }
+  .section-head h2 { font-size: clamp(2rem, 4vw, 2.6rem); margin-bottom: 0.9rem; }
+  .section-head p { color: var(--ink-dim); font-size: 1.05rem; }
+
+  /* ---------- NAV ---------- */
+  .site-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-height);
+    display: flex; align-items: center;
+    background: rgba(15, 23, 42, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .site-nav.scrolled { background: rgba(15, 23, 42, 0.96); box-shadow: 0 4px 24px rgba(0,0,0,0.18); }
+  .site-nav .wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+  .brand { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--white); text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 2.1rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.82); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.15s ease; }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-links .nav-cta { color: var(--navy); background: var(--white); padding: 0.55rem 1.2rem; border-radius: 999px; font-weight: 600; }
+  .nav-links .nav-cta:hover { background: var(--cyan); color: var(--navy); }
+  .nav-toggle {
+    display: none; background: none; border: none; width: 40px; height: 40px;
+    position: relative; z-index: 210;
+  }
+  .nav-toggle span, .nav-toggle::before, .nav-toggle::after {
+    content: ''; position: absolute; left: 8px; right: 8px; height: 2px; background: var(--white);
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+  .nav-toggle::before { top: 13px; }
+  .nav-toggle span { top: 19px; }
+  .nav-toggle::after { top: 25px; }
+  .nav-toggle.open::before { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle.open::after { transform: translateY(-6px) rotate(-45deg); }
+  .nav-toggle.open span { opacity: 0; }
+
+  @media (max-width: 880px) {
+    .nav-toggle { display: block; }
+    .nav-links {
+      position: fixed; top: 0; right: 0; height: 100vh; width: min(78vw, 320px);
+      background: var(--navy); flex-direction: column; align-items: flex-start;
+      justify-content: center; gap: 1.6rem; padding: 2rem 2.5rem;
+      transform: translateX(100%); transition: transform 0.32s ease; z-index: 200;
     }
-    a {
-      color: #bfdbfe;
-      text-decoration: none;
-      font-weight: 600;
-    }
-  </style>
+    .nav-links.open { transform: translateX(0); }
+    .nav-links .nav-cta { margin-top: 0.5rem; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--navy); color: var(--white); text-align: center;
+    padding: calc(var(--nav-height) + 3rem) 2rem 5rem;
+  }
+  .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.55; }
+  .hero-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
+  .hero h1 { color: var(--white); font-size: clamp(2.6rem, 6vw, 4.3rem); margin-bottom: 1.4rem; }
+  .hero .lead { color: rgba(255,255,255,0.78); font-size: 1.2rem; margin: 0 auto 2.4rem; max-width: 52ch; }
+  .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.9rem 1.9rem; border-radius: 999px; font-weight: 600; font-size: 1rem; text-decoration: none; border: 1px solid transparent; transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-dim); }
+  .btn-outline { border-color: rgba(255,255,255,0.4); color: var(--white); }
+  .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+  .scroll-cue { position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%); z-index: 2; color: rgba(255,255,255,0.5); font-size: 0.8rem; letter-spacing: 0.02em; }
+
+  /* ---------- ABOUT ---------- */
+  .about .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+  .about h2 { font-size: clamp(2rem, 4vw, 2.6rem); margin-bottom: 1.2rem; }
+  .about p { color: var(--ink-dim); font-size: 1.05rem; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+  .stat-card { background: var(--mist); border-left: 3px solid var(--blue); padding: 1.4rem 1.5rem; border-radius: var(--radius); }
+  .stat-card .num { font-family: var(--font-display); font-size: 2.1rem; color: var(--navy); font-weight: 700; }
+  .stat-card .label { color: var(--ink-dim); font-size: 0.9rem; margin-top: 0.2rem; }
+
+  /* ---------- FEATURES ---------- */
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+  .feature-card { background: var(--white); border: 1px solid var(--line); border-top: 3px solid var(--blue); padding: 2rem 1.8rem; border-radius: var(--radius); }
+  .feature-card svg { color: var(--blue); margin-bottom: 1.1rem; }
+  .feature-card h3 { font-family: var(--font-body); font-size: 1.1rem; color: var(--navy); margin-bottom: 0.5rem; }
+  .feature-card p { color: var(--ink-dim); font-size: 0.96rem; margin: 0; }
+
+  /* ---------- SOLUTIONS ---------- */
+  .solutions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+  .solution-card { padding: 2.2rem 1.9rem; border-radius: var(--radius); background: var(--navy); color: var(--white); }
+  .solution-card h3 { font-family: var(--font-display); color: var(--white); font-size: 1.3rem; margin-bottom: 0.7rem; }
+  .solution-card p { color: rgba(255,255,255,0.72); font-size: 0.96rem; margin: 0; }
+  .solution-card:nth-child(2) { background: var(--blue); }
+  .solution-card:nth-child(3) { background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%); }
+
+  /* ---------- PORTFOLIO ---------- */
+  .filter-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
+  .filter-chip {
+    background: var(--white); border: 1px solid var(--line); color: var(--ink-dim);
+    padding: 0.5rem 1.1rem; border-radius: 999px; font-size: 0.9rem; font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  .filter-chip:hover { border-color: var(--blue); color: var(--blue); }
+  .filter-chip.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.75rem; }
+  .project-card {
+    display: block; text-decoration: none; color: inherit;
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    background: var(--white); transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(15,23,42,0.14); }
+  .project-thumb {
+    height: 148px; display: flex; align-items: center; justify-content: center;
+    font-size: 2.6rem; color: var(--white);
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+  }
+  .project-body { padding: 1.4rem 1.5rem 1.6rem; }
+  .project-tag { display: inline-block; font-size: 0.76rem; font-weight: 600; color: var(--blue); background: rgba(37,99,235,0.08); padding: 0.2rem 0.65rem; border-radius: 999px; margin-bottom: 0.7rem; }
+  .project-body h3 { font-family: var(--font-body); font-size: 1.1rem; color: var(--navy); margin-bottom: 0.4rem; }
+  .project-body p { color: var(--ink-dim); font-size: 0.92rem; margin: 0; }
+  .project-card[hidden] { display: none; }
+
+  /* ---------- RESOURCES ---------- */
+  .resource-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .resource-card { display: block; text-decoration: none; color: inherit; padding: 1.6rem; border: 1px solid var(--line); border-radius: var(--radius); transition: border-color 0.15s ease; }
+  .resource-card:hover { border-color: var(--blue); }
+  .resource-card h3 { font-family: var(--font-body); font-size: 1.02rem; color: var(--navy); margin-bottom: 0.4rem; }
+  .resource-card p { color: var(--ink-dim); font-size: 0.9rem; margin: 0; }
+
+  /* ---------- CONTACT ---------- */
+  .contact-shell { max-width: 680px; margin: 0 auto; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; }
+  .field { margin-bottom: 1.3rem; }
+  .field label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--navy); margin-bottom: 0.4rem; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 0.75rem 0.9rem; border: 1px solid var(--line); border-radius: var(--radius);
+    font-family: inherit; font-size: 0.98rem; color: var(--ink); background: var(--white);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--blue); outline-offset: 1px; border-color: var(--blue); }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field .error-msg { display: none; color: #C0392B; font-size: 0.82rem; margin-top: 0.35rem; }
+  .field.invalid input, .field.invalid select, .field.invalid textarea { border-color: #C0392B; }
+  .field.invalid .error-msg { display: block; }
+  .submit-row { margin-top: 0.5rem; }
+  .submit-row .btn-primary { border: none; width: 100%; }
+  .form-success { display: none; text-align: center; padding: 3rem 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); }
+  .form-success.visible { display: block; }
+  .form-success h3 { margin-bottom: 0.6rem; }
+  .form-success p { margin: 0 auto 1.5rem; color: var(--ink-dim); }
+  #contactForm.hidden { display: none; }
+
+  @media (max-width: 900px) {
+    .about .wrap { grid-template-columns: 1fr; }
+    .feature-grid, .solutions-grid { grid-template-columns: repeat(2, 1fr); }
+    .resource-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .section { padding: 4.5rem 0; }
+    .feature-grid, .solutions-grid, .resource-grid { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- FOOTER ---------- */
+  .site-footer { background: var(--navy); color: rgba(255,255,255,0.65); padding: 2.6rem 0; font-size: 0.9rem; }
+  .site-footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .site-footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+  .site-footer a:hover { color: var(--cyan); }
+</style>
 </head>
 <body>
-  <div>
-    <h1>Electroduction 10 Websites</h1>
-    <p>Redirecting to the launcher…</p>
-    <p><a href="./launch-all.html">Open the launcher now</a></p>
+
+<nav class="site-nav" id="siteNav">
+  <div class="wrap">
+    <a class="brand" href="#top">Electroduction</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#top">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#solutions">Solutions</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a class="nav-cta" href="#contact">Contact</a></li>
+    </ul>
   </div>
+</nav>
+
+<header class="hero" id="top">
+  <svg class="hero-bg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="traceFade" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#2563EB"/>
+        <stop offset="100%" stop-color="#06B6D4"/>
+      </linearGradient>
+    </defs>
+    <g fill="none" stroke="#2563EB" stroke-width="1.5" opacity="0.35">
+      <polyline points="0,120 260,120 260,260 620,260"/>
+      <polyline points="1600,180 1300,180 1300,60 980,60"/>
+      <polyline points="0,620 220,620 220,740 540,740 540,860"/>
+      <polyline points="1600,700 1360,700 1360,560 1040,560 1040,420"/>
+      <polyline points="760,900 760,760 1120,760 1120,900"/>
+    </g>
+    <g fill="#06B6D4" opacity="0.55">
+      <circle cx="260" cy="120" r="4"/>
+      <circle cx="620" cy="260" r="4"/>
+      <circle cx="1300" cy="180" r="4"/>
+      <circle cx="980" cy="60" r="4"/>
+      <circle cx="220" cy="740" r="4"/>
+      <circle cx="540" cy="860" r="4"/>
+      <circle cx="1360" cy="560" r="4"/>
+      <circle cx="1040" cy="420" r="4"/>
+      <circle cx="760" cy="760" r="4"/>
+      <circle cx="1120" cy="760" r="4"/>
+    </g>
+    <polyline points="0,450 400,450 400,340 800,340 800,450 1200,450 1200,340 1600,340" fill="none" stroke="url(#traceFade)" stroke-width="2" opacity="0.6"/>
+    <circle r="5" fill="#06B6D4">
+      <animateMotion dur="7s" repeatCount="indefinite" path="M0,450 L400,450 L400,340 L800,340 L800,450 L1200,450 L1200,340 L1600,340"/>
+    </circle>
+  </svg>
+  <div class="hero-inner">
+    <h1>Where ideas become working software.</h1>
+    <p class="lead">Electroduction is a hands-on build log: complete web projects taken from a blank file to a working product, each one shipped and usable the moment you open it.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#portfolio">Explore Projects</a>
+      <a class="btn btn-outline" href="#contact">Get Started</a>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll to explore ↓</div>
+</header>
+
+<section class="about section" id="about">
+  <div class="wrap">
+    <div>
+      <h2>About Electroduction</h2>
+      <p>Electroduction started with a simple rule: build real, working software instead of tutorials. Every project here runs entirely in the browser with zero build steps, from a full shopping cart to a live chat interface, each one deployed and usable the moment you open it.</p>
+      <p>It's a working record of design and engineering decisions made and shipped, one project at a time.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num">11</div><div class="label">Projects shipped</div></div>
+      <div class="stat-card"><div class="num">0</div><div class="label">Build steps required</div></div>
+      <div class="stat-card"><div class="num">100%</div><div class="label">Runs in the browser</div></div>
+      <div class="stat-card"><div class="num">4</div><div class="label">Venues in one brand suite</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="features section section-mist" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Core features</h2>
+      <p>What Electroduction is built to handle.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <svg width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="6" width="26" height="8" rx="1.5"/><rect x="7" y="17" width="26" height="8" rx="1.5"/><rect x="7" y="28" width="17" height="6" rx="1.5"/></svg>
+        <h3>Smart project management</h3>
+        <p>Organize work into clear boards and milestones, so nothing slips between the cracks.</p>
+      </div>
+      <div class="feature-card">
+        <svg width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="20" cy="9" r="4"/><circle cx="8" cy="31" r="4"/><circle cx="32" cy="31" r="4"/><path d="M20 13 L8 27 M20 13 L32 27 M8 31 H32"/></svg>
+        <h3>AI integration</h3>
+        <p>Bring language-model assistance directly into your workflow, from drafting to review.</p>
+      </div>
+      <div class="feature-card">
+        <svg width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><circle cx="16" cy="20" r="10"/><circle cx="26" cy="20" r="10" opacity="0.55"/></svg>
+        <h3>Collaboration tools</h3>
+        <p>Work alongside your team in real time, with shared context and fewer status meetings.</p>
+      </div>
+      <div class="feature-card">
+        <svg width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 33 V17 M17 33 V9 M27 33 V21 M33 33 H7"/></svg>
+        <h3>Analytics dashboard</h3>
+        <p>See how your projects are actually performing, in one uncluttered view.</p>
+      </div>
+      <div class="feature-card">
+        <svg width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15a11 11 0 0 1 19-6 M31 25a11 11 0 0 1-19 6"/><path d="M28 6 L28 11 L23 11 M12 34 L12 29 L17 29"/></svg>
+        <h3>Automation workflows</h3>
+        <p>Automate the repetitive steps so your team can spend time on the work that matters.</p>
+      </div>
+      <div class="feature-card">
+        <svg width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 28a7 7 0 0 1-1-13.9A9 9 0 0 1 28 12a6.5 6.5 0 0 1 1 16H12z"/></svg>
+        <h3>Cloud accessibility</h3>
+        <p>Pick up exactly where you left off, from any device, anywhere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="solutions section" id="solutions">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Solutions</h2>
+      <p>Built to fit however you work.</p>
+    </div>
+    <div class="solutions-grid">
+      <div class="solution-card">
+        <h3>For individuals</h3>
+        <p>A focused workspace for solo builders moving fast on one idea at a time.</p>
+      </div>
+      <div class="solution-card">
+        <h3>For teams</h3>
+        <p>Shared boards and shared context, in a workflow that scales past two people.</p>
+      </div>
+      <div class="solution-card">
+        <h3>For enterprises</h3>
+        <p>The structure and oversight larger organizations need, without slowing anyone down.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="portfolio section section-mist" id="portfolio">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Portfolio</h2>
+      <p>Eleven complete projects, each built and deployed end to end. Filter by category, or open one directly.</p>
+    </div>
+    <div class="filter-row" id="filterRow">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="commerce">Commerce</button>
+      <button class="filter-chip" data-filter="content">Content &amp; Social</button>
+      <button class="filter-chip" data-filter="productivity">Productivity</button>
+      <button class="filter-chip" data-filter="lifestyle">Lifestyle &amp; Media</button>
+      <button class="filter-chip" data-filter="brand">Brand Suite</button>
+    </div>
+    <div class="portfolio-grid" id="portfolioGrid">
+      <a class="project-card" data-category="commerce" href="1-ecommerce.html" target="_blank" rel="noopener">
+        <div class="project-thumb">🛒</div>
+        <div class="project-body"><span class="project-tag">Commerce</span><h3>TechShop</h3><p>A full-featured online store with shopping cart, product filtering, and a modal checkout.</p></div>
+      </a>
+      <a class="project-card" data-category="content" href="2-blog.html" target="_blank" rel="noopener">
+        <div class="project-thumb">📰</div>
+        <div class="project-body"><span class="project-tag">Content &amp; Social</span><h3>TechBlog</h3><p>A modern blog with article management, category filtering, and featured content.</p></div>
+      </a>
+      <a class="project-card" data-category="content" href="3-social-dashboard.html" target="_blank" rel="noopener">
+        <div class="project-thumb">📱</div>
+        <div class="project-body"><span class="project-tag">Content &amp; Social</span><h3>SocialHub</h3><p>A social media dashboard with live stats, post creation, and an activity feed.</p></div>
+      </a>
+      <a class="project-card" data-category="productivity" href="4-task-manager.html" target="_blank" rel="noopener">
+        <div class="project-thumb">✅</div>
+        <div class="project-body"><span class="project-tag">Productivity</span><h3>TaskFlow</h3><p>A task manager with priorities, status filtering, and completion tracking.</p></div>
+      </a>
+      <a class="project-card" data-category="productivity" href="5-weather.html" target="_blank" rel="noopener">
+        <div class="project-thumb">⛅</div>
+        <div class="project-body"><span class="project-tag">Productivity</span><h3>WeatherNow</h3><p>A weather dashboard with city search, current conditions, and a 7-day forecast.</p></div>
+      </a>
+      <a class="project-card" data-category="lifestyle" href="6-music-player.html" target="_blank" rel="noopener">
+        <div class="project-thumb">🎵</div>
+        <div class="project-body"><span class="project-tag">Lifestyle &amp; Media</span><h3>MusicStream</h3><p>A Spotify-inspired music player with playlists and playback controls.</p></div>
+      </a>
+      <a class="project-card" data-category="lifestyle" href="7-recipe-site.html" target="_blank" rel="noopener">
+        <div class="project-thumb">🍳</div>
+        <div class="project-body"><span class="project-tag">Lifestyle &amp; Media</span><h3>RecipeHub</h3><p>A recipe platform with category browsing, search, and detailed instructions.</p></div>
+      </a>
+      <a class="project-card" data-category="lifestyle" href="8-fitness-tracker.html" target="_blank" rel="noopener">
+        <div class="project-thumb">💪</div>
+        <div class="project-body"><span class="project-tag">Lifestyle &amp; Media</span><h3>FitTrack</h3><p>A fitness tracker with workout logging, calorie tracking, and progress history.</p></div>
+      </a>
+      <a class="project-card" data-category="commerce" href="9-finance-dashboard.html" target="_blank" rel="noopener">
+        <div class="project-thumb">💰</div>
+        <div class="project-body"><span class="project-tag">Commerce</span><h3>MoneyTrack</h3><p>A personal finance manager with transactions, budgets, and spending insights.</p></div>
+      </a>
+      <a class="project-card" data-category="content" href="10-chat-app.html" target="_blank" rel="noopener">
+        <div class="project-thumb">💬</div>
+        <div class="project-body"><span class="project-tag">Content &amp; Social</span><h3>ChatHub</h3><p>A real-time messaging app with contacts, chat history, and unread indicators.</p></div>
+      </a>
+      <a class="project-card" data-category="brand" href="muster/shop.html" target="_blank" rel="noopener">
+        <div class="project-thumb">🎯</div>
+        <div class="project-body"><span class="project-tag">Brand Suite</span><h3>Muster</h3><p>A four-venue brand suite — café, card store, range, and gym — under one shared identity.</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="resources section" id="resources">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Resources</h2>
+      <p>Everything behind the build.</p>
+    </div>
+    <div class="resource-grid">
+      <a class="resource-card" href="https://github.com/alexmutegi/Electroduction" target="_blank" rel="noopener">
+        <h3>Source code</h3>
+        <p>Every line of this project, open on GitHub.</p>
+      </a>
+      <a class="resource-card" href="launch-all.html">
+        <h3>Full collection</h3>
+        <p>Open all ten single-purpose apps from one launcher.</p>
+      </a>
+      <a class="resource-card" href="https://github.com/alexmutegi/Electroduction/blob/main/10-websites/WEBSITE_DEPLOYMENT_GUIDE.md" target="_blank" rel="noopener">
+        <h3>Deployment guide</h3>
+        <p>How each site is structured, built, and shipped.</p>
+      </a>
+      <a class="resource-card" href="#contact">
+        <h3>Get in touch</h3>
+        <p>Questions, feedback, or a project in mind — start here.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="contact section section-mist" id="contact">
+  <div class="wrap contact-shell">
+    <div class="section-head">
+      <h2>Get in touch</h2>
+      <p>Tell me about your project, and I'll follow up.</p>
+    </div>
+    <form id="contactForm" novalidate>
+      <div class="form-row">
+        <div class="field">
+          <label for="cName">Name</label>
+          <input type="text" id="cName" name="name" required>
+          <div class="error-msg">Please enter your name.</div>
+        </div>
+        <div class="field">
+          <label for="cOrg">Organization</label>
+          <input type="text" id="cOrg" name="organization">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="cEmail">Email</label>
+          <input type="email" id="cEmail" name="email" required>
+          <div class="error-msg">Please enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label for="cPhone">Phone Number</label>
+          <input type="tel" id="cPhone" name="phone">
+        </div>
+      </div>
+      <div class="field">
+        <label for="cService">Service Interest</label>
+        <select id="cService" name="service">
+          <option value="Web Development">Web development</option>
+          <option value="Portfolio Feedback">Portfolio feedback</option>
+          <option value="Collaboration">Collaboration</option>
+          <option value="Mentorship">Mentorship</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cMessage">Project Description</label>
+        <textarea id="cMessage" name="message" required></textarea>
+        <div class="error-msg">Let me know a bit about the project.</div>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </div>
+    </form>
+    <div class="form-success" id="formSuccess">
+      <h3>Message received</h3>
+      <p>Thanks for reaching out — I'll reply within a couple of days.</p>
+      <button class="btn btn-outline" id="sendAnother" style="color: var(--navy); border-color: var(--line);">Send another message</button>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Electroduction. Built with HTML, CSS, and JavaScript — no frameworks required.</span>
+    <a href="https://github.com/alexmutegi/Electroduction" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script src="shared/storage.js"></script>
+<script>
+  var nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 40) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  var chips = document.querySelectorAll('.filter-chip');
+  var cards = document.querySelectorAll('.project-card');
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      var filter = chip.getAttribute('data-filter');
+      cards.forEach(function (card) {
+        var show = filter === 'all' || card.getAttribute('data-category') === filter;
+        card.hidden = !show;
+      });
+    });
+  });
+
+  var form = document.getElementById('contactForm');
+  var formSuccess = document.getElementById('formSuccess');
+  var sendAnother = document.getElementById('sendAnother');
+
+  function setInvalid(field, invalid) {
+    field.classList.toggle('invalid', invalid);
+  }
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var name = document.getElementById('cName');
+    var email = document.getElementById('cEmail');
+    var message = document.getElementById('cMessage');
+    var valid = true;
+
+    if (!name.value.trim()) {
+      setInvalid(name.parentElement, true);
+      valid = false;
+    } else {
+      setInvalid(name.parentElement, false);
+    }
+
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email.value.trim())) {
+      setInvalid(email.parentElement, true);
+      valid = false;
+    } else {
+      setInvalid(email.parentElement, false);
+    }
+
+    if (!message.value.trim()) {
+      setInvalid(message.parentElement, true);
+      valid = false;
+    } else {
+      setInvalid(message.parentElement, false);
+    }
+
+    if (!valid) {
+      return;
+    }
+
+    var submission = {
+      name: name.value.trim(),
+      organization: document.getElementById('cOrg').value.trim(),
+      email: email.value.trim(),
+      phone: document.getElementById('cPhone').value.trim(),
+      service: document.getElementById('cService').value,
+      message: message.value.trim(),
+      submittedAt: new Date().toISOString()
+    };
+    /* No backend is wired up for this static site yet — the submission is kept
+       locally so the form is fully testable. Point this at a real endpoint
+       (the FastAPI backend already in this repo, for example) when ready. */
+    if (typeof setJSON === 'function') {
+      setJSON('electroduction:lastContactSubmission', submission);
+    }
+
+    form.classList.add('hidden');
+    formSuccess.classList.add('visible');
+  });
+
+  sendAnother.addEventListener('click', function () {
+    form.reset();
+    form.classList.remove('hidden');
+    formSuccess.classList.remove('visible');
+  });
+</script>
 </body>
 </html>
