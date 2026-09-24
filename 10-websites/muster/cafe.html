@@ -15,16 +15,40 @@
   .eyebrow { color: var(--venue); }
   .site-nav ul a:hover, .site-nav ul a[aria-current="page"] { border-color: var(--venue); }
 
-  .vhero {
-    background: var(--ink);
-    color: var(--canvas);
-    padding: 4.5rem 0 4rem;
+  .cafe-hero {
+    position: relative;
+    overflow: hidden;
     border-bottom: 4px solid var(--venue);
   }
-  .vhero .wrap { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2.5rem; }
-  .vhero .stamp { --stamp-color: var(--venue); }
-  .vhero .eyebrow { color: var(--venue); }
-  .vhero .lead { color: var(--canvas-dim); }
+  .cafe-hero .photo-box.hero-photo {
+    aspect-ratio: 16 / 8;
+    max-height: 560px;
+    width: 100%;
+    background: linear-gradient(135deg, #C9793D 0%, #6B3F23 100%);
+    font-size: 5rem;
+    border: none;
+  }
+  .cafe-hero .hero-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end;
+    background: linear-gradient(180deg, rgba(15,16,17,0) 40%, rgba(15,16,17,0.82) 100%);
+    pointer-events: none;
+  }
+  .cafe-hero .hero-overlay .wrap { pointer-events: auto; padding-bottom: 3rem; }
+  .cafe-hero .eyebrow {
+    color: var(--canvas);
+    background: var(--flare);
+    padding: 0.35rem 0.9rem;
+    display: inline-block;
+    border-radius: 2px;
+    font-size: 0.78rem;
+  }
+  .cafe-hero h1 { color: var(--canvas); font-size: clamp(2.6rem, 7vw, 5rem); margin-top: 0.7rem; }
+  .cafe-hero .lead { color: var(--canvas-dim); max-width: 52ch; margin-top: 0.8rem; }
+
+  @media (max-width: 760px) {
+    .cafe-hero .photo-box.hero-photo { aspect-ratio: 4 / 5; max-height: none; font-size: 3.4rem; }
+  }
 
   .menu-section { padding: 5rem 0; }
   .menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
@@ -45,7 +69,9 @@
 
   /* ---------- GALLERY: fillable photo boxes ---------- */
   .gallery-section { padding: 5rem 0; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 2.5rem; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; margin-top: 2.5rem; }
+  .gallery-grid .photo-card:first-child { grid-column: 1 / -1; }
+  .gallery-grid .photo-card:first-child .photo-box { aspect-ratio: 21 / 8; }
   .photo-card { display: flex; flex-direction: column; gap: 0.6rem; }
   .photo-box {
     aspect-ratio: 4 / 3;
@@ -70,10 +96,10 @@
   .photo-label { font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--steel-dim); text-align: center; }
 
   @media (max-width: 760px) {
-    .vhero .wrap { grid-template-columns: 1fr; text-align: left; } .vhero .stamp { width: 108px; height: 108px; margin-top: 1.5rem; transform: rotate(-8deg) scale(1); } .vhero .stamp .stamp-top, .vhero .stamp .stamp-bottom { font-size: 0.44rem; } .vhero .stamp .stamp-mid { font-size: 1rem; }
     .menu-cols { grid-template-columns: 1fr; }
     .strip .wrap { grid-template-columns: 1fr; }
     .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-grid .photo-card:first-child .photo-box { aspect-ratio: 16 / 10; }
     .photo-box { aspect-ratio: 16 / 10; }
   }
 </style>
@@ -95,17 +121,17 @@
   </div>
 </nav>
 
-<header class="vhero">
-  <div class="wrap">
-    <div>
+<header class="cafe-hero">
+  <label class="photo-box hero-photo" data-photo-key="cafe-hero-main">
+    <span class="ph-icon" aria-hidden="true">☕</span>
+    <span class="placeholder-note">Click to upload your café's hero photo</span>
+    <input type="file" accept="image/*" class="photo-upload-input" hidden>
+  </label>
+  <div class="hero-overlay">
+    <div class="wrap">
       <span class="eyebrow">Ground 01 — Fuel</span>
       <h1>Coffee before<br>the op.</h1>
       <p class="lead">Pour-over bar, drip on tap, and a kitchen that runs breakfast burritos past noon on game days. Outlets at every table — this is where routes get planned and decks get sleeved.</p>
-    </div>
-    <div class="stamp" aria-hidden="true">
-      <span class="stamp-top">ROASTED &amp;</span>
-      <span class="stamp-mid">POURED</span>
-      <span class="stamp-bottom">ON SITE</span>
     </div>
   </div>
 </header>

@@ -45,7 +45,7 @@
     reader.readAsDataURL(file);
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function init() {
     var boxes = document.querySelectorAll('.photo-box[data-photo-key]');
     for (var i = 0; i < boxes.length; i++) {
       var box = boxes[i];
@@ -61,5 +61,11 @@
         });
       }
     }
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
