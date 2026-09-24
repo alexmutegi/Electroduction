@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muster Shop — Gear Stamped for the Field</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/brand.css">
+<script src="shared/storage.js"></script>
+<script src="shared/gallery-upload.js"></script>
+<script src="shared/nav.js" defer></script>
+<style>
+  :root { --venue: var(--brass); }
+  .eyebrow { color: var(--venue); }
+  .site-nav { border-bottom-color: var(--venue); }
+  .site-nav ul a:hover, .site-nav ul a[aria-current="page"] { border-color: var(--venue); }
+
+  /* ---------- HERO ---------- */
+  .vhero {
+    background: var(--ink);
+    color: var(--canvas);
+    padding-bottom: 3rem;
+    border-bottom: 4px solid var(--venue);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-banner {
+    width: 100%;
+    aspect-ratio: 16 / 6;
+    max-height: 480px;
+    overflow: hidden;
+    position: relative;
+    line-height: 0;
+  }
+  .hero-banner svg { width: 100%; height: 100%; display: block; }
+  .vhero .wrap { position: relative; padding-top: 2.75rem; }
+  .vhero .hero-copy { max-width: 620px; }
+  .vhero .lead { color: var(--canvas-dim); max-width: 46ch; }
+
+  .cta-row { display: flex; gap: 1rem; margin-top: 1.75rem; flex-wrap: wrap; }
+
+  /* ---------- FILTERS ---------- */
+  .shop-section { padding: 4.5rem 0; }
+  .filter-row { display: flex; gap: 0.75rem; margin: 2rem 0 2.5rem; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.55rem 1.1rem; border: 2px solid var(--ink); background: transparent; color: var(--ink);
+    cursor: pointer; border-radius: 999px;
+  }
+  .filter-btn.active { background: var(--ink); color: var(--canvas); }
+
+  /* ---------- PRODUCT GRID: fillable image boxes ---------- */
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+  .product-card { border: 1px solid var(--ink); background: var(--canvas); display: flex; flex-direction: column; }
+  .product-image-box {
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, var(--field) 0%, var(--ink) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .product-image-box .photo-upload-input { display: none; }
+  .product-image-box img.photo-uploaded { display: none; width: 100%; height: 100%; object-fit: cover; }
+  .product-image-box.has-photo .ph-icon,
+  .product-image-box.has-photo .placeholder-note { display: none; }
+  .product-image-box.has-photo img.photo-uploaded { display: block; }
+  .product-image-box .placeholder-note {
+    position: absolute; bottom: 6px; right: 8px;
+    font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.08em;
+    color: rgba(237,230,214,0.55); text-transform: uppercase;
+  }
+  .product-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1; }
+  .product-name { font-weight: 700; font-size: 1.05rem; }
+  .product-cat { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-dim); }
+  .product-price { font-family: var(--font-mono); font-size: 1.05rem; margin-top: auto; }
+  .add-btn {
+    margin-top: 0.75rem; width: 100%; padding: 0.7rem; border: 2px solid var(--ink); background: var(--ink);
+    color: var(--canvas); font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    cursor: pointer;
+  }
+  .add-btn:hover { background: var(--flare); border-color: var(--flare); color: var(--ink); }
+
+  /* ---------- CART BUTTON + MODAL ---------- */
+  .cart-btn {
+    position: relative; display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase;
+    background: transparent; border: 2px solid var(--canvas); color: var(--canvas); padding: 0.6rem 1.1rem; cursor: pointer;
+  }
+  .cart-count {
+    background: var(--flare); color: var(--ink); border-radius: 999px; font-weight: 700;
+    min-width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem;
+  }
+  .cart-modal {
+    display: none; position: fixed; inset: 0; background: rgba(27,29,31,0.7); z-index: 100;
+    align-items: flex-start; justify-content: flex-end;
+  }
+  .cart-modal.active { display: flex; }
+  .cart-panel {
+    background: var(--canvas); width: 100%; max-width: 420px; height: 100%; padding: 2rem;
+    display: flex; flex-direction: column; overflow-y: auto;
+  }
+  .cart-panel h2 { margin-bottom: 1.5rem; }
+  .cart-close { align-self: flex-end; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--ink); }
+  .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 0; border-bottom: 1px dotted var(--steel); gap: 1rem; }
+  .cart-item .remove-btn { background: var(--flare-dim); color: var(--canvas); border: none; padding: 0.4rem 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; cursor: pointer; flex-shrink: 0; }
+  .cart-empty { color: var(--steel-dim); padding: 1.5rem 0; text-align: center; }
+  .cart-total-row { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 1.1rem; margin-top: auto; padding-top: 1.25rem; border-top: 2px solid var(--ink); }
+  .checkout-btn { margin-top: 1.25rem; width: 100%; padding: 0.9rem; background: var(--flare); border: none; color: var(--ink); font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+
+  /* ---------- SUBSCRIBE ---------- */
+  .subscribe-strip { background: var(--field); color: var(--canvas); padding: 4rem 0; }
+  .subscribe-strip .wrap { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+  .subscribe-form { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .subscribe-form input[type="email"] {
+    padding: 0.85rem 1rem; border: 2px solid var(--canvas); background: var(--canvas); font-family: var(--font-body); font-size: 1rem; min-width: 260px; flex-grow: 1;
+  }
+  .subscribe-form button {
+    padding: 0.85rem 1.5rem; background: var(--flare); border: none; color: var(--ink); font-family: var(--font-mono);
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+  }
+  .subscribe-status { font-family: var(--font-mono); font-size: 0.85rem; margin-top: 0.75rem; min-height: 1.2rem; }
+
+  @media (max-width: 760px) {
+    .hero-banner { aspect-ratio: 4 / 3; max-height: 340px; }
+    .subscribe-strip .wrap { grid-template-columns: 1fr; }
+    .cart-panel { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <input type="checkbox" id="navToggle" class="nav-toggle-input">
+    <a class="brand" href="index.html">MUSTER<span class="dot">.</span></a>
+    <label for="navToggle" class="nav-toggle-label" aria-label="Toggle menu"><span></span></label>
+    <ul>
+      <li><a href="cafe.html">Café</a></li>
+      <li><a href="cards.html">Cards</a></li>
+      <li><a href="range.html">Range</a></li>
+      <li><a href="gym.html">Gym</a></li>
+      <li><a href="shop.html">Shop</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="vhero">
+  <div class="hero-banner">
+    <svg viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wide banner illustration: a stamp seal reading Muster Grounds Supply, Est. 2019, centered above a shelf holding a tote bag of folded apparel on the left and a canteen and camp mug on the right, with woven patches and a field cap scattered at the edges">
+        <defs>
+          <pattern id="shopStripe" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="46" height="46" fill="#1B1D1F"/>
+            <line x1="0" y1="0" x2="0" y2="46" stroke="#4B5320" stroke-width="1" opacity="0.35"/>
+          </pattern>
+        </defs>
+
+        <rect width="1600" height="600" fill="#1B1D1F"/>
+        <rect width="1600" height="600" fill="url(#shopStripe)"/>
+
+        <!-- ground plane -->
+        <rect x="0" y="430" width="1600" height="170" fill="#4B5320"/>
+        <line x1="0" y1="430" x2="1600" y2="430" stroke="#EDE6D6" stroke-width="3" stroke-dasharray="10 8" opacity="0.5"/>
+
+        <!-- far-left patches, partly bled off the edge -->
+        <g transform="translate(70,300)" opacity="0.9">
+          <circle r="34" fill="none" stroke="#B08D57" stroke-width="4"/>
+          <text y="6" text-anchor="middle" fill="#B08D57" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1">MG</text>
+        </g>
+        <g transform="translate(150,375)" opacity="0.65">
+          <circle r="22" fill="none" stroke="#E8631C" stroke-width="3"/>
+        </g>
+
+        <!-- left cluster: tote bag with folded apparel -->
+        <g transform="translate(330,485)">
+          <path d="M-70 -60 L-70 -90 Q-70 -115 -35 -115 L35 -115 Q70 -115 70 -90 L70 -60" fill="none" stroke="#B08D57" stroke-width="10" stroke-linecap="round"/>
+          <rect x="-95" y="-60" width="190" height="140" rx="6" fill="#26292c"/>
+          <rect x="-70" y="-40" width="60" height="45" fill="#EDE6D6" opacity="0.9"/>
+          <rect x="8" y="-40" width="60" height="45" fill="#B08D57" opacity="0.85"/>
+          <circle cx="0" cy="20" r="26" fill="#EDE6D6" opacity="0.9"/>
+          <rect x="-30" y="12" width="60" height="14" fill="#E8631C" opacity="0.85"/>
+          <circle cx="0" cy="-60" r="14" fill="#B08D57" stroke="#1B1D1F" stroke-width="2"/>
+        </g>
+
+        <!-- central stamp seal -->
+        <g transform="translate(800,235)">
+          <circle r="152" fill="none" stroke="#E8631C" stroke-width="4"/>
+          <circle r="129" fill="none" stroke="#E8631C" stroke-width="1.5" opacity="0.6"/>
+          <text y="-22" text-anchor="middle" fill="#E8631C" font-family="IBM Plex Mono, monospace" font-size="16" letter-spacing="4">MUSTER GROUNDS</text>
+          <text y="20" text-anchor="middle" fill="#EDE6D6" font-family="Bebas Neue, sans-serif" font-size="50" letter-spacing="4">SUPPLY</text>
+          <text y="52" text-anchor="middle" fill="#E8631C" font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="4">EST. 2019</text>
+        </g>
+
+        <!-- right cluster: canteen and camp mug -->
+        <g transform="translate(1270,470)">
+          <rect x="-40" y="-70" width="80" height="120" rx="14" fill="#EDE6D6"/>
+          <rect x="-14" y="-95" width="28" height="30" rx="4" fill="#7A8288"/>
+          <rect x="-40" y="-20" width="80" height="20" fill="#E8631C" opacity="0.85"/>
+          <circle cx="150" cy="8" r="34" fill="none" stroke="#EDE6D6" stroke-width="8"/>
+          <path d="M180 8 q24 0 24 -20" fill="none" stroke="#EDE6D6" stroke-width="8"/>
+        </g>
+
+        <!-- far-right field cap, partly bled off the edge -->
+        <g transform="translate(1520,300)" opacity="0.9">
+          <path d="M-60 20 Q-60 -35 0 -35 Q60 -35 60 20 Z" fill="#26292c" stroke="#B08D57" stroke-width="3"/>
+          <rect x="-72" y="14" width="144" height="14" rx="7" fill="#B08D57"/>
+        </g>
+    </svg>
+  </div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="eyebrow">Ground 05 — Gear</span>
+      <h1>Stamped for<br>the field.</h1>
+      <p class="lead">Apparel, drinkware, and gear carrying the same stamp you'll see at all four grounds — built for the crew that actually shows up.</p>
+      <div class="cta-row">
+        <a class="btn on-dark" href="#shop">Shop the drop</a>
+        <button class="cart-btn" onclick="toggleCart()" aria-label="Open cart">🧺 Cart <span class="cart-count" id="cartCount">0</span></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="shop-section" id="shop">
+  <div class="wrap">
+    <span class="eyebrow">The Drop</span>
+    <h2>Gear that's actually built for a Saturday at the field.</h2>
+
+    <div class="filter-row" role="group" aria-label="Filter products by category">
+      <button class="filter-btn active" data-cat="all" onclick="filterProducts('all', event)">All</button>
+      <button class="filter-btn" data-cat="apparel" onclick="filterProducts('apparel', event)">Apparel</button>
+      <button class="filter-btn" data-cat="drinkware" onclick="filterProducts('drinkware', event)">Drinkware</button>
+      <button class="filter-btn" data-cat="gear" onclick="filterProducts('gear', event)">Gear</button>
+      <button class="filter-btn" data-cat="accessories" onclick="filterProducts('accessories', event)">Accessories</button>
+    </div>
+
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+</section>
+
+<section class="subscribe-strip">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow" style="color: var(--flare);">First Look</span>
+      <h2>Get the next drop before it hits the shop.</h2>
+      <p style="color: var(--canvas-dim); max-width: 44ch;">One email when new gear lands. No spam, no daily digest — just the drop.</p>
+    </div>
+    <div>
+      <form class="subscribe-form" id="subscribeForm" onsubmit="return handleSubscribe(event)">
+        <label for="subscribeEmail" class="sr-only" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">Email address</label>
+        <input type="email" id="subscribeEmail" placeholder="you@example.com" required aria-label="Email address">
+        <button type="submit">Notify Me</button>
+      </form>
+      <div class="subscribe-status" id="subscribeStatus" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<div class="cart-modal" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartHeading" aria-hidden="true">
+  <div class="cart-panel">
+    <button class="cart-close" onclick="toggleCart()" aria-label="Close cart">×</button>
+    <h2 id="cartHeading">Your Cart</h2>
+    <div id="cartItems" aria-live="polite"></div>
+    <div class="cart-total-row"><span>Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Muster Grounds</h4>
+        <p style="color: var(--canvas-dim); font-size: 0.9rem; max-width: 32ch;">2400 Ordnance Road, Bay 4<br>One block, five grounds, one card.</p>
+      </div>
+      <div>
+        <h4>Grounds</h4>
+        <ul>
+          <li><a href="cafe.html">Café</a></li>
+          <li><a href="cards.html">Cards</a></li>
+          <li><a href="range.html">Range</a></li>
+          <li><a href="gym.html">Gym</a></li>
+          <li><a href="shop.html">Shop</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Shop Hours</h4>
+        <ul>
+          <li>Same as Café</li>
+          <li>6:30am – 6pm daily</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>shop@mustergrounds.example</li>
+          <li>(555) 019-4205</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Muster Grounds</span>
+      <span>Bay 4 — one block, five grounds</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const CART_KEY = 'muster_shop_cart';
+  const SUBSCRIBE_KEY = 'muster_shop_subscribed';
+
+  const products = [
+    { id: 1, name: 'Muster Stamp Tee', category: 'apparel', price: 28, icon: '👕' },
+    { id: 2, name: 'Field Cap', category: 'apparel', price: 24, icon: '🧢' },
+    { id: 3, name: 'Zip Hoodie', category: 'apparel', price: 52, icon: '🧥' },
+    { id: 4, name: 'Insulated Steel Canteen', category: 'drinkware', price: 22, icon: '🍶' },
+    { id: 5, name: 'Enamel Camp Mug', category: 'drinkware', price: 14, icon: '☕' },
+    { id: 6, name: 'Canvas Range Bag', category: 'gear', price: 58, icon: '🎒' },
+    { id: 7, name: 'Chalk Bag', category: 'gear', price: 18, icon: '🧴' },
+    { id: 8, name: 'Woven Patch Set (4)', category: 'accessories', price: 12, icon: '🎖️' },
+    { id: 9, name: 'Sticker Sheet', category: 'accessories', price: 6, icon: '⭐' }
+  ];
+
+  let cart = [];
+  let currentFilter = 'all';
+
+  function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    const filtered = currentFilter === 'all' ? products : products.filter((p) => p.category === currentFilter);
+
+    grid.innerHTML = filtered.map((p) => `
+      <div class="product-card">
+        <label class="photo-box product-image-box" data-photo-key="shop-product-${p.id}">
+          <span class="ph-icon" aria-hidden="true">${p.icon}</span>
+          <span class="placeholder-note">Click to upload a photo</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+        </label>
+        <div class="product-body">
+          <span class="product-cat">${p.category}</span>
+          <div class="product-name">${p.name}</div>
+          <div class="product-price">$${p.price.toFixed(2)}</div>
+          <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+        </div>
+      </div>
+    `).join('');
+    if (typeof initPhotoUploads === 'function') {
+      initPhotoUploads();
+    }
+  }
+
+  function filterProducts(cat, event) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach((btn) => btn.classList.remove('active'));
+    if (event && event.currentTarget) {
+      event.currentTarget.classList.add('active');
+    }
+    renderProducts();
+  }
+
+  function loadCart() {
+    cart = getJSON(CART_KEY, []);
+  }
+
+  function saveCart() {
+    setJSON(CART_KEY, cart);
+  }
+
+  function addToCart(productId) {
+    const product = products.find((p) => p.id === productId);
+    const existing = cart.find((item) => item.id === productId);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+    updateCart();
+  }
+
+  function removeFromCart(productId) {
+    cart = cart.filter((item) => item.id !== productId);
+    updateCart();
+  }
+
+  function updateCart() {
+    document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+    renderCart();
+    saveCart();
+  }
+
+  function renderCart() {
+    const cartItems = document.getElementById('cartItems');
+    if (cart.length === 0) {
+      cartItems.innerHTML = '<div class="cart-empty">Your cart is empty.</div>';
+      document.getElementById('cartTotal').textContent = '$0.00';
+      return;
+    }
+    cartItems.innerHTML = cart.map((item) => `
+      <div class="cart-item">
+        <div>
+          <strong>${item.name}</strong><br>
+          <small>$${item.price.toFixed(2)} × ${item.quantity}</small>
+        </div>
+        <button class="remove-btn" onclick="removeFromCart(${item.id})" aria-label="Remove ${item.name} from cart">Remove</button>
+      </div>
+    `).join('');
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+  }
+
+  function toggleCart() {
+    const modal = document.getElementById('cartModal');
+    const isOpening = !modal.classList.contains('active');
+    modal.classList.toggle('active');
+    modal.setAttribute('aria-hidden', isOpening ? 'false' : 'true');
+    if (isOpening) {
+      document.querySelector('.cart-close').focus();
+    }
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.getElementById('cartModal').classList.contains('active')) {
+      toggleCart();
+    }
+  });
+
+  function checkout() {
+    if (cart.length === 0) {
+      return;
+    }
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    alert(`Order placed! Total: $${total.toFixed(2)}. This is a demo checkout — no payment was processed.`);
+    cart = [];
+    updateCart();
+    toggleCart();
+  }
+
+  function handleSubscribe(event) {
+    event.preventDefault();
+    const input = document.getElementById('subscribeEmail');
+    const status = document.getElementById('subscribeStatus');
+    const email = input.value.trim();
+    if (!email) {
+      return false;
+    }
+
+    setJSON(SUBSCRIBE_KEY, { email: email, subscribedAt: new Date().toISOString() });
+    status.textContent = `You're on the list — we'll email ${email} when the next drop lands.`;
+    input.value = '';
+    return false;
+  }
+
+  function initSubscribeStatus() {
+    const saved = getJSON(SUBSCRIBE_KEY, null);
+    if (saved && saved.email) {
+      document.getElementById('subscribeStatus').textContent = `Already subscribed as ${saved.email}.`;
+    }
+  }
+
+  loadCart();
+  updateCart();
+  renderProducts();
+  initSubscribeStatus();
+</script>
+
+</body>
+</html>
