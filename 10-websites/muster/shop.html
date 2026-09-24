@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared/brand.css">
 <script src="shared/storage.js"></script>
+<script src="shared/gallery-upload.js"></script>
 <script src="shared/nav.js" defer></script>
 <style>
   :root { --venue: var(--brass); }
@@ -59,8 +60,13 @@
     font-size: 3.2rem;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
   }
-  .product-image-box img { width: 100%; height: 100%; object-fit: cover; }
+  .product-image-box .photo-upload-input { display: none; }
+  .product-image-box img.photo-uploaded { display: none; width: 100%; height: 100%; object-fit: cover; }
+  .product-image-box.has-photo .ph-icon,
+  .product-image-box.has-photo .placeholder-note { display: none; }
+  .product-image-box.has-photo img.photo-uploaded { display: block; }
   .product-image-box .placeholder-note {
     position: absolute; bottom: 6px; right: 8px;
     font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.08em;
@@ -325,10 +331,11 @@
 
     grid.innerHTML = filtered.map((p) => `
       <div class="product-card">
-        <div class="product-image-box">
-          <span aria-hidden="true">${p.icon}</span>
-          <span class="placeholder-note">Photo coming soon</span>
-        </div>
+        <label class="photo-box product-image-box" data-photo-key="shop-product-${p.id}">
+          <span class="ph-icon" aria-hidden="true">${p.icon}</span>
+          <span class="placeholder-note">Click to upload a photo</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+        </label>
         <div class="product-body">
           <span class="product-cat">${p.category}</span>
           <div class="product-name">${p.name}</div>
@@ -337,6 +344,9 @@
         </div>
       </div>
     `).join('');
+    if (typeof initPhotoUploads === 'function') {
+      initPhotoUploads();
+    }
   }
 
   function filterProducts(cat, event) {
