@@ -93,6 +93,8 @@
   .photo-box { cursor: pointer; }
   .photo-box .photo-upload-input { display: none; }
   .photo-box img.photo-uploaded { display: none; width: 100%; height: 100%; object-fit: cover; }
+  .ph-icon { display: inline-block; width: 1em; height: 1em; vertical-align: middle; }
+  .ph-icon svg { display: block; width: 100%; height: 100%; }
   .photo-box.has-photo .ph-icon,
   .photo-box.has-photo .placeholder-note { display: none; }
   .photo-box.has-photo img.photo-uploaded { display: block; }
@@ -133,10 +135,11 @@
 </nav>
 
 <header class="gym-hero">
-  <label class="photo-box hero-photo" data-photo-key="gym-hero-main">
-    <span class="ph-icon" aria-hidden="true">🏋️</span>
+  <label class="photo-box has-photo hero-photo" data-photo-key="gym-hero-main">
+    <span class="ph-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="6" y="20" width="7" height="24" rx="2" fill="var(--brass)"/><rect x="13" y="24" width="4" height="16" rx="1.5" fill="var(--flare)"/><rect x="15" y="30" width="34" height="4" fill="var(--canvas)"/><rect x="47" y="24" width="4" height="16" rx="1.5" fill="var(--flare)"/><rect x="51" y="20" width="7" height="24" rx="2" fill="var(--brass)"/></svg></span>
     <span class="placeholder-note">Click to upload your gym's hero photo</span>
     <input type="file" accept="image/*" class="photo-upload-input" hidden>
+    <img class="photo-uploaded" src="assets/gym-hero.jpg" alt="A tactical-styled athlete carrying kettlebells through the Muster gym floor">
   </label>
   <div class="hero-overlay">
     <div class="wrap">
@@ -154,35 +157,39 @@
     <div class="gallery-grid">
       <!-- Click any box below to upload a photo from your device; it is saved in this browser only. -->
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="gym-weight-room">
-          <span class="ph-icon" aria-hidden="true">🏋️</span>
+        <label class="photo-box has-photo" data-photo-key="gym-weight-room">
+          <span class="ph-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="6" y="20" width="7" height="24" rx="2" fill="var(--brass)"/><rect x="13" y="24" width="4" height="16" rx="1.5" fill="var(--flare)"/><rect x="15" y="30" width="34" height="4" fill="var(--canvas)"/><rect x="47" y="24" width="4" height="16" rx="1.5" fill="var(--flare)"/><rect x="51" y="20" width="7" height="24" rx="2" fill="var(--brass)"/></svg></span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
-        </label>
+    <img class="photo-uploaded" src="assets/gym-weight-room.jpg" alt="Dumbbell racks and squat rigs on the Muster gym weight room floor">
+  </label>
         <span class="photo-label">Weight Room</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="gym-conditioning-floor">
-          <span class="ph-icon" aria-hidden="true">🏃</span>
+        <label class="photo-box has-photo" data-photo-key="gym-conditioning-floor">
+          <span class="ph-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="38" cy="12" r="6" fill="var(--canvas)"/><path d="M36,18 L26,30 L36,38 L30,50 M26,30 L14,24 M30,24 L42,14 M26,30 L18,40" fill="none" stroke="var(--canvas)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
-        </label>
+    <img class="photo-uploaded" src="assets/gym-conditioning-floor.jpg" alt="The Muster Conditioning floor with battle ropes, tires, and rig stations">
+  </label>
         <span class="photo-label">Conditioning Floor</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="gym-mobility-area">
-          <span class="ph-icon" aria-hidden="true">🧘</span>
+        <label class="photo-box has-photo" data-photo-key="gym-mobility-area">
+          <span class="ph-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="12" r="6" fill="var(--canvas)"/><path d="M32,18 L20,42 L44,42 Z" fill="var(--canvas)"/><path d="M24,24 L19,38 M40,24 L45,38" fill="none" stroke="var(--canvas)" stroke-width="4" stroke-linecap="round"/></svg></span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
-        </label>
+    <img class="photo-uploaded" src="assets/gym-mobility-area.jpg" alt="The Muster Mobility area with foam rollers, bands, and stretch mats">
+  </label>
         <span class="photo-label">Mobility Area</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="gym-coached-class">
-          <span class="ph-icon" aria-hidden="true">👥</span>
+        <label class="photo-box has-photo" data-photo-key="gym-coached-class">
+          <span class="ph-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="21" cy="16" r="7" fill="var(--brass)"/><path d="M9,52 Q9,30 21,30 Q33,30 33,52 Z" fill="var(--brass)"/><circle cx="41" cy="18" r="8" fill="var(--canvas)"/><path d="M25,54 Q25,28 41,28 Q57,28 57,54 Z" fill="var(--canvas)"/></svg></span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
-        </label>
+    <img class="photo-uploaded" src="assets/gym-coached-class.jpg" alt="A coached group training class at Muster, working dumbbells and resistance bands">
+  </label>
         <span class="photo-label">Coached Class</span>
       </div>
     </div>
