@@ -28,14 +28,11 @@
     font-size: 5rem;
     border: none;
   }
-  .cafe-hero .hero-overlay {
-    position: absolute; inset: 0;
-    display: flex; align-items: flex-end;
-    background: linear-gradient(180deg, rgba(15,16,17,0) 40%, rgba(15,16,17,0.82) 100%);
-    pointer-events: none;
+  .hero-intro {
+    background: var(--ink);
+    padding: 2.75rem 0 3rem;
   }
-  .cafe-hero .hero-overlay .wrap { pointer-events: auto; padding-bottom: 3rem; }
-  .cafe-hero .eyebrow {
+  .hero-intro .eyebrow {
     color: var(--canvas);
     background: var(--flare);
     padding: 0.35rem 0.9rem;
@@ -43,8 +40,8 @@
     border-radius: 2px;
     font-size: 0.78rem;
   }
-  .cafe-hero h1 { color: var(--canvas); font-size: clamp(2.6rem, 7vw, 5rem); margin-top: 0.7rem; }
-  .cafe-hero .lead { color: var(--canvas-dim); max-width: 52ch; margin-top: 0.8rem; }
+  .hero-intro h1 { color: var(--canvas); font-size: clamp(2.6rem, 7vw, 5rem); margin-top: 0.7rem; }
+  .hero-intro .lead { color: var(--canvas-dim); max-width: 52ch; margin-top: 0.8rem; }
 
   @media (max-width: 760px) {
     .cafe-hero .photo-box.hero-photo { aspect-ratio: 4 / 5; max-height: none; font-size: 3.4rem; }
@@ -122,19 +119,21 @@
 </nav>
 
 <header class="cafe-hero">
-  <label class="photo-box hero-photo" data-photo-key="cafe-hero-main">
+  <label class="photo-box has-photo hero-photo" data-photo-key="cafe-hero-main">
     <span class="ph-icon" aria-hidden="true">☕</span>
     <span class="placeholder-note">Click to upload your café's hero photo</span>
     <input type="file" accept="image/*" class="photo-upload-input" hidden>
+    <img class="photo-uploaded" src="cafe-hero.jpg" alt="A barista pouring coffee at Muster Café, with latte art, pastries, and the coffee menu on the table">
   </label>
-  <div class="hero-overlay">
-    <div class="wrap">
-      <span class="eyebrow">Ground 01 — Fuel</span>
-      <h1>Coffee before<br>the op.</h1>
-      <p class="lead">Pour-over bar, drip on tap, and a kitchen that runs breakfast burritos past noon on game days. Outlets at every table — this is where routes get planned and decks get sleeved.</p>
-    </div>
-  </div>
 </header>
+
+<section class="hero-intro">
+  <div class="wrap">
+    <span class="eyebrow">Ground 01 — Fuel</span>
+    <h1>Coffee before<br>the op.</h1>
+    <p class="lead">Pour-over bar, drip on tap, and a kitchen that runs breakfast burritos past noon on game days. Outlets at every table — this is where routes get planned and decks get sleeved.</p>
+  </div>
+</section>
 
 <section class="gallery-section">
   <div class="wrap">
@@ -143,34 +142,38 @@
     <div class="gallery-grid">
       <!-- Click any box below to upload a photo from your device; it is saved in this browser only. -->
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="cafe-espresso-bar">
+        <label class="photo-box has-photo" data-photo-key="cafe-espresso-bar">
           <span class="ph-icon" aria-hidden="true">☕</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="cafe-espresso-bar.jpg" alt="Friends holding branded coffee cups and sharing cheesecake at the espresso bar">
         </label>
         <span class="photo-label">Espresso Bar</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="cafe-outlet-seating">
+        <label class="photo-box has-photo" data-photo-key="cafe-outlet-seating">
           <span class="ph-icon" aria-hidden="true">🔌</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="cafe-outlet-seating.jpg" alt="Outdoor café seating under string lights with customers at small tables">
         </label>
         <span class="photo-label">Outlet Seating</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="cafe-kitchen-window">
+        <label class="photo-box has-photo" data-photo-key="cafe-kitchen-window">
           <span class="ph-icon" aria-hidden="true">🥪</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="cafe-kitchen-window.jpg" alt="View through the café window of the coffee menu board and baristas at work">
         </label>
         <span class="photo-label">Kitchen Window</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="cafe-weekend-rush">
+        <label class="photo-box has-photo" data-photo-key="cafe-weekend-rush">
           <span class="ph-icon" aria-hidden="true">🥐</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="cafe-weekend-rush.jpg" alt="A crowded café patio full of customers during a busy weekend rush">
         </label>
         <span class="photo-label">Weekend Rush</span>
       </div>
