@@ -28,14 +28,11 @@
     font-size: 5rem;
     border: none;
   }
-  .range-hero .hero-overlay {
-    position: absolute; inset: 0;
-    display: flex; align-items: flex-end;
-    background: linear-gradient(180deg, rgba(15,16,17,0) 40%, rgba(15,16,17,0.82) 100%);
-    pointer-events: none;
+  .hero-intro {
+    background: var(--ink);
+    padding: 2.75rem 0 3rem;
   }
-  .range-hero .hero-overlay .wrap { pointer-events: auto; padding-bottom: 3rem; }
-  .range-hero .eyebrow {
+  .hero-intro .eyebrow {
     color: var(--canvas);
     background: var(--flare);
     padding: 0.35rem 0.9rem;
@@ -43,8 +40,8 @@
     border-radius: 2px;
     font-size: 0.78rem;
   }
-  .range-hero h1 { color: var(--canvas); font-size: clamp(2.6rem, 7vw, 5rem); margin-top: 0.7rem; }
-  .range-hero .lead { color: var(--canvas-dim); max-width: 52ch; margin-top: 0.8rem; }
+  .hero-intro h1 { color: var(--canvas); font-size: clamp(2.6rem, 7vw, 5rem); margin-top: 0.7rem; }
+  .hero-intro .lead { color: var(--canvas-dim); max-width: 52ch; margin-top: 0.8rem; }
 
   @media (max-width: 760px) {
     .range-hero .photo-box.hero-photo { aspect-ratio: 4 / 5; max-height: none; font-size: 3.4rem; }
@@ -128,19 +125,21 @@
 </nav>
 
 <header class="range-hero">
-  <label class="photo-box hero-photo" data-photo-key="range-hero-main">
+  <label class="photo-box has-photo hero-photo" data-photo-key="range-hero-main">
     <span class="ph-icon" aria-hidden="true">🎯</span>
     <span class="placeholder-note">Click to upload your field's hero photo</span>
     <input type="file" accept="image/*" class="photo-upload-input" hidden>
+    <img class="photo-uploaded" src="range-hero.jpg" alt="Renter loadout gate at Muster Range with rental vests, masks, and tanks at sunset, airsoft players in the background">
   </label>
-  <div class="hero-overlay">
-    <div class="wrap">
-      <span class="eyebrow">Ground 03 — The Field</span>
-      <h1>Two acres.<br>Same field.</h1>
-      <p class="lead">One field, split by the week: airsoft scenario nights on one schedule, paintball speedball on another. Rental loadouts at the gate, no gear required to show up.</p>
-    </div>
-  </div>
 </header>
+
+<section class="hero-intro">
+  <div class="wrap">
+    <span class="eyebrow">Ground 03 — The Field</span>
+    <h1>Two acres.<br>Same field.</h1>
+    <p class="lead">One field, split by the week: airsoft scenario nights on one schedule, paintball speedball on another. Rental loadouts at the gate, no gear required to show up.</p>
+  </div>
+</section>
 
 <section class="gallery-section">
   <div class="wrap">
@@ -149,34 +148,38 @@
     <div class="gallery-grid">
       <!-- Click any box below to upload a photo from your device; it is saved in this browser only. -->
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="range-airsoft-field">
+        <label class="photo-box has-photo" data-photo-key="range-airsoft-field">
           <span class="ph-icon" aria-hidden="true">🌲</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="range-airsoft-field.jpg" alt="An airsoft rifle resting on sandbags inside the Muster airsoft field warehouse">
         </label>
         <span class="photo-label">Airsoft Field</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="range-paintball-bunkers">
+        <label class="photo-box has-photo" data-photo-key="range-paintball-bunkers">
           <span class="ph-icon" aria-hidden="true">🎯</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="range-paintball-bunkers.jpg" alt="Muster Paintball branded bunkers, marker, and masks on the tournament field">
         </label>
         <span class="photo-label">Paintball Bunkers</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="range-gear-rental">
+        <label class="photo-box has-photo" data-photo-key="range-gear-rental">
           <span class="ph-icon" aria-hidden="true">🥽</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="range-gear-rental.jpg" alt="Premium rental gear counter with a chronograph, tripod, and tablet displaying velocity test data">
         </label>
         <span class="photo-label">Gear Rental</span>
       </div>
       <div class="photo-card">
-        <label class="photo-box" data-photo-key="range-chrono-station">
+        <label class="photo-box has-photo" data-photo-key="range-chrono-station">
           <span class="ph-icon" aria-hidden="true">🚩</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="range-chrono-station.jpg" alt="Chrono Station tactical testing setup with a rifle, Doppler radar, and a muzzle velocity readout">
         </label>
         <span class="photo-label">Chrono Station</span>
       </div>
