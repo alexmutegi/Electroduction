@@ -62,6 +62,8 @@
     overflow: hidden;
     cursor: pointer;
   }
+  .product-image-box .ph-icon { display: block; width: 76px; height: 76px; }
+  .product-image-box .ph-icon svg { display: block; width: 100%; height: 100%; }
   .product-image-box .photo-upload-input { display: none; }
   .product-image-box img.photo-uploaded { display: none; width: 100%; height: 100%; object-fit: cover; }
   .product-image-box.has-photo .ph-icon,
@@ -310,6 +312,30 @@
   const CART_KEY = 'muster_shop_cart';
   const SUBSCRIBE_KEY = 'muster_shop_subscribed';
 
+  const PRODUCT_ART = {
+    1: '<svg viewBox="0 0 64 64"><path d="M20,12 L14,6 L6,14 L12,22 L16,19 L16,54 L48,54 L48,19 L52,22 L58,14 L50,6 L44,12 Q38,16 32,16 Q26,16 20,12 Z" fill="var(--canvas)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M26,13 Q32,18 38,13" fill="none" stroke="var(--ink)" stroke-width="1.5"/><circle cx="32" cy="32" r="7" fill="none" stroke="var(--brass)" stroke-width="1.5"/><circle cx="32" cy="32" r="2" fill="var(--flare)"/></svg>',
+    2: '<svg viewBox="0 0 64 64"><path d="M8,36 Q8,14 32,14 Q56,14 56,36 Z" fill="var(--brass)" stroke="var(--ink)" stroke-width="2"/><path d="M8,36 Q2,39 2,45 Q20,41 36,36 Z" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round"/><circle cx="32" cy="15" r="2.2" fill="var(--ink)"/><path d="M32,14 L32,34" stroke="var(--field-dim)" stroke-width="1.5"/><rect x="46" y="30" width="9" height="5" rx="1.5" fill="var(--flare)"/></svg>',
+    3: '<svg viewBox="0 0 64 64"><path d="M20,12 Q32,2 44,12 L39,20 Q32,15 25,20 Z" fill="var(--steel)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M14,22 L8,28 L14,36 L18,33 L18,56 L46,56 L46,33 L50,36 L56,28 L50,22 L44,26 Q32,30 20,26 Z" fill="var(--ink-soft)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M32,22 L30,28 L34,32 L30,38 L34,44 L30,50 L32,55" fill="none" stroke="var(--brass)" stroke-width="2"/><rect x="30" y="19" width="4" height="4" rx="1" fill="var(--flare)"/><path d="M20,45 Q32,50 44,45" fill="none" stroke="var(--canvas-dim)" stroke-width="1.5"/><line x1="27" y1="19" x2="24" y2="28" stroke="var(--canvas)" stroke-width="1.5"/><circle cx="24" cy="28" r="1.3" fill="var(--canvas)"/><line x1="37" y1="19" x2="40" y2="28" stroke="var(--canvas)" stroke-width="1.5"/><circle cx="40" cy="28" r="1.3" fill="var(--canvas)"/></svg>',
+    4: '<svg viewBox="0 0 64 64"><rect x="20" y="22" width="24" height="34" rx="6" fill="var(--steel)" stroke="var(--ink)" stroke-width="2"/><rect x="28" y="13" width="8" height="10" fill="var(--steel)" stroke="var(--ink)" stroke-width="2"/><rect x="26" y="7" width="12" height="7" rx="2" fill="var(--brass)" stroke="var(--ink)" stroke-width="1.5"/><circle cx="45" cy="19" r="4" fill="none" stroke="var(--brass)" stroke-width="2"/><line x1="41" y1="19" x2="44" y2="20" stroke="var(--brass)" stroke-width="2"/><rect x="24" y="28" width="4" height="22" rx="2" fill="var(--canvas)" opacity="0.45"/><rect x="20" y="40" width="24" height="6" fill="var(--field)"/></svg>',
+    5: '<svg viewBox="0 0 64 64"><path d="M18,24 L46,24 L43,52 L21,52 Z" fill="var(--canvas)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><ellipse cx="32" cy="24" rx="14" ry="3" fill="var(--canvas-dim)" stroke="var(--brass)" stroke-width="1.5"/><path d="M46,30 Q58,32 58,40 Q58,48 46,46" fill="none" stroke="var(--ink)" stroke-width="3"/><circle cx="27" cy="34" r="1.1" fill="var(--steel-dim)"/><circle cx="35" cy="30" r="1.1" fill="var(--steel-dim)"/><circle cx="30" cy="42" r="1.1" fill="var(--steel-dim)"/><circle cx="38" cy="40" r="1.1" fill="var(--steel-dim)"/><circle cx="24" cy="45" r="1.1" fill="var(--steel-dim)"/><circle cx="33" cy="47" r="1.1" fill="var(--steel-dim)"/><path d="M26,18 Q28,14 26,10 Q24,6 26,2" fill="none" stroke="var(--steel)" stroke-width="1.5" opacity="0.6"/><path d="M36,18 Q38,14 36,10 Q34,6 36,2" fill="none" stroke="var(--steel)" stroke-width="1.5" opacity="0.6"/></svg>',
+    6: '<svg viewBox="0 0 64 64"><path d="M18,22 Q18,6 32,6 Q46,6 46,22" fill="none" stroke="var(--brass)" stroke-width="2.5"/><rect x="8" y="24" width="48" height="28" rx="6" fill="var(--field)" stroke="var(--ink)" stroke-width="2"/><path d="M10,24 L14,20 L18,24 L22,20 L26,24 L30,20 L34,24 L38,20 L42,24 L46,20 L50,24 L54,20" stroke="var(--brass)" stroke-width="1.5" fill="none"/><rect x="14" y="38" width="14" height="10" rx="2" fill="var(--field-dim)" stroke="var(--ink)" stroke-width="1"/><circle cx="44" cy="42" r="5" fill="none" stroke="var(--canvas)" stroke-width="1.5"/></svg>',
+    7: '<svg viewBox="0 0 64 64"><path d="M20,26 Q18,50 32,54 Q46,50 44,26 Z" fill="var(--brass)" stroke="var(--ink)" stroke-width="2"/><ellipse cx="32" cy="26" rx="12" ry="4" fill="var(--ink-soft)" stroke="var(--ink)" stroke-width="1.5"/><rect x="28" y="32" width="8" height="3" rx="1.5" fill="var(--field)"/><path d="M22,24 Q20,14 26,10" stroke="var(--canvas)" stroke-width="1.5" fill="none"/><path d="M42,24 Q44,14 38,10" stroke="var(--canvas)" stroke-width="1.5" fill="none"/><circle cx="32" cy="9" r="2.5" fill="var(--canvas)"/><line x1="40" y1="20" x2="48" y2="8" stroke="var(--steel)" stroke-width="2"/><circle cx="49" cy="6" r="3" fill="var(--canvas-dim)"/></svg>',
+    8: '<svg viewBox="0 0 64 64"><circle cx="24" cy="38" r="15" fill="var(--field)" stroke="var(--brass)" stroke-width="2" stroke-dasharray="2 2"/><path d="M17,38 L24,31 L31,38" fill="none" stroke="var(--canvas)" stroke-width="2" stroke-linejoin="round"/><circle cx="42" cy="24" r="13" fill="var(--ink-soft)" stroke="var(--flare)" stroke-width="2" stroke-dasharray="2 2"/><circle cx="42" cy="24" r="4" fill="var(--flare)"/></svg>',
+    9: '<svg viewBox="0 0 64 64"><rect x="10" y="10" width="44" height="44" rx="3" fill="var(--canvas)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 2"/><path d="M20,18 L23,25 L30,25 L24,29 L26,36 L20,32 L14,36 L16,29 L10,25 L17,25 Z" fill="var(--flare)"/><circle cx="42" cy="20" r="6" fill="var(--field)" stroke="var(--ink)" stroke-width="1"/><path d="M34,42 L34,52 L44,47 Z" fill="var(--brass)" stroke="var(--ink)" stroke-width="1" stroke-linejoin="round"/></svg>'
+  };
+
+  const PRODUCT_PHOTOS = {
+    1: 'shop-muster-stamp-tee.jpg',
+    2: 'shop-field-cap.jpg',
+    3: 'shop-zip-hoodie.jpg',
+    4: 'shop-insulated-steel-canteen.jpg',
+    5: 'shop-enamel-camp-mug.jpg',
+    6: 'shop-canvas-range-bag.jpg',
+    7: 'shop-chalk-bag.jpg',
+    8: 'shop-woven-patch-set.jpg',
+    9: 'shop-sticker-sheet.jpg'
+  };
+
   const products = [
     { id: 1, name: 'Muster Stamp Tee', category: 'apparel', price: 28, icon: '👕' },
     { id: 2, name: 'Field Cap', category: 'apparel', price: 24, icon: '🧢' },
@@ -331,10 +357,11 @@
 
     grid.innerHTML = filtered.map((p) => `
       <div class="product-card">
-        <label class="photo-box product-image-box" data-photo-key="shop-product-${p.id}">
-          <span class="ph-icon" aria-hidden="true">${p.icon}</span>
+        <label class="photo-box product-image-box${PRODUCT_PHOTOS[p.id] ? ' has-photo' : ''}" data-photo-key="shop-product-${p.id}">
+          <span class="ph-icon" aria-hidden="true">${PRODUCT_ART[p.id]}</span>
           <span class="placeholder-note">Click to upload a photo</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          ${PRODUCT_PHOTOS[p.id] ? `<img class="photo-uploaded" src="${PRODUCT_PHOTOS[p.id]}" alt="${p.name}">` : ''}
         </label>
         <div class="product-body">
           <span class="product-cat">${p.category}</span>
