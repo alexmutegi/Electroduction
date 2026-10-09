@@ -107,7 +107,11 @@
     background: var(--navy); color: var(--white); text-align: center;
     padding: calc(var(--nav-height) + 3rem) 2rem 5rem;
   }
-  .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.55; }
+  .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(15,23,42,0.55) 0%, rgba(15,23,42,0.72) 55%, rgba(15,23,42,0.88) 100%);
+  }
   .hero-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
   .hero h1 { color: var(--white); font-size: clamp(2.6rem, 6vw, 4.3rem); margin-bottom: 1.4rem; }
   .hero .lead { color: rgba(255,255,255,0.78); font-size: 1.2rem; margin: 0 auto 2.4rem; max-width: 52ch; }
@@ -161,13 +165,13 @@
   }
   .project-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(15,23,42,0.14); }
   .project-thumb.photo-box {
-    height: 148px; aspect-ratio: auto; display: flex; align-items: center; justify-content: center;
+    height: 210px; aspect-ratio: auto; display: flex; align-items: center; justify-content: center;
     font-size: 2.6rem; color: var(--white); cursor: pointer;
     background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
     position: relative; overflow: hidden; border: none;
   }
   .project-thumb .photo-upload-input { display: none; }
-  .project-thumb img.photo-uploaded { display: none; width: 100%; height: 100%; object-fit: cover; }
+  .project-thumb img.photo-uploaded { display: none; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
   .project-thumb.has-photo .ph-icon,
   .project-thumb.has-photo .placeholder-note { display: none; }
   .project-thumb.has-photo img.photo-uploaded { display: block; }
@@ -249,7 +253,8 @@
 </div>
 
 <div class="hero" id="top" role="banner">
-  <img class="hero-bg" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%20900%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22traceFade%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%232563EB%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2306B6D4%22%2F%3E%0A%20%20%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3C%2Fdefs%3E%0A%20%20%20%20%3Cg%20fill%3D%22none%22%20stroke%3D%22%232563EB%22%20stroke-width%3D%221.5%22%20opacity%3D%220.35%22%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%220%2C120%20260%2C120%20260%2C260%20620%2C260%22%2F%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%221600%2C180%201300%2C180%201300%2C60%20980%2C60%22%2F%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%220%2C620%20220%2C620%20220%2C740%20540%2C740%20540%2C860%22%2F%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%221600%2C700%201360%2C700%201360%2C560%201040%2C560%201040%2C420%22%2F%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%22760%2C900%20760%2C760%201120%2C760%201120%2C900%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3Cg%20fill%3D%22%2306B6D4%22%20opacity%3D%220.55%22%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22260%22%20cy%3D%22120%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22620%22%20cy%3D%22260%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221300%22%20cy%3D%22180%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22980%22%20cy%3D%2260%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22220%22%20cy%3D%22740%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22540%22%20cy%3D%22860%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221360%22%20cy%3D%22560%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221040%22%20cy%3D%22420%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22760%22%20cy%3D%22760%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221120%22%20cy%3D%22760%22%20r%3D%224%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3Cpolyline%20points%3D%220%2C450%20400%2C450%20400%2C340%20800%2C340%20800%2C450%201200%2C450%201200%2C340%201600%2C340%22%20fill%3D%22none%22%20stroke%3D%22url%28%23traceFade%29%22%20stroke-width%3D%222%22%20opacity%3D%220.6%22%2F%3E%0A%20%20%20%20%3Ccircle%20r%3D%225%22%20fill%3D%22%2306B6D4%22%3E%0A%20%20%20%20%20%20%3CanimateMotion%20dur%3D%227s%22%20repeatCount%3D%22indefinite%22%20path%3D%22M0%2C450%20L400%2C450%20L400%2C340%20L800%2C340%20L800%2C450%20L1200%2C450%20L1200%2C340%20L1600%2C340%22%2F%3E%0A%20%20%20%20%3C%2Fcircle%3E%0A%20%20%3C%2Fsvg%3E" alt="">
+  <img class="hero-bg" src="electroduction-hero.jpg" alt="Electroduction pavilion at twilight, a glass-and-carbon-fiber building with cyan and violet neon lighting">
+  <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-inner">
     <h1>Where ideas become working software.</h1>
     <p class="lead">Electroduction is a hands-on build log: complete web projects taken from a blank file to a working product, each one shipped and usable the moment you open it.</p>
@@ -357,18 +362,20 @@
     </div>
     <div class="portfolio-grid" id="portfolioGrid">
       <div class="project-card" data-category="commerce">
-        <label class="photo-box project-thumb" data-photo-key="portfolio-techshop">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-techshop">
           <span class="ph-icon" aria-hidden="true">🛒</span>
           <span class="placeholder-note">Click to upload a screenshot</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-techshop.jpg" alt="Customers browsing electronics and getting devices repaired at the Electroduction repair counter">
         </label>
         <a class="project-body" href="1-ecommerce.html" target="_blank" rel="noopener"><span class="project-tag">Commerce</span><h3>TechShop</h3><p>A full-featured online store with shopping cart, product filtering, and a modal checkout.</p></a>
       </div>
       <div class="project-card" data-category="content">
-        <label class="photo-box project-thumb" data-photo-key="portfolio-techblog">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-techblog">
           <span class="ph-icon" aria-hidden="true">📰</span>
           <span class="placeholder-note">Click to upload a screenshot</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-techblog.jpg" alt="A developer writing code and notes with an article on middleware open on screen">
         </label>
         <a class="project-body" href="2-blog.html" target="_blank" rel="noopener"><span class="project-tag">Content &amp; Social</span><h3>TechBlog</h3><p>A modern blog with article management, category filtering, and featured content.</p></a>
       </div>
@@ -381,26 +388,29 @@
         <a class="project-body" href="3-social-dashboard.html" target="_blank" rel="noopener"><span class="project-tag">Content &amp; Social</span><h3>SocialHub</h3><p>A social media dashboard with live stats, post creation, and an activity feed.</p></a>
       </div>
       <div class="project-card" data-category="productivity">
-        <label class="photo-box project-thumb" data-photo-key="portfolio-taskflow">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-taskflow">
           <span class="ph-icon" aria-hidden="true">✅</span>
           <span class="placeholder-note">Click to upload a screenshot</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-taskflow.jpg" alt="A team member managing a kanban task board on a monitor and tablet at a standing desk">
         </label>
         <a class="project-body" href="4-task-manager.html" target="_blank" rel="noopener"><span class="project-tag">Productivity</span><h3>TaskFlow</h3><p>A task manager with priorities, status filtering, and completion tracking.</p></a>
       </div>
       <div class="project-card" data-category="productivity">
-        <label class="photo-box project-thumb" data-photo-key="portfolio-weathernow">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-weathernow">
           <span class="ph-icon" aria-hidden="true">⛅</span>
           <span class="placeholder-note">Click to upload a screenshot</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-weathernow.jpg" alt="A woman checking a weather app on her phone on a rainy city balcony at dusk">
         </label>
         <a class="project-body" href="5-weather.html" target="_blank" rel="noopener"><span class="project-tag">Productivity</span><h3>WeatherNow</h3><p>A weather dashboard with city search, current conditions, and a 7-day forecast.</p></a>
       </div>
       <div class="project-card" data-category="lifestyle">
-        <label class="photo-box project-thumb" data-photo-key="portfolio-musicstream">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-musicstream">
           <span class="ph-icon" aria-hidden="true">🎵</span>
           <span class="placeholder-note">Click to upload a screenshot</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-musicstream.jpg" alt="A man relaxing with headphones beside a laptop music library and vinyl records">
         </label>
         <a class="project-body" href="6-music-player.html" target="_blank" rel="noopener"><span class="project-tag">Lifestyle &amp; Media</span><h3>MusicStream</h3><p>A Spotify-inspired music player with playlists and playback controls.</p></a>
       </div>
@@ -413,10 +423,11 @@
         <a class="project-body" href="7-recipe-site.html" target="_blank" rel="noopener"><span class="project-tag">Lifestyle &amp; Media</span><h3>RecipeHub</h3><p>A recipe platform with category browsing, search, and detailed instructions.</p></a>
       </div>
       <div class="project-card" data-category="lifestyle">
-        <label class="photo-box project-thumb" data-photo-key="portfolio-fittrack">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-fittrack">
           <span class="ph-icon" aria-hidden="true">💪</span>
           <span class="placeholder-note">Click to upload a screenshot</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-fittrack.jpg" alt="People stretching and training outside the Electroduction FitTruck mobile gym">
         </label>
         <a class="project-body" href="8-fitness-tracker.html" target="_blank" rel="noopener"><span class="project-tag">Lifestyle &amp; Media</span><h3>FitTrack</h3><p>A fitness tracker with workout logging, calorie tracking, and progress history.</p></a>
       </div>
@@ -429,10 +440,11 @@
         <a class="project-body" href="9-finance-dashboard.html" target="_blank" rel="noopener"><span class="project-tag">Commerce</span><h3>MoneyTrack</h3><p>A personal finance manager with transactions, budgets, and spending insights.</p></a>
       </div>
       <div class="project-card" data-category="content">
-        <label class="photo-box project-thumb" data-photo-key="portfolio-chathub">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-chathub">
           <span class="ph-icon" aria-hidden="true">💬</span>
           <span class="placeholder-note">Click to upload a screenshot</span>
           <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-chathub.jpg" alt="Friends laughing together on a sofa with the ChatHub app on a TV and phones">
         </label>
         <a class="project-body" href="10-chat-app.html" target="_blank" rel="noopener"><span class="project-tag">Content &amp; Social</span><h3>ChatHub</h3><p>A real-time messaging app with contacts, chat history, and unread indicators.</p></a>
       </div>
