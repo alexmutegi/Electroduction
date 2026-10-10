@@ -3,368 +3,664 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muster — Train. Draft. Run the Field. Refuel.</title>
+<meta name="description" content="Electroduction — eleven complete web projects, built and shipped end to end, from e-commerce to a four-venue brand suite.">
+<title>Electroduction — Ship ideas as working software</title>
+<link rel="stylesheet" href="shared/theme.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared/brand.css">
-<script src="shared/nav.js" defer></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
+  :root {
+    --navy: #0F172A;
+    --navy-soft: #16213a;
+    --blue: #2563EB;
+    --blue-dim: #1d4fc4;
+    --cyan: #06B6D4;
+    --white: #FFFFFF;
+    --ink: #1F2937;
+    --ink-dim: #52606d;
+    --mist: #F1F5F9;
+    --line: #E2E8F0;
+    --radius: 4px;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --nav-height: 76px;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: var(--nav-height); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--white);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); color: var(--navy); line-height: 1.2; font-weight: 600; }
+  p { max-width: 62ch; }
+  a { color: inherit; }
+  img, svg { display: block; max-width: 100%; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 6.5rem 0; }
+  .section-mist { background: var(--mist); }
+  .section-head { max-width: 640px; margin-bottom: 3.5rem; }
+  .section-head h2 { font-size: clamp(2rem, 4vw, 2.6rem); margin-bottom: 0.9rem; }
+  .section-head p { color: var(--ink-dim); font-size: 1.05rem; }
+
+  /* ---------- NAV ---------- */
+  .site-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-height);
+    display: flex; align-items: center;
+    background: rgba(15, 23, 42, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .site-nav.scrolled { background: rgba(15, 23, 42, 0.96); box-shadow: 0 4px 24px rgba(0,0,0,0.18); }
+  .site-nav .wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+  .brand { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--white); text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 2.1rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.82); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.15s ease; }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-links .nav-cta { color: var(--navy); background: var(--white); padding: 0.55rem 1.2rem; border-radius: 999px; font-weight: 600; }
+  .nav-links .nav-cta:hover { background: var(--cyan); color: var(--navy); }
+  .nav-toggle {
+    display: none; background: none; border: none; width: 40px; height: 40px;
+    position: relative; z-index: 210;
+  }
+  .nav-toggle span, .nav-toggle::before, .nav-toggle::after {
+    content: ''; position: absolute; left: 8px; right: 8px; height: 2px; background: var(--white);
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+  .nav-toggle::before { top: 13px; }
+  .nav-toggle span { top: 19px; }
+  .nav-toggle::after { top: 25px; }
+  .nav-toggle.open::before { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle.open::after { transform: translateY(-6px) rotate(-45deg); }
+  .nav-toggle.open span { opacity: 0; }
+
+  @media (max-width: 880px) {
+    .nav-toggle { display: block; }
+    .nav-links {
+      position: fixed; top: 0; right: 0; height: 100vh; width: min(78vw, 320px);
+      background: var(--navy); flex-direction: column; align-items: flex-start;
+      justify-content: center; gap: 1.6rem; padding: 2rem 2.5rem;
+      transform: translateX(100%); transition: transform 0.32s ease; z-index: 200;
+    }
+    .nav-links.open { transform: translateX(0); }
+    .nav-links .nav-cta { margin-top: 0.5rem; }
+  }
+
+  /* ---------- HERO ---------- */
   .hero {
-    background: var(--ink);
-    color: var(--canvas);
-    position: relative;
-    overflow: hidden;
-    padding: 5.5rem 0 6rem;
+    position: relative; overflow: hidden;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--navy); color: var(--white); text-align: center;
+    padding: calc(var(--nav-height) + 3rem) 2rem 5rem;
   }
-  .hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      repeating-linear-gradient(135deg, rgba(232,99,28,0.05) 0 2px, transparent 2px 42px);
-    pointer-events: none;
+  .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(15,23,42,0.55) 0%, rgba(15,23,42,0.72) 55%, rgba(15,23,42,0.88) 100%);
   }
-  .hero .wrap {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 3rem;
-    position: relative;
-  }
-  .hero h1 { margin: 1rem 0 1.25rem; }
-  .hero h1 span { color: var(--flare); }
-  .hero .lead { color: var(--canvas-dim); }
-  .hero .cta-row { display: flex; gap: 1rem; margin-top: 2.25rem; flex-wrap: wrap; }
-  .hero .stamp { --stamp-color: var(--flare); }
+  .hero-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
+  .hero h1 { color: var(--white); font-size: clamp(2.6rem, 6vw, 4.3rem); margin-bottom: 1.4rem; }
+  .hero .lead { color: rgba(255,255,255,0.78); font-size: 1.2rem; margin: 0 auto 2.4rem; max-width: 52ch; }
+  .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 0.9rem 1.9rem; border-radius: 999px; font-weight: 600; font-size: 1rem; text-decoration: none; border: 1px solid transparent; transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-dim); }
+  .btn-outline { border-color: rgba(255,255,255,0.4); color: var(--white); }
+  .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+  .scroll-cue { position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%); z-index: 2; color: rgba(255,255,255,0.5); font-size: 0.8rem; letter-spacing: 0.02em; }
 
-  .manifest {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    color: var(--steel);
-    display: flex;
-    gap: 2.5rem;
-    margin-top: 3rem;
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--steel-dim);
-    flex-wrap: wrap;
-  }
-  .manifest strong { color: var(--canvas); display: block; font-family: var(--font-body); font-size: 1rem; }
+  /* ---------- ABOUT ---------- */
+  .about .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+  .about h2 { font-size: clamp(2rem, 4vw, 2.6rem); margin-bottom: 1.2rem; }
+  .about p { color: var(--ink-dim); font-size: 1.05rem; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+  .stat-card { background: var(--mist); border-left: 3px solid var(--blue); padding: 1.4rem 1.5rem; border-radius: var(--radius); }
+  .stat-card .num { font-family: var(--font-display); font-size: 2.1rem; color: var(--navy); font-weight: 700; }
+  .stat-card .label { color: var(--ink-dim); font-size: 0.9rem; margin-top: 0.2rem; }
 
-  .points {
-    padding: 6rem 0;
-  }
-  .points .section-head { max-width: 640px; margin-bottom: 3rem; }
-  .points .section-head .eyebrow { margin-bottom: 0.6rem; display: block; }
+  /* ---------- FEATURES ---------- */
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+  .feature-card { background: var(--white); border: 1px solid var(--line); border-top: 3px solid var(--blue); padding: 2rem 1.8rem; border-radius: var(--radius); }
+  .feature-card .feature-icon { margin-bottom: 1.1rem; }
+  .feature-card h3 { font-family: var(--font-body); font-size: 1.1rem; color: var(--navy); margin-bottom: 0.5rem; }
+  .feature-card p { color: var(--ink-dim); font-size: 0.96rem; margin: 0; }
 
-  .point-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  .point {
-    border: 1px solid var(--ink);
-    padding: 2.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    position: relative;
-    transition: background 0.2s ease;
-  }
-  .point:hover { background: rgba(27,29,31,0.03); }
-  .point .point-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
-  .point .stamp { width: 84px; height: 84px; border-width: 2px; flex-shrink: 0; }
-  .point .stamp .stamp-mid { font-size: 0.85rem; }
-  .point .stamp .stamp-top, .point .stamp .stamp-bottom { font-size: 0.42rem; }
-  .point .stamp::before { inset: 5px; }
-  .point h3 { margin: 0; }
-  .point .venue-tag {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--steel-dim);
-  }
-  .point p { color: var(--ink); flex-grow: 1; }
-  .point .point-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    padding-top: 1rem;
-    border-top: 1px solid var(--steel);
-  }
-  .point .point-foot .go { color: var(--flare); font-weight: 600; }
-  .point.cafe { border-top: 4px solid var(--brass); }
-  .point.cards { border-top: 4px solid var(--brass); }
-  .point.range { border-top: 4px solid var(--field); }
-  .point.gym { border-top: 4px solid var(--flare); }
-  .point.shop { border-top: 4px solid var(--brass); }
-  .point.cafe .stamp, .point.cards .stamp, .point.shop .stamp { --stamp-color: var(--brass); }
-  .point.range .stamp { --stamp-color: var(--field); }
-  .point.gym .stamp { --stamp-color: var(--flare); }
+  /* ---------- SOLUTIONS ---------- */
+  .solutions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+  .solution-card { padding: 2.2rem 1.9rem; border-radius: var(--radius); background: var(--navy); color: var(--white); }
+  .solution-card h3 { font-family: var(--font-display); color: var(--white); font-size: 1.3rem; margin-bottom: 0.7rem; }
+  .solution-card p { color: rgba(255,255,255,0.72); font-size: 0.96rem; margin: 0; }
+  .solution-card:nth-child(2) { background: var(--blue); }
+  .solution-card:nth-child(3) { background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%); }
 
-  @media (max-width: 760px) {
-    .hero .wrap { grid-template-columns: 1fr; text-align: left; }
-    .hero .stamp { width: 108px; height: 108px; margin-top: 0.5rem; } .hero .stamp .stamp-top, .hero .stamp .stamp-bottom { font-size: 0.44rem; } .hero .stamp .stamp-mid { font-size: 1rem; }
-    .point-grid { grid-template-columns: 1fr; }
+  /* ---------- PORTFOLIO ---------- */
+  .filter-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
+  .filter-chip {
+    background: var(--white); border: 1px solid var(--line); color: var(--ink-dim);
+    padding: 0.5rem 1.1rem; border-radius: 999px; font-size: 0.9rem; font-weight: 500;
+    transition: all 0.15s ease;
   }
+  .filter-chip:hover { border-color: var(--blue); color: var(--blue); }
+  .filter-chip.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.75rem; }
+  .project-card {
+    display: block;
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    background: var(--white); transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(15,23,42,0.14); }
+  .project-thumb.photo-box {
+    height: 210px; aspect-ratio: auto; display: flex; align-items: center; justify-content: center;
+    font-size: 2.6rem; color: var(--white); cursor: pointer;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    position: relative; overflow: hidden; border: none;
+  }
+  .project-thumb .photo-upload-input { display: none; }
+  .project-thumb img.photo-uploaded { display: none; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+  .project-thumb.has-photo .ph-icon,
+  .project-thumb.has-photo .placeholder-note { display: none; }
+  .project-thumb.has-photo img.photo-uploaded { display: block; }
+  .project-thumb .placeholder-note {
+    position: absolute; bottom: 8px; right: 10px;
+    font-family: var(--font-body); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.03em;
+    color: rgba(255,255,255,0.75); text-transform: uppercase;
+  }
+  .project-body { display: block; padding: 1.4rem 1.5rem 1.6rem; text-decoration: none; color: inherit; }
+  .project-tag { display: inline-block; font-size: 0.76rem; font-weight: 600; color: var(--blue); background: rgba(37,99,235,0.08); padding: 0.2rem 0.65rem; border-radius: 999px; margin-bottom: 0.7rem; }
+  .project-body h3 { font-family: var(--font-body); font-size: 1.1rem; color: var(--navy); margin-bottom: 0.4rem; }
+  .project-body p { color: var(--ink-dim); font-size: 0.92rem; margin: 0; }
+  .project-card[hidden] { display: none; }
 
-  /* THE CARD — unifying membership section */
-  .thecard {
-    background: var(--field);
-    color: var(--canvas);
-    padding: 5.5rem 0;
-  }
-  .thecard .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
-  .thecard .eyebrow { color: var(--flare); }
-  .thecard .card-visual {
-    background: var(--ink);
-    border: 1px solid var(--brass);
-    padding: 2rem;
-    aspect-ratio: 1.6 / 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-family: var(--font-mono);
-  }
-  .thecard .card-visual .row1 { display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--steel); }
-  .thecard .card-visual .row2 { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 0.06em; color: var(--canvas); }
-  .thecard .card-visual .row3 { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--brass); letter-spacing: 0.08em; }
-  .thecard .perks { list-style: none; margin-top: 1.75rem; font-size: 0.95rem; }
-  .thecard .perks li { padding: 0.6rem 0; border-bottom: 1px solid rgba(237,230,214,0.2); display: flex; justify-content: space-between; gap: 1rem; }
-  .thecard .perks li span:last-child { font-family: var(--font-mono); font-size: 0.8rem; color: var(--canvas-dim); text-align: right; }
+  /* ---------- RESOURCES ---------- */
+  .resource-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .resource-card { display: block; text-decoration: none; color: inherit; padding: 1.6rem; border: 1px solid var(--line); border-radius: var(--radius); transition: border-color 0.15s ease; }
+  .resource-card:hover { border-color: var(--blue); }
+  .resource-card h3 { font-family: var(--font-body); font-size: 1.02rem; color: var(--navy); margin-bottom: 0.4rem; }
+  .resource-card p { color: var(--ink-dim); font-size: 0.9rem; margin: 0; }
 
-  @media (max-width: 760px) {
-    .thecard .wrap { grid-template-columns: 1fr; }
+  /* ---------- CONTACT ---------- */
+  .contact-shell { max-width: 680px; margin: 0 auto; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; }
+  .field { margin-bottom: 1.3rem; }
+  .field label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--navy); margin-bottom: 0.4rem; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 0.75rem 0.9rem; border: 1px solid var(--line); border-radius: var(--radius);
+    font-family: inherit; font-size: 0.98rem; color: var(--ink); background: var(--white);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--blue); outline-offset: 1px; border-color: var(--blue); }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field .error-msg { display: none; color: #C0392B; font-size: 0.82rem; margin-top: 0.35rem; }
+  .field.invalid input, .field.invalid select, .field.invalid textarea { border-color: #C0392B; }
+  .field.invalid .error-msg { display: block; }
+  .submit-row { margin-top: 0.5rem; }
+  .submit-row .btn-primary { border: none; width: 100%; }
+  .form-success { display: none; text-align: center; padding: 3rem 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); }
+  .form-success.visible { display: block; }
+  .form-success h3 { margin-bottom: 0.6rem; }
+  .form-success p { margin: 0 auto 1.5rem; color: var(--ink-dim); }
+  #contactForm.hidden { display: none; }
+
+  @media (max-width: 900px) {
+    .about .wrap { grid-template-columns: 1fr; }
+    .feature-grid, .solutions-grid { grid-template-columns: repeat(2, 1fr); }
+    .resource-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .section { padding: 4.5rem 0; }
+    .feature-grid, .solutions-grid, .resource-grid { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
   }
 
-  .hours-strip {
-    background: var(--canvas-dim);
-    padding: 3rem 0;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-  }
-  .hours-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-  }
-  .hours-grid .h-name { font-family: var(--font-body); font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
-  .hours-grid .h-time { color: var(--steel-dim); }
-  @media (max-width: 760px) { .hours-grid { grid-template-columns: 1fr 1fr; } }
+  /* ---------- FOOTER ---------- */
+  .site-footer { background: var(--navy); color: rgba(255,255,255,0.65); padding: 2.6rem 0; font-size: 0.9rem; }
+  .site-footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .site-footer a { color: rgba(255,255,255,0.8); text-decoration: none; }
+  .site-footer a:hover { color: var(--cyan); }
 </style>
 </head>
 <body>
 
-<nav class="site-nav">
+<div class="site-nav" id="siteNav" role="navigation" aria-label="Primary">
   <div class="wrap">
-    <input type="checkbox" id="navToggle" class="nav-toggle-input">
-    <a class="brand" href="index.html">MUSTER<span class="dot">.</span></a>
-    <label for="navToggle" class="nav-toggle-label" aria-label="Toggle menu"><span></span></label>
-    <ul>
-      <li><a href="cafe.html">Café</a></li>
-      <li><a href="cards.html">Cards</a></li>
-      <li><a href="range.html">Range</a></li>
-      <li><a href="gym.html">Gym</a></li>
-      <li><a href="shop.html">Shop</a></li>
+    <a class="brand" href="#top">Electroduction</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#top">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#solutions">Solutions</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a class="nav-cta" href="#contact">Contact</a></li>
     </ul>
   </div>
-</nav>
+</div>
 
-<header class="hero">
-  <div class="wrap">
-    <div>
-      <span class="eyebrow on-dark">Est. 2019 — Muster Grounds, Bay 4</span>
-      <h1>Where the crew<br><span>musters.</span></h1>
-      <p class="lead">Four grounds, one card. Train at the gym, draft at the shop, run the field at the range, and unwind at the café — all on the same block, all under one roof.</p>
-      <div class="cta-row">
-        <a class="btn on-dark" href="#points">See the five grounds</a>
-        <a class="btn on-dark ghost" href="#thecard">The Muster Card</a>
-      </div>
-      <div class="manifest">
-        <div><strong>4</strong>grounds, one block</div>
-        <div><strong>1</strong>membership card</div>
-        <div><strong>7am–11pm</strong>doors open daily</div>
-        <div><strong>Bay 4</strong>Muster Grounds</div>
-      </div>
-    </div>
-    <div class="stamp" aria-hidden="true">
-      <span class="stamp-top">MUSTER GROUNDS</span>
-      <span class="stamp-mid">EST.<br>2019</span>
-      <span class="stamp-bottom">BAY FOUR</span>
+<div class="hero" id="top" role="banner">
+  <img class="hero-bg" src="electroduction-hero.jpg" alt="Electroduction pavilion at twilight, a glass-and-carbon-fiber building with cyan and violet neon lighting">
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <h1>Where ideas become working software.</h1>
+    <p class="lead">Electroduction is a hands-on build log: complete web projects taken from a blank file to a working product, each one shipped and usable the moment you open it.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#portfolio">Explore Projects</a>
+      <a class="btn btn-outline" href="#contact">Get Started</a>
     </div>
   </div>
-</header>
+  <div class="scroll-cue">Scroll to explore ↓</div>
+</div>
 
-<section class="points" id="points">
+<div class="about section" id="about">
+  <div class="wrap">
+    <div>
+      <h2>About Electroduction</h2>
+      <p>Electroduction started with a simple rule: build real, working software instead of tutorials. Every project here runs entirely in the browser with zero build steps, from a full shopping cart to a live chat interface, each one deployed and usable the moment you open it.</p>
+      <p>It's a working record of design and engineering decisions made and shipped, one project at a time.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num">11</div><div class="label">Projects shipped</div></div>
+      <div class="stat-card"><div class="num">0</div><div class="label">Build steps required</div></div>
+      <div class="stat-card"><div class="num">100%</div><div class="label">Runs in the browser</div></div>
+      <div class="stat-card"><div class="num">4</div><div class="label">Venues in one brand suite</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="features section section-mist" id="features">
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow">The Five Grounds</span>
-      <h2>One membership. Four reasons to show up.</h2>
+      <h2>Core features</h2>
+      <p>What Electroduction is built to handle.</p>
     </div>
-    <div class="point-grid">
-
-      <article class="point cafe">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 01 — Fuel</span>
-            <h3>Muster Café</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">ROASTED</span>
-            <span class="stamp-mid">CAFÉ</span>
-            <span class="stamp-bottom">ON SITE</span>
-          </div>
-        </div>
-        <p>Pour-over bar, breakfast burritos, and enough outlets to plan next weekend's scenario game over a second coffee.</p>
-        <div class="point-foot"><span>Open 6:30am</span><a class="go" href="cafe.html">Visit the café →</a></div>
-      </article>
-
-      <article class="point cards">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 02 — Strategy</span>
-            <h3>Muster Cards</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">SEALED &amp;</span>
-            <span class="stamp-mid">SINGLES</span>
-            <span class="stamp-bottom">GRADED</span>
-          </div>
-        </div>
-        <p>Singles, sealed product, and a back room that runs a draft or a Commander pod most nights of the week.</p>
-        <div class="point-foot"><span>Draft night: Thu</span><a class="go" href="cards.html">Visit the shop →</a></div>
-      </article>
-
-      <article class="point range">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 03 — The Field</span>
-            <h3>Muster Range</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">AIRSOFT &amp;</span>
-            <span class="stamp-mid">PAINTBALL</span>
-            <span class="stamp-bottom">TWO ACRES</span>
-          </div>
-        </div>
-        <p>Two acres, one field, split by the week between airsoft scenario nights and paintball speedball. Rental loadouts at the gate.</p>
-        <div class="point-foot"><span>Games Fri–Sun</span><a class="go" href="range.html">Visit the range →</a></div>
-      </article>
-
-      <article class="point gym">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 04 — Conditioning</span>
-            <h3>Muster Gym</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">STRENGTH &amp;</span>
-            <span class="stamp-mid">CONDITION</span>
-            <span class="stamp-bottom">24/5 ACCESS</span>
-          </div>
-        </div>
-        <p>Built for the field, not the mirror: loaded carries, sprint intervals, and mobility work that holds up under a full loadout.</p>
-        <div class="point-foot"><span>Open 24/5</span><a class="go" href="gym.html">Visit the gym →</a></div>
-      </article>
-
-      <article class="point shop">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 05 — Gear</span>
-            <h3>Muster Shop</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">MUSTER GROUNDS</span>
-            <span class="stamp-mid">SUPPLY</span>
-            <span class="stamp-bottom">EST. 2019</span>
-          </div>
-        </div>
-        <p>Apparel, drinkware, and gear carrying the same stamp as the rest of the block — built for the crew that actually shows up.</p>
-        <div class="point-foot"><span>Same hours as café</span><a class="go" href="shop.html">Visit the shop →</a></div>
-      </article>
-
+    <div class="feature-grid">
+      <div class="feature-card">
+        <img class="feature-icon" width="34" height="34" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20stroke%3D%22%232563EB%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%227%22%20y%3D%226%22%20width%3D%2226%22%20height%3D%228%22%20rx%3D%221.5%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2217%22%20width%3D%2226%22%20height%3D%228%22%20rx%3D%221.5%22%2F%3E%3Crect%20x%3D%227%22%20y%3D%2228%22%20width%3D%2217%22%20height%3D%226%22%20rx%3D%221.5%22%2F%3E%3C%2Fsvg%3E">
+        <h3>Smart project management</h3>
+        <p>Organize work into clear boards and milestones, so nothing slips between the cracks.</p>
+      </div>
+      <div class="feature-card">
+        <img class="feature-icon" width="34" height="34" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20stroke%3D%22%232563EB%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%229%22%20r%3D%224%22%2F%3E%3Ccircle%20cx%3D%228%22%20cy%3D%2231%22%20r%3D%224%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2231%22%20r%3D%224%22%2F%3E%3Cpath%20d%3D%22M20%2013%20L8%2027%20M20%2013%20L32%2027%20M8%2031%20H32%22%2F%3E%3C%2Fsvg%3E">
+        <h3>AI integration</h3>
+        <p>Bring language-model assistance directly into your workflow, from drafting to review.</p>
+      </div>
+      <div class="feature-card">
+        <img class="feature-icon" width="34" height="34" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20stroke%3D%22%232563EB%22%20stroke-width%3D%222%22%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2220%22%20r%3D%2210%22%2F%3E%3Ccircle%20cx%3D%2226%22%20cy%3D%2220%22%20r%3D%2210%22%20opacity%3D%220.55%22%2F%3E%3C%2Fsvg%3E">
+        <h3>Collaboration tools</h3>
+        <p>Work alongside your team in real time, with shared context and fewer status meetings.</p>
+      </div>
+      <div class="feature-card">
+        <img class="feature-icon" width="34" height="34" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20stroke%3D%22%232563EB%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M7%2033%20V17%20M17%2033%20V9%20M27%2033%20V21%20M33%2033%20H7%22%2F%3E%3C%2Fsvg%3E">
+        <h3>Analytics dashboard</h3>
+        <p>See how your projects are actually performing, in one uncluttered view.</p>
+      </div>
+      <div class="feature-card">
+        <img class="feature-icon" width="34" height="34" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20stroke%3D%22%232563EB%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M9%2015a11%2011%200%200%201%2019-6%20M31%2025a11%2011%200%200%201-19%206%22%2F%3E%3Cpath%20d%3D%22M28%206%20L28%2011%20L23%2011%20M12%2034%20L12%2029%20L17%2029%22%2F%3E%3C%2Fsvg%3E">
+        <h3>Automation workflows</h3>
+        <p>Automate the repetitive steps so your team can spend time on the work that matters.</p>
+      </div>
+      <div class="feature-card">
+        <img class="feature-icon" width="34" height="34" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20stroke%3D%22%232563EB%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2028a7%207%200%200%201-1-13.9A9%209%200%200%201%2028%2012a6.5%206.5%200%200%201%201%2016H12z%22%2F%3E%3C%2Fsvg%3E">
+        <h3>Cloud accessibility</h3>
+        <p>Pick up exactly where you left off, from any device, anywhere.</p>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
-<section class="thecard" id="thecard">
+<div class="solutions section" id="solutions">
   <div class="wrap">
-    <div>
-      <span class="eyebrow">One Card, Five Grounds</span>
-      <h2>The Muster Card</h2>
-      <p class="lead" style="color: var(--canvas-dim);">One membership, scanned at all five doors. It doesn't unlock everything for free — it just makes sure showing up at all five is always worth it.</p>
-      <ul class="perks">
-        <li><span>Muster Café</span><span>10% off, house account tab</span></li>
-        <li><span>Muster Cards</span><span>Free draft entry, 1st Thursday</span></li>
-        <li><span>Muster Range</span><span>Member rate on rentals</span></li>
-        <li><span>Muster Gym</span><span>24/5 key fob access</span></li>
-        <li><span>Muster Shop</span><span>10% off, all gear</span></li>
-      </ul>
+    <div class="section-head">
+      <h2>Solutions</h2>
+      <p>Built to fit however you work.</p>
     </div>
-    <div class="card-visual">
-      <div class="row1"><span>MUSTER GROUNDS</span><span>BAY 4</span></div>
-      <div class="row2">MUSTER<br>CARD</div>
-      <div class="row3"><span>MEMBER SINCE 2024</span><span>NO. 00142</span></div>
+    <div class="solutions-grid">
+      <div class="solution-card">
+        <h3>For individuals</h3>
+        <p>A focused workspace for solo builders moving fast on one idea at a time.</p>
+      </div>
+      <div class="solution-card">
+        <h3>For teams</h3>
+        <p>Shared boards and shared context, in a workflow that scales past two people.</p>
+      </div>
+      <div class="solution-card">
+        <h3>For enterprises</h3>
+        <p>The structure and oversight larger organizations need, without slowing anyone down.</p>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
-<section class="hours-strip">
-  <div class="wrap hours-grid">
-    <div><div class="h-name">Muster Café</div><div class="h-time">Mon–Sun · 6:30am – 6pm</div></div>
-    <div><div class="h-name">Muster Cards</div><div class="h-time">Tue–Sun · 11am – 9pm</div></div>
-    <div><div class="h-name">Muster Range</div><div class="h-time">Fri–Sun · 9am – 5pm (games)</div></div>
-    <div><div class="h-name">Muster Gym</div><div class="h-time">Mon–Fri 5am–11pm · Sat–Sun 7am–9pm</div></div>
-    <div><div class="h-name">Muster Shop</div><div class="h-time">Mon–Sun · 6:30am – 6pm</div></div>
-  </div>
-</section>
-
-<footer class="site-footer">
+<div class="portfolio section section-mist" id="portfolio">
   <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <h4>Muster Grounds</h4>
-        <p style="color: var(--canvas-dim); font-size: 0.9rem; max-width: 32ch;">2400 Ordnance Road, Bay 4<br>One block, five grounds, one card.</p>
-      </div>
-      <div>
-        <h4>Grounds</h4>
-        <ul>
-          <li><a href="cafe.html">Café</a></li>
-          <li><a href="cards.html">Cards</a></li>
-          <li><a href="range.html">Range</a></li>
-          <li><a href="gym.html">Gym</a></li>
-          <li><a href="shop.html">Shop</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Info</h4>
-        <ul>
-          <li><a href="#thecard">The Muster Card</a></li>
-          <li><a href="#points">Hours</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li>hello@mustergrounds.example</li>
-          <li>(555) 019-4200</li>
-        </ul>
-      </div>
+    <div class="section-head">
+      <h2>Portfolio</h2>
+      <p>Eleven complete projects, each built and deployed end to end. Filter by category, or open one directly.</p>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 Muster Grounds</span>
-      <span>Bay 4 — one block, five grounds</span>
+    <div class="filter-row" id="filterRow">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="commerce">Commerce</button>
+      <button class="filter-chip" data-filter="content">Content &amp; Social</button>
+      <button class="filter-chip" data-filter="productivity">Productivity</button>
+      <button class="filter-chip" data-filter="lifestyle">Lifestyle &amp; Media</button>
+      <button class="filter-chip" data-filter="brand">Brand Suite</button>
+    </div>
+    <div class="portfolio-grid" id="portfolioGrid">
+      <div class="project-card" data-category="commerce">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-techshop">
+          <span class="ph-icon" aria-hidden="true">🛒</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-techshop.jpg" alt="Customers browsing electronics and getting devices repaired at the Electroduction repair counter">
+        </label>
+        <a class="project-body" href="1-ecommerce.html" target="_blank" rel="noopener"><span class="project-tag">Commerce</span><h3>TechShop</h3><p>A full-featured online store with shopping cart, product filtering, and a modal checkout.</p></a>
+      </div>
+      <div class="project-card" data-category="content">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-techblog">
+          <span class="ph-icon" aria-hidden="true">📰</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-techblog.jpg" alt="A developer writing code and notes with an article on middleware open on screen">
+        </label>
+        <a class="project-body" href="2-blog.html" target="_blank" rel="noopener"><span class="project-tag">Content &amp; Social</span><h3>TechBlog</h3><p>A modern blog with article management, category filtering, and featured content.</p></a>
+      </div>
+      <div class="project-card" data-category="content">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-socialhub">
+          <span class="ph-icon" aria-hidden="true">📱</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-socialhub.jpg" alt="A group of friends laughing together in a café while one checks a phone">
+        </label>
+        <a class="project-body" href="3-social-dashboard.html" target="_blank" rel="noopener"><span class="project-tag">Content &amp; Social</span><h3>SocialHub</h3><p>A social media dashboard with live stats, post creation, and an activity feed.</p></a>
+      </div>
+      <div class="project-card" data-category="productivity">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-taskflow">
+          <span class="ph-icon" aria-hidden="true">✅</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-taskflow.jpg" alt="A team member managing a kanban task board on a monitor and tablet at a standing desk">
+        </label>
+        <a class="project-body" href="4-task-manager.html" target="_blank" rel="noopener"><span class="project-tag">Productivity</span><h3>TaskFlow</h3><p>A task manager with priorities, status filtering, and completion tracking.</p></a>
+      </div>
+      <div class="project-card" data-category="productivity">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-weathernow">
+          <span class="ph-icon" aria-hidden="true">⛅</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-weathernow.jpg" alt="A woman checking a weather app on her phone on a rainy city balcony at dusk">
+        </label>
+        <a class="project-body" href="5-weather.html" target="_blank" rel="noopener"><span class="project-tag">Productivity</span><h3>WeatherNow</h3><p>A weather dashboard with city search, current conditions, and a 7-day forecast.</p></a>
+      </div>
+      <div class="project-card" data-category="lifestyle">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-musicstream">
+          <span class="ph-icon" aria-hidden="true">🎵</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-musicstream.jpg" alt="A man relaxing with headphones beside a laptop music library and vinyl records">
+        </label>
+        <a class="project-body" href="6-music-player.html" target="_blank" rel="noopener"><span class="project-tag">Lifestyle &amp; Media</span><h3>MusicStream</h3><p>A Spotify-inspired music player with playlists and playback controls.</p></a>
+      </div>
+      <div class="project-card" data-category="lifestyle">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-recipehub">
+          <span class="ph-icon" aria-hidden="true">🍳</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-recipehub.jpg" alt="A home cook kneading dough in a bright kitchen while filming a recipe on her phone">
+        </label>
+        <a class="project-body" href="7-recipe-site.html" target="_blank" rel="noopener"><span class="project-tag">Lifestyle &amp; Media</span><h3>RecipeHub</h3><p>A recipe platform with category browsing, search, and detailed instructions.</p></a>
+      </div>
+      <div class="project-card" data-category="lifestyle">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-fittrack">
+          <span class="ph-icon" aria-hidden="true">💪</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-fittrack.jpg" alt="People stretching and training outside the Electroduction FitTruck mobile gym">
+        </label>
+        <a class="project-body" href="8-fitness-tracker.html" target="_blank" rel="noopener"><span class="project-tag">Lifestyle &amp; Media</span><h3>FitTrack</h3><p>A fitness tracker with workout logging, calorie tracking, and progress history.</p></a>
+      </div>
+      <div class="project-card" data-category="commerce">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-moneytrack">
+          <span class="ph-icon" aria-hidden="true">💰</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-moneytrack.jpg" alt="A man tracking his budget with a notebook, phone banking app, calculator, and receipts">
+        </label>
+        <a class="project-body" href="9-finance-dashboard.html" target="_blank" rel="noopener"><span class="project-tag">Commerce</span><h3>MoneyTrack</h3><p>A personal finance manager with transactions, budgets, and spending insights.</p></a>
+      </div>
+      <div class="project-card" data-category="content">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-chathub">
+          <span class="ph-icon" aria-hidden="true">💬</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-chathub.jpg" alt="Friends laughing together on a sofa with the ChatHub app on a TV and phones">
+        </label>
+        <a class="project-body" href="10-chat-app.html" target="_blank" rel="noopener"><span class="project-tag">Content &amp; Social</span><h3>ChatHub</h3><p>A real-time messaging app with contacts, chat history, and unread indicators.</p></a>
+      </div>
+      <div class="project-card" data-category="brand">
+        <label class="photo-box project-thumb has-photo" data-photo-key="portfolio-muster">
+          <span class="ph-icon" aria-hidden="true">🎯</span>
+          <span class="placeholder-note">Click to upload a screenshot</span>
+          <input type="file" accept="image/*" class="photo-upload-input" hidden>
+          <img class="photo-uploaded" src="portfolio-muster.jpg" alt="A member leaving the Muster fitness, café, and range storefronts with a coffee, gym bag, and member card">
+        </label>
+        <a class="project-body" href="muster/shop.html" target="_blank" rel="noopener"><span class="project-tag">Brand Suite</span><h3>Muster</h3><p>A four-venue brand suite — café, card store, range, and gym — under one shared identity.</p></a>
+      </div>
     </div>
   </div>
-</footer>
+</div>
 
+<div class="resources section" id="resources">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Resources</h2>
+      <p>Everything behind the build.</p>
+    </div>
+    <div class="resource-grid">
+      <a class="resource-card" href="https://github.com/alexmutegi/Electroduction" target="_blank" rel="noopener">
+        <h3>Source code</h3>
+        <p>Every line of this project, open on GitHub.</p>
+      </a>
+      <a class="resource-card" href="launch-all.html">
+        <h3>Full collection</h3>
+        <p>Open all ten single-purpose apps from one launcher.</p>
+      </a>
+      <a class="resource-card" href="https://github.com/alexmutegi/Electroduction/blob/main/10-websites/WEBSITE_DEPLOYMENT_GUIDE.md" target="_blank" rel="noopener">
+        <h3>Deployment guide</h3>
+        <p>How each site is structured, built, and shipped.</p>
+      </a>
+      <a class="resource-card" href="#contact">
+        <h3>Get in touch</h3>
+        <p>Questions, feedback, or a project in mind — start here.</p>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="contact section section-mist" id="contact">
+  <div class="wrap contact-shell">
+    <div class="section-head">
+      <h2>Get in touch</h2>
+      <p>Tell me about your project, and I'll follow up.</p>
+    </div>
+    <form id="contactForm" novalidate>
+      <div class="form-row">
+        <div class="field">
+          <label for="cName">Name</label>
+          <input type="text" id="cName" name="name" required>
+          <div class="error-msg">Please enter your name.</div>
+        </div>
+        <div class="field">
+          <label for="cOrg">Organization</label>
+          <input type="text" id="cOrg" name="organization">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="cEmail">Email</label>
+          <input type="email" id="cEmail" name="email" required>
+          <div class="error-msg">Please enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label for="cPhone">Phone Number</label>
+          <input type="tel" id="cPhone" name="phone">
+        </div>
+      </div>
+      <div class="field">
+        <label for="cService">Service Interest</label>
+        <select id="cService" name="service">
+          <option value="Web Development">Web development</option>
+          <option value="Portfolio Feedback">Portfolio feedback</option>
+          <option value="Collaboration">Collaboration</option>
+          <option value="Mentorship">Mentorship</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cMessage">Project Description</label>
+        <textarea id="cMessage" name="message" required></textarea>
+        <div class="error-msg">Let me know a bit about the project.</div>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </div>
+    </form>
+    <div class="form-success" id="formSuccess">
+      <h3>Message received</h3>
+      <p>Thanks for reaching out — I'll reply within a couple of days.</p>
+      <button class="btn btn-outline" id="sendAnother" style="color: var(--navy); border-color: var(--line);">Send another message</button>
+    </div>
+  </div>
+</div>
+
+<div class="site-footer" role="contentinfo">
+  <div class="wrap">
+    <span>&copy; 2026 Electroduction. Built with HTML, CSS, and JavaScript — no frameworks required.</span>
+    <a href="https://github.com/alexmutegi/Electroduction" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div>
+
+<script src="shared/storage.js"></script>
+<script src="shared/gallery-upload.js"></script>
+<script>
+  var nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 40) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  var chips = document.querySelectorAll('.filter-chip');
+  var cards = document.querySelectorAll('.project-card');
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      var filter = chip.getAttribute('data-filter');
+      cards.forEach(function (card) {
+        var show = filter === 'all' || card.getAttribute('data-category') === filter;
+        card.hidden = !show;
+      });
+    });
+  });
+
+  var form = document.getElementById('contactForm');
+  var formSuccess = document.getElementById('formSuccess');
+  var sendAnother = document.getElementById('sendAnother');
+
+  function setInvalid(field, invalid) {
+    field.classList.toggle('invalid', invalid);
+  }
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var name = document.getElementById('cName');
+    var email = document.getElementById('cEmail');
+    var message = document.getElementById('cMessage');
+    var valid = true;
+
+    if (!name.value.trim()) {
+      setInvalid(name.parentElement, true);
+      valid = false;
+    } else {
+      setInvalid(name.parentElement, false);
+    }
+
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email.value.trim())) {
+      setInvalid(email.parentElement, true);
+      valid = false;
+    } else {
+      setInvalid(email.parentElement, false);
+    }
+
+    if (!message.value.trim()) {
+      setInvalid(message.parentElement, true);
+      valid = false;
+    } else {
+      setInvalid(message.parentElement, false);
+    }
+
+    if (!valid) {
+      return;
+    }
+
+    var submission = {
+      name: name.value.trim(),
+      organization: document.getElementById('cOrg').value.trim(),
+      email: email.value.trim(),
+      phone: document.getElementById('cPhone').value.trim(),
+      service: document.getElementById('cService').value,
+      message: message.value.trim(),
+      submittedAt: new Date().toISOString()
+    };
+    /* No backend is wired up for this static site yet — the submission is kept
+       locally so the form is fully testable. Point this at a real endpoint
+       (the FastAPI backend already in this repo, for example) when ready. */
+    if (typeof setJSON === 'function') {
+      setJSON('electroduction:lastContactSubmission', submission);
+    }
+
+    form.classList.add('hidden');
+    formSuccess.classList.add('visible');
+  });
+
+  sendAnother.addEventListener('click', function () {
+    form.reset();
+    form.classList.remove('hidden');
+    formSuccess.classList.remove('visible');
+  });
+</script>
 </body>
 </html>
