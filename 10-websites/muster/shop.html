@@ -371,9 +371,9 @@
         </div>
       </div>
     `).join('');
-    if (typeof initPhotoUploads === 'function') {
-      initPhotoUploads();
-    }
+    if (typeof window.initPhotoUploads === 'function') {
+  window.initPhotoUploads();
+}
   }
 
   function filterProducts(cat, event) {
