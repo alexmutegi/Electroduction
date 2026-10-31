@@ -1,384 +1,767 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muster — Train. Draft. Run the Field. Refuel.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared/brand.css">
-<script src="shared/nav.js" defer></script>
-<style>
-  .hub-banner {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 700px;
-    overflow: hidden;
-    background: var(--ink);
-    border-bottom: 4px solid var(--flare);
-  }
-  .hub-banner img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
-  .hero {
-    background: var(--ink);
-    color: var(--canvas);
-    position: relative;
-    overflow: hidden;
-    padding: 3.5rem 0 6rem;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      repeating-linear-gradient(135deg, rgba(232,99,28,0.05) 0 2px, transparent 2px 42px);
-    pointer-events: none;
-  }
-  .hero .wrap {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 3rem;
-    position: relative;
-  }
-  .hero h1 { margin: 1rem 0 1.25rem; }
-  .hero h1 span { color: var(--flare); }
-  .hero .lead { color: var(--canvas-dim); }
-  .hero .cta-row { display: flex; gap: 1rem; margin-top: 2.25rem; flex-wrap: wrap; }
-  .hero .stamp { --stamp-color: var(--flare); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Electroduction - A comprehensive portfolio of production-ready web applications showcasing modern development techniques">
+    <meta name="author" content="Kenny Situ">
+    <meta name="keywords" content="web development, portfolio, javascript, html, css, projects">
+    <title>Electroduction - Web Development Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  .manifest {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    color: var(--steel);
-    display: flex;
-    gap: 2.5rem;
-    margin-top: 3rem;
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--steel-dim);
-    flex-wrap: wrap;
-  }
-  .manifest strong { color: var(--canvas); display: block; font-family: var(--font-body); font-size: 1rem; }
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #00c9ff;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+        }
 
-  .points {
-    padding: 6rem 0;
-  }
-  .points .section-head { max-width: 640px; margin-bottom: 3rem; }
-  .points .section-head .eyebrow { margin-bottom: 0.6rem; display: block; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-  .point-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  .point {
-    border: 1px solid var(--ink);
-    padding: 2.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    position: relative;
-    transition: background 0.2s ease;
-  }
-  .point:hover { background: rgba(27,29,31,0.03); }
-  .point .point-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
-  .point .stamp { width: 84px; height: 84px; border-width: 2px; flex-shrink: 0; }
-  .point .stamp .stamp-mid { font-size: 0.85rem; }
-  .point .stamp .stamp-top, .point .stamp .stamp-bottom { font-size: 0.42rem; }
-  .point .stamp::before { inset: 5px; }
-  .point h3 { margin: 0; }
-  .point .venue-tag {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--steel-dim);
-  }
-  .point p { color: var(--ink); flex-grow: 1; }
-  .point .point-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    padding-top: 1rem;
-    border-top: 1px solid var(--steel);
-  }
-  .point .point-foot .go { color: var(--flare); font-weight: 600; }
-  .point.cafe { border-top: 4px solid var(--brass); }
-  .point.cards { border-top: 4px solid var(--brass); }
-  .point.range { border-top: 4px solid var(--field); }
-  .point.gym { border-top: 4px solid var(--flare); }
-  .point.shop { border-top: 4px solid var(--brass); }
-  .point.cafe .stamp, .point.cards .stamp, .point.shop .stamp { --stamp-color: var(--brass); }
-  .point.range .stamp { --stamp-color: var(--field); }
-  .point.gym .stamp { --stamp-color: var(--flare); }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f64f59 100%);
+            position: relative;
+            overflow: hidden;
+        }
 
-  @media (max-width: 760px) {
-    .hub-banner { aspect-ratio: 4 / 5; max-height: none; }
-    .hero .wrap { grid-template-columns: 1fr; text-align: left; }
-    .hero .stamp { width: 108px; height: 108px; margin-top: 0.5rem; } .hero .stamp .stamp-top, .hero .stamp .stamp-bottom { font-size: 0.44rem; } .hero .stamp .stamp-mid { font-size: 1rem; }
-    .point-grid { grid-template-columns: 1fr; }
-  }
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.3) 80%);
+            animation: pulse 8s ease-in-out infinite;
+        }
 
-  /* THE CARD — unifying membership section */
-  .thecard {
-    background: var(--field);
-    color: var(--canvas);
-    padding: 5.5rem 0;
-  }
-  .thecard .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
-  .thecard .eyebrow { color: var(--flare); }
-  .thecard .card-visual {
-    background: var(--ink);
-    border: 1px solid var(--brass);
-    padding: 2rem;
-    aspect-ratio: 1.6 / 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-family: var(--font-mono);
-  }
-  .thecard .card-visual .row1 { display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--steel); }
-  .thecard .card-visual .row2 { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 0.06em; color: var(--canvas); }
-  .thecard .card-visual .row3 { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--brass); letter-spacing: 0.08em; }
-  .thecard .perks { list-style: none; margin-top: 1.75rem; font-size: 0.95rem; }
-  .thecard .perks li { padding: 0.6rem 0; border-bottom: 1px solid rgba(237,230,214,0.2); display: flex; justify-content: space-between; gap: 1rem; }
-  .thecard .perks li span:last-child { font-family: var(--font-mono); font-size: 0.8rem; color: var(--canvas-dim); text-align: right; }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
 
-  @media (max-width: 760px) {
-    .thecard .wrap { grid-template-columns: 1fr; }
-  }
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+        }
 
-  .hours-strip {
-    background: var(--canvas-dim);
-    padding: 3rem 0;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-  }
-  .hours-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-  }
-  .hours-grid .h-name { font-family: var(--font-body); font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
-  .hours-grid .h-time { color: var(--steel-dim); }
-  @media (max-width: 760px) { .hours-grid { grid-template-columns: 1fr 1fr; } }
-</style>
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero .tagline {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .stat-item:nth-child(1) { animation-delay: 0.1s; }
+        .stat-item:nth-child(2) { animation-delay: 0.2s; }
+        .stat-item:nth-child(3) { animation-delay: 0.3s; }
+        .stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            opacity: 0.8;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .project-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .project-description {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .project-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .project-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            opacity: 0.8;
+        }
+
+        /* Tech Stack Section */
+        .tech-stack {
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tech-item {
+            padding: 2rem;
+            text-align: center;
+            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tech-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            animation: progressFill 2s ease-out forwards;
+        }
+
+        @keyframes progressFill {
+            from { width: 0; }
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a0a0a;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            opacity: 0.6;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .projects-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 80%;
+                justify-content: center;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+    </style>
 </head>
 <body>
-
-<nav class="site-nav">
-  <div class="wrap">
-    <input type="checkbox" id="navToggle" class="nav-toggle-input">
-    <a class="brand" href="index.html">MUSTER<span class="dot">.</span></a>
-    <label for="navToggle" class="nav-toggle-label" aria-label="Toggle menu"><span></span></label>
-    <ul>
-      <li><a href="cafe.html">Café</a></li>
-      <li><a href="cards.html">Cards</a></li>
-      <li><a href="range.html">Range</a></li>
-      <li><a href="gym.html">Gym</a></li>
-      <li><a href="shop.html">Shop</a></li>
-    </ul>
-  </div>
-</nav>
-
-<div class="hub-banner">
-  <img src="muster-hub-hero.jpg" alt="A member leaving the Muster fitness, café, and range storefronts with a coffee, gym bag, and member card">
-</div>
-
-<header class="hero">
-  <div class="wrap">
-    <div>
-      <span class="eyebrow on-dark">Est. 2019 — Muster Grounds, Bay 4</span>
-      <h1>Where the crew<br><span>musters.</span></h1>
-      <p class="lead">Four grounds, one card. Train at the gym, draft at the shop, run the field at the range, and unwind at the café — all on the same block, all under one roof.</p>
-      <div class="cta-row">
-        <a class="btn on-dark" href="#points">See the five grounds</a>
-        <a class="btn on-dark ghost" href="#thecard">The Muster Card</a>
-      </div>
-      <div class="manifest">
-        <div><strong>4</strong>grounds, one block</div>
-        <div><strong>1</strong>membership card</div>
-        <div><strong>7am–11pm</strong>doors open daily</div>
-        <div><strong>Bay 4</strong>Muster Grounds</div>
-      </div>
-    </div>
-    <div class="stamp" aria-hidden="true">
-      <span class="stamp-top">MUSTER GROUNDS</span>
-      <span class="stamp-mid">EST.<br>2019</span>
-      <span class="stamp-bottom">BAY FOUR</span>
-    </div>
-  </div>
-</header>
-
-<section class="points" id="points">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">The Five Grounds</span>
-      <h2>One membership. Four reasons to show up.</h2>
-    </div>
-    <div class="point-grid">
-
-      <article class="point cafe">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 01 — Fuel</span>
-            <h3>Muster Café</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">ROASTED</span>
-            <span class="stamp-mid">CAFÉ</span>
-            <span class="stamp-bottom">ON SITE</span>
-          </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>⚡ Electroduction</h1>
+            <p class="tagline">Web Development Portfolio</p>
+            <p class="subtitle">
+                A comprehensive collection of production-ready web applications built with pure HTML, CSS, and JavaScript.
+                No frameworks. No dependencies. Just clean, modern code.
+            </p>
+            <div class="cta-buttons">
+                <a href="10-websites/launch-all.html" class="btn btn-primary">
+                    🚀 View All Projects
+                </a>
+                <a href="https://github.com/Electroduction/Electroduction" class="btn btn-secondary" target="_blank">
+                    📂 View on GitHub
+                </a>
+            </div>
         </div>
-        <p>Pour-over bar, breakfast burritos, and enough outlets to plan next weekend's scenario game over a second coffee.</p>
-        <div class="point-foot"><span>Open 6:30am</span><a class="go" href="cafe.html">Visit the café →</a></div>
-      </article>
-
-      <article class="point cards">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 02 — Strategy</span>
-            <h3>Muster Cards</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">SEALED &amp;</span>
-            <span class="stamp-mid">SINGLES</span>
-            <span class="stamp-bottom">GRADED</span>
-          </div>
+        <div class="scroll-indicator">
+            <div style="font-size: 2rem;">⬇</div>
         </div>
-        <p>Singles, sealed product, and a back room that runs a draft or a Commander pod most nights of the week.</p>
-        <div class="point-foot"><span>Draft night: Thu</span><a class="go" href="cards.html">Visit the shop →</a></div>
-      </article>
+    </section>
 
-      <article class="point range">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 03 — The Field</span>
-            <h3>Muster Range</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">AIRSOFT &amp;</span>
-            <span class="stamp-mid">PAINTBALL</span>
-            <span class="stamp-bottom">TWO ACRES</span>
-          </div>
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value">12+</div>
+                <div class="stat-label">Projects</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">50+</div>
+                <div class="stat-label">Features</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Dependencies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Production Ready</div>
+            </div>
         </div>
-        <p>Two acres, one field, split by the week between airsoft scenario nights and paintball speedball. Rental loadouts at the gate.</p>
-        <div class="point-foot"><span>Games Fri–Sun</span><a class="go" href="range.html">Visit the range →</a></div>
-      </article>
+    </section>
 
-      <article class="point gym">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 04 — Conditioning</span>
-            <h3>Muster Gym</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">STRENGTH &amp;</span>
-            <span class="stamp-mid">CONDITION</span>
-            <span class="stamp-bottom">24/5 ACCESS</span>
-          </div>
+    <!-- Projects Section -->
+    <section class="projects">
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">
+            Each project demonstrates different design patterns, features, and real-world use cases
+        </p>
+        <div class="projects-grid">
+            <!-- 10 Websites Collection -->
+            <div class="project-card">
+                <div class="project-icon">🌐</div>
+                <h3 class="project-title">10 Production Websites</h3>
+                <p class="project-description">
+                    A complete collection of 10 fully functional websites, each with unique design and purpose.
+                    From e-commerce to chat applications, covering a wide range of real-world scenarios.
+                </p>
+                <div class="project-stats">
+                    <div class="project-stat">🎨 10 unique designs</div>
+                    <div class="project-stat">⚡ 50+ features</div>
+                    <div class="project-stat">📦 Zero dependencies</div>
+                </div>
+                <div>
+                    <span class="project-badge">E-commerce</span>
+                    <span class="project-badge">Blog</span>
+                    <span class="project-badge">Dashboard</span>
+                    <span class="project-badge">Chat</span>
+                    <span class="project-badge">Music Player</span>
+                    <span class="project-badge">+5 more</span>
+                </div>
+                <a href="10-websites/launch-all.html" class="project-link">
+                    Explore Collection →
+                </a>
+            </div>
+
+            <!-- EchoFrontier Game -->
+            <div class="project-card">
+                <div class="project-icon">🎮</div>
+                <h3 class="project-title">EchoFrontier</h3>
+                <p class="project-description">
+                    An immersive text-based adventure game with rich narrative, multiple story paths,
+                    combat system, inventory management, and save/load functionality.
+                </p>
+                <div class="project-stats">
+                    <div class="project-stat">📖 Multiple endings</div>
+                    <div class="project-stat">⚔️ Combat system</div>
+                    <div class="project-stat">💾 Save/Load</div>
+                </div>
+                <div>
+                    <span class="project-badge">Game</span>
+                    <span class="project-badge">Interactive Fiction</span>
+                    <span class="project-badge">State Management</span>
+                </div>
+                <a href="echofrontier-game/game.html" class="project-link">
+                    Play Game →
+                </a>
+            </div>
+
+            <!-- Desktop Application -->
+            <div class="project-card">
+                <div class="project-icon">💻</div>
+                <h3 class="project-title">Desktop Application</h3>
+                <p class="project-description">
+                    A full-stack desktop-class web application with native-like user interface,
+                    demonstrating advanced web technologies and modern design patterns.
+                </p>
+                <div class="project-stats">
+                    <div class="project-stat">🖥️ Desktop-optimized</div>
+                    <div class="project-stat">⚡ Fast & responsive</div>
+                    <div class="project-stat">🎨 Native-like UI</div>
+                </div>
+                <div>
+                    <span class="project-badge">Desktop</span>
+                    <span class="project-badge">Full-stack</span>
+                    <span class="project-badge">Advanced UI</span>
+                </div>
+                <a href="desktop-app/index.html" class="project-link">
+                    Launch App →
+                </a>
+            </div>
         </div>
-        <p>Built for the field, not the mirror: loaded carries, sprint intervals, and mobility work that holds up under a full loadout.</p>
-        <div class="point-foot"><span>Open 24/5</span><a class="go" href="gym.html">Visit the gym →</a></div>
-      </article>
+    </section>
 
-      <article class="point shop">
-        <div class="point-top">
-          <div>
-            <span class="venue-tag">Ground 05 — Gear</span>
-            <h3>Muster Shop</h3>
-          </div>
-          <div class="stamp" aria-hidden="true">
-            <span class="stamp-top">MUSTER GROUNDS</span>
-            <span class="stamp-mid">SUPPLY</span>
-            <span class="stamp-bottom">EST. 2019</span>
-          </div>
+    <!-- Features Section -->
+    <section class="features">
+        <h2 class="section-title">Why This Portfolio Stands Out</h2>
+        <p class="section-subtitle">
+            Built with quality, learning, and real-world application in mind
+        </p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h4 class="feature-title">Production Ready</h4>
+                <p class="feature-description">
+                    Every project is fully functional and can be deployed immediately. No prototypes or demos.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h4 class="feature-title">Zero Dependencies</h4>
+                <p class="feature-description">
+                    Pure HTML, CSS, and JavaScript. No frameworks, no build tools, no external libraries.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h4 class="feature-title">Unique Designs</h4>
+                <p class="feature-description">
+                    10 completely different design systems, each with its own color scheme and layout.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h4 class="feature-title">Fully Responsive</h4>
+                <p class="feature-description">
+                    Mobile-first approach ensuring perfect display on all devices and screen sizes.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h4 class="feature-title">Educational</h4>
+                <p class="feature-description">
+                    Clean, documented code perfect for learning modern JavaScript and CSS techniques.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h4 class="feature-title">High Performance</h4>
+                <p class="feature-description">
+                    Optimized for speed with minimal JavaScript and efficient rendering patterns.
+                </p>
+            </div>
         </div>
-        <p>Apparel, drinkware, and gear carrying the same stamp as the rest of the block — built for the crew that actually shows up.</p>
-        <div class="point-foot"><span>Same hours as café</span><a class="go" href="shop.html">Visit the shop →</a></div>
-      </article>
+    </section>
 
-    </div>
-  </div>
-</section>
+    <!-- Tech Stack Section -->
+    <section class="tech-stack">
+        <h2 class="section-title">Technology Stack</h2>
+        <p class="section-subtitle">
+            Modern web technologies used throughout all projects
+        </p>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <div class="tech-name">HTML5</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%"></div>
+                </div>
+            </div>
 
-<section class="thecard" id="thecard">
-  <div class="wrap">
-    <div>
-      <span class="eyebrow">One Card, Five Grounds</span>
-      <h2>The Muster Card</h2>
-      <p class="lead" style="color: var(--canvas-dim);">One membership, scanned at all five doors. It doesn't unlock everything for free — it just makes sure showing up at all five is always worth it.</p>
-      <ul class="perks">
-        <li><span>Muster Café</span><span>10% off, house account tab</span></li>
-        <li><span>Muster Cards</span><span>Free draft entry, 1st Thursday</span></li>
-        <li><span>Muster Range</span><span>Member rate on rentals</span></li>
-        <li><span>Muster Gym</span><span>24/5 key fob access</span></li>
-        <li><span>Muster Shop</span><span>10% off, all gear</span></li>
-      </ul>
-    </div>
-    <div class="card-visual">
-      <div class="row1"><span>MUSTER GROUNDS</span><span>BAY 4</span></div>
-      <div class="row2">MUSTER<br>CARD</div>
-      <div class="row3"><span>MEMBER SINCE 2024</span><span>NO. 00142</span></div>
-    </div>
-  </div>
-</section>
+            <div class="tech-item">
+                <div class="tech-name">CSS3</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%"></div>
+                </div>
+            </div>
 
-<section class="hours-strip">
-  <div class="wrap hours-grid">
-    <div><div class="h-name">Muster Café</div><div class="h-time">Mon–Sun · 6:30am – 6pm</div></div>
-    <div><div class="h-name">Muster Cards</div><div class="h-time">Tue–Sun · 11am – 9pm</div></div>
-    <div><div class="h-name">Muster Range</div><div class="h-time">Fri–Sun · 9am – 5pm (games)</div></div>
-    <div><div class="h-name">Muster Gym</div><div class="h-time">Mon–Fri 5am–11pm · Sat–Sun 7am–9pm</div></div>
-    <div><div class="h-name">Muster Shop</div><div class="h-time">Mon–Sun · 6:30am – 6pm</div></div>
-  </div>
-</section>
+            <div class="tech-item">
+                <div class="tech-name">JavaScript ES6+</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <h4>Muster Grounds</h4>
-        <p style="color: var(--canvas-dim); font-size: 0.9rem; max-width: 32ch;">2400 Ordnance Road, Bay 4<br>One block, five grounds, one card.</p>
-      </div>
-      <div>
-        <h4>Grounds</h4>
-        <ul>
-          <li><a href="cafe.html">Café</a></li>
-          <li><a href="cards.html">Cards</a></li>
-          <li><a href="range.html">Range</a></li>
-          <li><a href="gym.html">Gym</a></li>
-          <li><a href="shop.html">Shop</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Info</h4>
-        <ul>
-          <li><a href="#thecard">The Muster Card</a></li>
-          <li><a href="#points">Hours</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li>hello@mustergrounds.example</li>
-          <li>(555) 019-4200</li>
-        </ul>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <span>© 2026 Muster Grounds</span>
-      <span>Bay 4 — one block, five grounds</span>
-    </div>
-  </div>
-</footer>
+        <div style="text-align: center; margin-top: 3rem; opacity: 0.8;">
+            <p style="font-size: 1.2rem;">
+                <strong>Key Techniques:</strong> CSS Grid • Flexbox • Template Literals •
+                Arrow Functions • Array Methods • Event Delegation • State Management
+            </p>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="10-websites/README.md" class="footer-link">Documentation</a>
+                <a href="10-websites/WEBSITE_DEPLOYMENT_GUIDE.md" class="footer-link">Deployment Guide</a>
+                <a href="https://github.com/Electroduction/Electroduction" target="_blank" class="footer-link">GitHub</a>
+                <a href="https://www.linkedin.com/in/kenny-situ/" target="_blank" class="footer-link">LinkedIn</a>
+            </div>
+            <div class="copyright">
+                <p>© 2026 Electroduction • Built by Kenny Situ</p>
+                <p style="margin-top: 0.5rem; opacity: 0.7;">
+                    Made with ❤️ using pure HTML, CSS, and JavaScript
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe project cards and feature cards
+        document.querySelectorAll('.project-card, .feature-card, .tech-item').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+
+        // Add active state to current section in viewport
+        const sections = document.querySelectorAll('section');
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Could be used to update navigation if we had one
+                    console.log('Viewing section:', entry.target.className);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => sectionObserver.observe(section));
+
+        // Log welcome message to console
+        console.log('%c⚡ Electroduction Portfolio', 'font-size: 20px; font-weight: bold; color: #667eea;');
+        console.log('%cWelcome! Feel free to explore the code.', 'font-size: 14px; color: #764ba2;');
+        console.log('%cAll projects built with vanilla JavaScript - no frameworks!', 'font-size: 12px; color: #00c9ff;');
+    </script>
 </body>
 </html>
