@@ -47,5 +47,15 @@
     "getJSON": "readonly",
     "setJSON": "readonly",
     "initPhotoUploads": "readonly"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.html"
+      ],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ]
 }
