@@ -54,6 +54,15 @@
         "*.html"
       ],
       "rules": {
+        "no-unused-vars": "off",
+        "indent": "off"
+      }
+    },
+    {
+      "files": [
+        "**/storage.js"
+      ],
+      "rules": {
         "no-unused-vars": "off"
       }
     }
