@@ -11,7 +11,15 @@
   },
   "rules": {
     "no-unused-vars": "warn",
-    "no-console": "warn",
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
     "eqeqeq": "error",
     "curly": "error",
     "semi": [
@@ -37,6 +45,26 @@
   ],
   "globals": {
     "getJSON": "readonly",
-    "setJSON": "readonly"
-  }
+    "setJSON": "readonly",
+    "initPhotoUploads": "readonly"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.html"
+      ],
+      "rules": {
+        "no-unused-vars": "off",
+        "indent": "off"
+      }
+    },
+    {
+      "files": [
+        "**/storage.js"
+      ],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ]
 }
