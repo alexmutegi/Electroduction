@@ -38,6 +38,10 @@
   .vhero .hero-copy { max-width: 620px; }
   .vhero .lead { color: var(--canvas-dim); max-width: 46ch; }
 
+  .hero-split { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: center; padding-bottom: 0.5rem; }
+  .hero-photo { justify-self: center; width: 100%; max-width: 340px; border: 4px solid var(--venue); overflow: hidden; line-height: 0; }
+  .hero-photo img { width: 100%; height: auto; display: block; }
+
   .cta-row { display: flex; gap: 1rem; margin-top: 1.75rem; flex-wrap: wrap; }
 
   /* ---------- FILTERS ---------- */
@@ -126,7 +130,8 @@
   .subscribe-status { font-family: var(--font-mono); font-size: 0.85rem; margin-top: 0.75rem; min-height: 1.2rem; }
 
   @media (max-width: 760px) {
-    .hero-banner { aspect-ratio: 4 / 3; max-height: 340px; }
+    .hero-split { grid-template-columns: 1fr; }
+    .hero-photo { max-width: 260px; }
     .subscribe-strip .wrap { grid-template-columns: 1fr; }
     .cart-panel { max-width: 100%; }
   }
@@ -150,68 +155,7 @@
 </nav>
 
 <header class="vhero">
-  <div class="hero-banner">
-    <svg viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wide banner illustration: a stamp seal reading Muster Grounds Supply, Est. 2019, centered above a shelf holding a tote bag of folded apparel on the left and a canteen and camp mug on the right, with woven patches and a field cap scattered at the edges">
-        <defs>
-          <pattern id="shopStripe" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="46" height="46" fill="#1B1D1F"/>
-            <line x1="0" y1="0" x2="0" y2="46" stroke="#4B5320" stroke-width="1" opacity="0.35"/>
-          </pattern>
-        </defs>
-
-        <rect width="1600" height="600" fill="#1B1D1F"/>
-        <rect width="1600" height="600" fill="url(#shopStripe)"/>
-
-        <!-- ground plane -->
-        <rect x="0" y="430" width="1600" height="170" fill="#4B5320"/>
-        <line x1="0" y1="430" x2="1600" y2="430" stroke="#EDE6D6" stroke-width="3" stroke-dasharray="10 8" opacity="0.5"/>
-
-        <!-- far-left patches, partly bled off the edge -->
-        <g transform="translate(70,300)" opacity="0.9">
-          <circle r="34" fill="none" stroke="#B08D57" stroke-width="4"/>
-          <text y="6" text-anchor="middle" fill="#B08D57" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1">MG</text>
-        </g>
-        <g transform="translate(150,375)" opacity="0.65">
-          <circle r="22" fill="none" stroke="#E8631C" stroke-width="3"/>
-        </g>
-
-        <!-- left cluster: tote bag with folded apparel -->
-        <g transform="translate(330,485)">
-          <path d="M-70 -60 L-70 -90 Q-70 -115 -35 -115 L35 -115 Q70 -115 70 -90 L70 -60" fill="none" stroke="#B08D57" stroke-width="10" stroke-linecap="round"/>
-          <rect x="-95" y="-60" width="190" height="140" rx="6" fill="#26292c"/>
-          <rect x="-70" y="-40" width="60" height="45" fill="#EDE6D6" opacity="0.9"/>
-          <rect x="8" y="-40" width="60" height="45" fill="#B08D57" opacity="0.85"/>
-          <circle cx="0" cy="20" r="26" fill="#EDE6D6" opacity="0.9"/>
-          <rect x="-30" y="12" width="60" height="14" fill="#E8631C" opacity="0.85"/>
-          <circle cx="0" cy="-60" r="14" fill="#B08D57" stroke="#1B1D1F" stroke-width="2"/>
-        </g>
-
-        <!-- central stamp seal -->
-        <g transform="translate(800,235)">
-          <circle r="152" fill="none" stroke="#E8631C" stroke-width="4"/>
-          <circle r="129" fill="none" stroke="#E8631C" stroke-width="1.5" opacity="0.6"/>
-          <text y="-22" text-anchor="middle" fill="#E8631C" font-family="IBM Plex Mono, monospace" font-size="16" letter-spacing="4">MUSTER GROUNDS</text>
-          <text y="20" text-anchor="middle" fill="#EDE6D6" font-family="Bebas Neue, sans-serif" font-size="50" letter-spacing="4">SUPPLY</text>
-          <text y="52" text-anchor="middle" fill="#E8631C" font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="4">EST. 2019</text>
-        </g>
-
-        <!-- right cluster: canteen and camp mug -->
-        <g transform="translate(1270,470)">
-          <rect x="-40" y="-70" width="80" height="120" rx="14" fill="#EDE6D6"/>
-          <rect x="-14" y="-95" width="28" height="30" rx="4" fill="#7A8288"/>
-          <rect x="-40" y="-20" width="80" height="20" fill="#E8631C" opacity="0.85"/>
-          <circle cx="150" cy="8" r="34" fill="none" stroke="#EDE6D6" stroke-width="8"/>
-          <path d="M180 8 q24 0 24 -20" fill="none" stroke="#EDE6D6" stroke-width="8"/>
-        </g>
-
-        <!-- far-right field cap, partly bled off the edge -->
-        <g transform="translate(1520,300)" opacity="0.9">
-          <path d="M-60 20 Q-60 -35 0 -35 Q60 -35 60 20 Z" fill="#26292c" stroke="#B08D57" stroke-width="3"/>
-          <rect x="-72" y="14" width="144" height="14" rx="7" fill="#B08D57"/>
-        </g>
-    </svg>
-  </div>
-  <div class="wrap">
+  <div class="wrap hero-split">
     <div class="hero-copy">
       <span class="eyebrow">Ground 05 — Gear</span>
       <h1>Stamped for<br>the field.</h1>
@@ -220,6 +164,9 @@
         <a class="btn on-dark" href="#shop">Shop the drop</a>
         <button class="cart-btn" onclick="toggleCart()" aria-label="Open cart">🧺 Cart <span class="cart-count" id="cartCount">0</span></button>
       </div>
+    </div>
+    <div class="hero-photo">
+      <img src="shop-hero-coffee-pour.gif" width="320" height="512" alt="Coffee being poured into a white cup on a saucer, splashing among scattered coffee beans" decoding="async">
     </div>
   </div>
 </header>
@@ -309,6 +256,8 @@
 </footer>
 
 <script>
+  /* global initPhotoUploads */
+  /* exported filterProducts, addToCart, removeFromCart */
   const CART_KEY = 'muster_shop_cart';
   const SUBSCRIBE_KEY = 'muster_shop_subscribed';
 
@@ -371,9 +320,9 @@
         </div>
       </div>
     `).join('');
-    if (typeof window.initPhotoUploads === 'function') {
-  window.initPhotoUploads();
-}
+    if (typeof initPhotoUploads === 'function') {
+      initPhotoUploads();
+    }
   }
 
   function filterProducts(cat, event) {
